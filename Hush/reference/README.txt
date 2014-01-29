@@ -1,0 +1,6 @@
+
+Reference URLs:
+
+1. Building apps with Parse - http://guides.thecodepath.com/android/Building-Data-driven-Apps-with-Parse
+2. Push notifs with Parse - https://www.parse.com/docs/android_guide#push
+3. Android inspired UIs - http://android.inspired-ui.com/
