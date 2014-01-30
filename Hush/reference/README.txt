@@ -1,4 +1,25 @@
 
+
+Discussed in first class:
+
+
+Points to evaluate ideas
+
+- Scope
+- Pitch
+- Addictive/Habit forming
+- Need/Market Size/Uniqueness
+- Tech Feasibility
+
+
+Final product evaluation criteria used by judges
+
+- Product Strength
+- Target Market
+- Creativity
+
+
+
 Reference URLs:
 
 1. Building apps with Parse - http://guides.thecodepath.com/android/Building-Data-driven-Apps-with-Parse
