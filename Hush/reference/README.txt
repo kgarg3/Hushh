@@ -1,4 +1,7 @@
 
+Link to user stories Google Doc: 
+	https://docs.google.com/document/d/1_m79nBdlkzx7OrauaXdeBx3B73CEhvSM3yYZfq4PK68/edit
+
 
 Discussed in first class:
 
