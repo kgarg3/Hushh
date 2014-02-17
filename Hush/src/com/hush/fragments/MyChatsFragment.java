@@ -8,5 +8,10 @@ package com.hush.fragments;
  */
 public class MyChatsFragment extends ChatListFragment{
 
-	//TODO: implement my chats
+	@Override
+	protected void getChatListType() {
+		// TODO return mychats qualifier
+		
+	}
+
 }

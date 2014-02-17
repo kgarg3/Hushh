@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.hush.R;
 import com.hush.models.Chat;
@@ -30,6 +31,14 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 	    	LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    	view = inflater.inflate(R.layout.chat_item, null);
 	    }
+	    
+	    Chat chat = getItem(position);
+	    
+	    //set up views here
+	    TextView tvNotifications = (TextView) view.findViewById(R.id.tvChatItemNotificationCount);
+	    
+	    TextView tvChatTopic = (TextView) view.findViewById(R.id.tvChatItemChatTopic);
+	    
 	    
         return view;
 	}

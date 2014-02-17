@@ -23,7 +23,7 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
  *
  * Fragment to hold the list of chats
  */
-public class ChatListFragment extends Fragment {
+public abstract class ChatListFragment extends Fragment {
 
 	protected  PullToRefreshListView lvChats;
 	protected ProgressBar progressBarLoadingTweets;
@@ -76,4 +76,6 @@ public class ChatListFragment extends Fragment {
 	public ChatAdapter getAdapter() {
 		return adapter;
 	}
+	
+	protected abstract void getChatListType();
 }

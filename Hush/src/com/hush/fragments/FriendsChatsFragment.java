@@ -8,5 +8,9 @@ package com.hush.fragments;
  */
 public class FriendsChatsFragment extends ChatListFragment{
 
-	//TODO: implement friends chat
+	@Override
+	protected void getChatListType() {
+		// TODO return a qualifier 
+		
+	}
 }
