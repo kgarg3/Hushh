@@ -30,18 +30,19 @@ public final class R {
         public static final int ptr_pulltorefresh_arrow=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000b;
-        public static final int btnLoginActivityFacebook=0x7f080002;
-        public static final int lvChatListFragmentChatsList=0x7f080004;
-        public static final int pgbarChatListFragment=0x7f080003;
-        public static final int ptr_id_header=0x7f080005;
-        public static final int ptr_id_image=0x7f080006;
-        public static final int ptr_id_last_updated=0x7f08000a;
-        public static final int ptr_id_spinner=0x7f080007;
-        public static final int ptr_id_text=0x7f080009;
-        public static final int ptr_id_textwrapper=0x7f080008;
-        public static final int tvLoginActivityJoinHushSubtitle=0x7f080001;
-        public static final int tvLoginActivityJoinHushTitle=0x7f080000;
+        public static final int action_settings=0x7f08000c;
+        public static final int btnLoginActivityFacebook=0x7f080003;
+        public static final int flChatsActivityChatLists=0x7f080000;
+        public static final int lvChatListFragmentChatsList=0x7f080005;
+        public static final int pgbarChatListFragment=0x7f080004;
+        public static final int ptr_id_header=0x7f080006;
+        public static final int ptr_id_image=0x7f080007;
+        public static final int ptr_id_last_updated=0x7f08000b;
+        public static final int ptr_id_spinner=0x7f080008;
+        public static final int ptr_id_text=0x7f08000a;
+        public static final int ptr_id_textwrapper=0x7f080009;
+        public static final int tvLoginActivityJoinHushSubtitle=0x7f080002;
+        public static final int tvLoginActivityJoinHushTitle=0x7f080001;
     }
     public static final class layout {
         public static final int activity_all_chats=0x7f030000;
@@ -73,10 +74,14 @@ public final class R {
         public static final int ptr_pull_to_refresh=0x7f050000;
         public static final int ptr_refreshing=0x7f050002;
         public static final int ptr_release_to_refresh=0x7f050001;
+        public static final int tab_frds_chats=0x7f05000c;
+        public static final int tab_my_chats=0x7f05000b;
+        /**  ChatsList Activity 
+         */
         public static final int title_activity_all_chats=0x7f05000a;
-        public static final int title_activity_chat=0x7f05000d;
-        public static final int title_activity_invite_friends=0x7f05000c;
-        public static final int title_activity_new_chat_topic=0x7f05000b;
+        public static final int title_activity_chat=0x7f05000f;
+        public static final int title_activity_invite_friends=0x7f05000e;
+        public static final int title_activity_new_chat_topic=0x7f05000d;
     }
     public static final class style {
         /** 
