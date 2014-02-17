@@ -1,23 +1,23 @@
 package com.hush.activities;
 
-import com.hush.R;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
-public class ChatsList extends Activity {
+import com.hush.R;
+
+public class InviteFriendsActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_all_chats);
+		setContentView(R.layout.activity_invite_friends);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.all_chats, menu);
+		getMenuInflater().inflate(R.menu.invite_friends, menu);
 		return true;
 	}
 
