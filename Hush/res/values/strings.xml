@@ -19,5 +19,8 @@
     <string name="title_activity_new_chat_topic">New Chat Topic</string>
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="title_activity_chat">Chat</string>
+    <string name="action_new_chat">New Chat</string>
+    <string name="action_invite_friends">Add</string>
+    <string name="action_view_chat">Done</string>
 
 </resources>

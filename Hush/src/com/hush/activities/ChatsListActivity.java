@@ -3,9 +3,11 @@ package com.hush.activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.hush.R;
 import com.hush.fragments.FriendsChatsFragment;
@@ -56,6 +58,12 @@ public class ChatsListActivity extends FragmentActivity {
 		actionBar.addTab(tabMyChats);
 		actionBar.addTab(tabFrdsChats);
 		actionBar.selectTab(tabMyChats);
+	}
+	
+	// menu actions
+	public void onNewChatClick(MenuItem mi) {
+		Intent i = new Intent(ChatsListActivity.this, NewChatTopicActivity.class);
+		startActivity(i);
 	}
 
 }

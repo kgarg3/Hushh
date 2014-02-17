@@ -1,8 +1,10 @@
 package com.hush.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.hush.R;
 
@@ -21,4 +23,9 @@ public class ChatActivity extends Activity {
 		return true;
 	}
 
+	// menu actions
+	public void onInviteFriendsClick(MenuItem mi) {
+		Intent i = new Intent(ChatActivity.this, InviteFriendsActivity.class);
+		startActivity(i);
+	}
 }

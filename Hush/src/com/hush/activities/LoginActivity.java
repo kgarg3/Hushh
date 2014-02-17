@@ -1,6 +1,7 @@
 package com.hush.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -36,7 +37,8 @@ public class LoginActivity extends Activity {
      */
     public void loginWithFacebook(View v) {
   
-    	
+    	Intent i = new Intent(LoginActivity.this, ChatsListActivity.class);
+    	startActivity(i);
     }
     
 }
