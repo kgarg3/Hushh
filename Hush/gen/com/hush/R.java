@@ -17,20 +17,29 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f040000;
-        public static final int activity_vertical_margin=0x7f040001;
-        public static final int text_size_large=0x7f040002;
-        public static final int text_size_medium=0x7f040003;
-        public static final int text_size_small=0x7f040004;
+        public static final int activity_horizontal_margin=0x7f060000;
+        public static final int activity_vertical_margin=0x7f060001;
+        public static final int text_size_large=0x7f060002;
+        public static final int text_size_medium=0x7f060003;
+        public static final int text_size_small=0x7f060004;
     }
     public static final class drawable {
         public static final int facebook=0x7f020000;
         public static final int ic_launcher=0x7f020001;
         public static final int login_background=0x7f020002;
+        public static final int ptr_pulltorefresh_arrow=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f080003;
+        public static final int action_settings=0x7f08000b;
         public static final int btnLoginActivityFacebook=0x7f080002;
+        public static final int lvChatListFragmentChatsList=0x7f080004;
+        public static final int pgbarChatListFragment=0x7f080003;
+        public static final int ptr_id_header=0x7f080005;
+        public static final int ptr_id_image=0x7f080006;
+        public static final int ptr_id_last_updated=0x7f08000a;
+        public static final int ptr_id_spinner=0x7f080007;
+        public static final int ptr_id_text=0x7f080009;
+        public static final int ptr_id_textwrapper=0x7f080008;
         public static final int tvLoginActivityJoinHushSubtitle=0x7f080001;
         public static final int tvLoginActivityJoinHushTitle=0x7f080000;
     }
@@ -40,6 +49,9 @@ public final class R {
         public static final int activity_invite_friends=0x7f030002;
         public static final int activity_login=0x7f030003;
         public static final int activity_new_chat_topic=0x7f030004;
+        public static final int chat_item=0x7f030005;
+        public static final int fragment_chat_list=0x7f030006;
+        public static final int ptr_header=0x7f030007;
     }
     public static final class menu {
         public static final int all_chats=0x7f070000;
@@ -49,18 +61,22 @@ public final class R {
         public static final int new_chat_topic=0x7f070004;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
-        public static final int app_name=0x7f050000;
-        public static final int empty=0x7f050003;
-        public static final int hello_world=0x7f050002;
+        public static final int action_settings=0x7f050005;
+        public static final int app_name=0x7f050004;
+        public static final int empty=0x7f050007;
+        public static final int hello_world=0x7f050006;
         /**  Login Activity 
          */
-        public static final int login_activity_join_hush=0x7f050004;
-        public static final int login_activity_join_hush_subtitle=0x7f050005;
-        public static final int title_activity_all_chats=0x7f050006;
-        public static final int title_activity_chat=0x7f050009;
-        public static final int title_activity_invite_friends=0x7f050008;
-        public static final int title_activity_new_chat_topic=0x7f050007;
+        public static final int login_activity_join_hush=0x7f050008;
+        public static final int login_activity_join_hush_subtitle=0x7f050009;
+        public static final int ptr_last_updated=0x7f050003;
+        public static final int ptr_pull_to_refresh=0x7f050000;
+        public static final int ptr_refreshing=0x7f050002;
+        public static final int ptr_release_to_refresh=0x7f050001;
+        public static final int title_activity_all_chats=0x7f05000a;
+        public static final int title_activity_chat=0x7f05000d;
+        public static final int title_activity_invite_friends=0x7f05000c;
+        public static final int title_activity_new_chat_topic=0x7f05000b;
     }
     public static final class style {
         /** 
@@ -84,10 +100,17 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f040007;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f040008;
+        public static final int ptr_arrow=0x7f040002;
+        public static final int ptr_header=0x7f040001;
+        public static final int ptr_headerContainer=0x7f040000;
+        public static final int ptr_last_updated=0x7f040006;
+        public static final int ptr_spinner=0x7f040003;
+        public static final int ptr_text=0x7f040005;
+        public static final int ptr_textwrapper=0x7f040004;
     }
 }

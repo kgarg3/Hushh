@@ -35,7 +35,8 @@ public class LoginActivity extends Activity {
      * @param v
      */
     public void loginWithFacebook(View v) {
-    	int x = 0;
+  
+    	
     }
     
 }

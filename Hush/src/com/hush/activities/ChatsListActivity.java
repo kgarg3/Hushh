@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
+/**
+ * 
+ * @author 
+ *
+ * Activity that shows all the chats of the logged in user and his friends. 
+ */
 public class ChatsListActivity extends Activity {
 
 	@Override
