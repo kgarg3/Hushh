@@ -12,7 +12,10 @@ int drawable facebook 0x7f020001
 int drawable ic_launcher 0x7f020002
 int drawable login_background 0x7f020003
 int drawable ptr_pulltorefresh_arrow 0x7f020004
-int id action_settings 0x7f08000f
+int id action_invite_friends 0x7f080010
+int id action_new_chat 0x7f08000f
+int id action_settings 0x7f080012
+int id action_view_chat 0x7f080011
 int id btnChatItemTimebomb 0x7f080006
 int id btnLoginActivityFacebook 0x7f080003
 int id flChatsActivityChatLists 0x7f080000
@@ -41,7 +44,10 @@ int menu chat 0x7f070001
 int menu invite_friends 0x7f070002
 int menu login 0x7f070003
 int menu new_chat_topic 0x7f070004
+int string action_invite_friends 0x7f050011
+int string action_new_chat 0x7f050010
 int string action_settings 0x7f050005
+int string action_view_chat 0x7f050012
 int string app_name 0x7f050004
 int string empty 0x7f050007
 int string hello_world 0x7f050006

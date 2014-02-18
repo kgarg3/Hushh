@@ -37,7 +37,10 @@ public final class R {
         public static final int ptr_pulltorefresh_arrow=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000f;
+        public static final int action_invite_friends=0x7f080010;
+        public static final int action_new_chat=0x7f08000f;
+        public static final int action_settings=0x7f080012;
+        public static final int action_view_chat=0x7f080011;
         public static final int btnChatItemTimebomb=0x7f080006;
         public static final int btnLoginActivityFacebook=0x7f080003;
         public static final int flChatsActivityChatLists=0x7f080000;
@@ -72,7 +75,10 @@ public final class R {
         public static final int new_chat_topic=0x7f070004;
     }
     public static final class string {
+        public static final int action_invite_friends=0x7f050011;
+        public static final int action_new_chat=0x7f050010;
         public static final int action_settings=0x7f050005;
+        public static final int action_view_chat=0x7f050012;
         public static final int app_name=0x7f050004;
         public static final int empty=0x7f050007;
         public static final int hello_world=0x7f050006;
