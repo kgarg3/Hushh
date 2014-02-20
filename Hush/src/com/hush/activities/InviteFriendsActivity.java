@@ -32,7 +32,7 @@ public class InviteFriendsActivity extends Activity {
 	
 	// menu actions
 	public void onViewChatClick(MenuItem mi) {
-		Intent i = new Intent(InviteFriendsActivity.this, ChatActivity.class);
+		Intent i = new Intent(InviteFriendsActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}
 

@@ -8,12 +8,12 @@ import android.view.MenuItem;
 
 import com.hush.R;
 
-public class ChatActivity extends Activity {
+public class ChatWindowActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_chat);
+		setContentView(R.layout.activity_chat_window);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class ChatActivity extends Activity {
 
 	// menu actions
 	public void onInviteFriendsClick(MenuItem mi) {
-		Intent i = new Intent(ChatActivity.this, InviteFriendsActivity.class);
+		Intent i = new Intent(ChatWindowActivity.this, InviteFriendsActivity.class);
 		startActivity(i);
 	}
 }

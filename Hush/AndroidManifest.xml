@@ -10,6 +10,9 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     
     <application
    		android:name="com.hush.HushApp"
@@ -39,7 +42,7 @@
             android:label="@string/title_activity_invite_friends" >
         </activity>
         <activity
-            android:name="com.hush.activities.ChatActivity"
+            android:name="com.hush.activities.ChatWindowActivity"
             android:label="@string/title_activity_chat" >
         </activity>
         <activity
