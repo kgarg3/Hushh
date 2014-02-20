@@ -13,6 +13,7 @@ import com.hush.R;
 import com.hush.fragments.FriendsChatsFragment;
 import com.hush.fragments.MyChatsFragment;
 import com.hush.listeners.FragmentTabListener;
+import com.hush.utils.FriendListRequestListener;
 
 /**
  * 
@@ -30,6 +31,9 @@ public class ChatsListActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_all_chats);
 		
+        // Get the list of all friends
+        FriendListRequestListener.getUserData();
+
 		setupNavgationTabs();
 	}
 

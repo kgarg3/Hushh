@@ -14,10 +14,14 @@ import com.facebook.model.GraphUser;
 
 public class FriendListRequestListener {
 
-	public static void getUserData(final Session session){
-	    Request request = Request.newMeRequest(session, 
-	        new Request.GraphUserCallback() {
-	        @Override
+	public static void getUserData(){
+	    final Session session = Session.getActiveSession();
+
+	    if(!session.getState().isOpened()) { return; }
+	    
+	    Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
+	    
+	    	@Override
 	        public void onCompleted(GraphUser user, Response response) {
 	            if(user != null && session == Session.getActiveSession()){
 	                //pictureView.setProfileId(user.getId());
@@ -25,29 +29,30 @@ public class FriendListRequestListener {
 	                getFriends();
 	            }
 	            if(response.getError() !=null){
-
 	            }
 	        }
 	    });
+	    
 	    request.executeAsync();
 	}
 
 	private static void getFriends(){
-	    Session activeSession = Session.getActiveSession();
-	    if(activeSession.getState().isOpened()){
-	        Request friendRequest = Request.newMyFriendsRequest(activeSession, 
-	            new GraphUserListCallback(){
-	                @Override
-	                public void onCompleted(List<GraphUser> users,
-	                        Response response) {
-	                    Log.i("FRIENDS LIST", response.toString());
-	                }
-	        });
-	        Bundle params = new Bundle();
-	        params.putString("fields", "id,name,friends");
-	        friendRequest.setParameters(params);
-	        friendRequest.executeAsync();
-	    }
-	}
+		
+	    Session session = Session.getActiveSession();
+	    if(!session.getState().isOpened()) { return; }
+	    
+        Request friendRequest = Request.newMyFriendsRequest(session, new GraphUserListCallback(){
+            @Override
+            public void onCompleted(List<GraphUser> users, Response response) {
+                Log.i("FRIENDS LIST", response.toString());
+            }
+        });
+        
+        Bundle params = new Bundle();
+        params.putString("fields", "id,name");
+        friendRequest.setParameters(params);
+        
+        friendRequest.executeAsync();
+    }
 
 }

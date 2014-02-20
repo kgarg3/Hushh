@@ -31,7 +31,7 @@
         android:textSize="@dimen/text_size_medium" />
 
     <!-- TODO: Right now setting the width and height, but once replaced with actual image, set to wrap_content -->
-    <Button
+    <!-- Button
         android:id="@+id/btnLoginActivityFacebook"
         android:layout_width="230dp"
         android:layout_height="85dp"
@@ -41,6 +41,15 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/facebook"
         android:onClick="loginWithFacebook"
-        android:text="@string/empty" />
+        android:text="@string/empty" / -->
+
+    <fragment
+        android:id="@+id/fragment1"
+        android:name="com.hush.fragments.FacebookLoginFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        tools:layout="@layout/fragment_facebook_login" />
 
 </RelativeLayout>
