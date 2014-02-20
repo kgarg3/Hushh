@@ -10,11 +10,13 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import com.facebook.FacebookException;
+import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.PickerFragment;
 import com.hush.HushApp;
 import com.hush.R;
+import com.hush.utils.FriendListRequestListener;
 
 public class PickFriendsActivity extends FragmentActivity {
 
@@ -41,6 +43,9 @@ public class PickFriendsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_friends);
 
+        // Get the list of all friends
+        FriendListRequestListener.getUserData(Session.getActiveSession());
+        
         FragmentManager fm = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
