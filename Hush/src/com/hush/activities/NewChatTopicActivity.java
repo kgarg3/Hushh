@@ -6,12 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.hush.R;
-import com.hush.clients.FacebookClient;
-import com.hush.clients.LayerClient;
-import com.hush.models.HushUser;
 
 public class NewChatTopicActivity extends Activity {
 
@@ -28,14 +24,15 @@ public class NewChatTopicActivity extends Activity {
 		return true;
 	}
 	
-	// menu actions
-	public void onInviteFriendsClick(MenuItem mi) {
+	// actions
+	public void onInviteFriendsClick(View view) {
 		Intent i = new Intent(NewChatTopicActivity.this, InviteFriendsActivity.class);
 		startActivity(i);
 	}
-
 	
-	public void createOrLoginUserIntoHush(View v) {
-        FacebookClient.setUserPropertiesFromFacebookAndLoginIntoLayer();
+	public void onDoneClick(MenuItem mi) {
+		Intent i = new Intent(NewChatTopicActivity.this, ChatWindowActivity.class);
+		startActivity(i);
 	}
+
 }
