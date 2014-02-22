@@ -5,6 +5,7 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:onClick="onNewChatClick"
+        android:icon="@drawable/ic_add"
         android:title="@string/action_new_chat"/>
 
 </menu>
