@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.hush.R;
-import com.hush.utils.FriendListRequestListener;
+import com.hush.utils.FacebookClient;
 
 public class NewChatTopicActivity extends Activity {
 
@@ -34,6 +34,6 @@ public class NewChatTopicActivity extends Activity {
 	
 	public void printAllFBFriendsToLogCat(View v) {
         // Get the list of all friends
-        FriendListRequestListener.getUserData();
+        FacebookClient.getUserData();
 	}
 }

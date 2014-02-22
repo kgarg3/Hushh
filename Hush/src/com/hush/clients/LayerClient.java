@@ -3,7 +3,6 @@ package com.hush.clients;
 import java.util.List;
 
 import layer.sdk.ContactManager;
-import layer.sdk.ContactManager.ContactImportCallback;
 import layer.sdk.LayerAddress;
 import layer.sdk.MessageManager;
 import layer.sdk.SessionManager;
@@ -14,12 +13,20 @@ import layer.sdk.messages.Message;
 import layer.sdk.user.User;
 import android.util.Log;
 
+import com.hush.models.HushUser;
+
 public class LayerClient {
 	
-	public final static String TAG = LayerClient.class.getSimpleName();
+	private final static String TAG = LayerClient.class.getSimpleName();
+	private final static String userDoesNotExistErrorMessage = "No user for "; 
+	private final static long userDoesNotExistErrorCode = 2; 
 
-	public void registerUser() {
-		UserManager.create("hacur", "secret", "Haskell", "Curry", "haskell@curry.com", "", new UserManager.UserCreateCallback() {
+	public static User getCurrentLayerUser() {
+		return UserManager.getUser();
+	}
+	
+	public static void registerAndLoginUser(HushUser u) {
+		UserManager.create(u.fbIdLayerUserName, "", u.firstName, u.lastName, u.fbIdLayerUserName, u.fbIdLayerUserName, new UserManager.UserCreateCallback() {
 			  @Override
 			  public void onCreated(User user) {
 			    Log.d(TAG, "user successfully registered");
@@ -32,41 +39,49 @@ public class LayerClient {
 			});
 	}
 	
-	public void loginUser() {
-		SessionManager.login("username", "password", new SessionManager.SessionLogInCallback() {
+	public static void loginUser(final HushUser hu) {
+		SessionManager.login(hu.fbIdLayerUserName, "", new SessionManager.SessionLogInCallback() {
 
-			  @Override
-			  public void onLoggedIn(User user) {
-			    Log.d(TAG, "user successfully logged in");
-			  }
+			@Override
+			public void onLoggedIn(User user) {
+				Log.d(TAG, "user successfully logged in");
+			}
 
-			  @Override
-			  public void onError(int code, String message) {
-			    Log.d(TAG, "onError; code=" + code + "; message=" + message);
-			  }
-			});
+			@Override
+			public void onError(int code, String message) {
+				Log.d(TAG, "onError; code=" + code + "; message=" + message);
+
+				if (code == userDoesNotExistErrorCode && message.startsWith(userDoesNotExistErrorMessage)) {
+					LayerClient.registerAndLoginUser(hu);
+				}
+
+				/*
+				if (getCurrentLayerUser() != null) {
+					FacebookClient.getFBFriendsAndUploadToLayer();
+				}
+				*/
+			}
+		});
 	}
-	
-	public User getCurrentLayerUser() {
-		return UserManager.getUser();
-	}
-	
-	public void addContact() {
-		Contact john = ContactManager.newContact("john", "wayne", "john@layer.com", null);
 
-		ContactManager.addContact(john, new ContactManager.ContactAddCallback() {
-		  @Override
-		  public void onContactsAdded() {
-		    Log.d("TAG", "contact successfully added");
-		  }
+	public static void addContact(String firstName, String lastName, long fbIdLayerUserName) {
+		final Contact layerContact = ContactManager.newContact(firstName, lastName, Long.toString(fbIdLayerUserName), Long.toString(fbIdLayerUserName));
 
-		  @Override
-		  public void onError(int code, String message) {
-		    Log.d("TAG", "onError; code=" + code + "; message=" + message);
-		  }
+		ContactManager.addContact(layerContact, new ContactManager.ContactAddCallback() {
+
+			@Override
+			public void onContactsAdded() {
+				Log.d("TAG", "contact " + layerContact.getFirstName() + " " + layerContact.getLastName() + " successfully added");
+			}
+
+			@Override
+			public void onError(int code, String message) {
+				Log.d("TAG", "onError; code=" + code + "; message=" + message);
+			}
 		});
 	}
 	
+	/*
 	public void updateContact() {
 		Contact john = ContactManager.getContactByUUID("blah");
 		john.addPhone("+1 415 123 4567");
@@ -97,6 +112,7 @@ public class LayerClient {
 			  }
 			});
 	}
+	*/
 	
 	public void sendMessageToContacts(List<Contact> contacts) {
 		MessageManager.sendMessageToContacts("message body", "subject", contacts);
@@ -118,7 +134,9 @@ public class LayerClient {
 		Message message = MessageManager.newMessage("Subject", "Hi, all!".getBytes(), "text/plain");
 		MessageManager.sendMessageToLayerAddresses(message, addresses);
 	}
+
 	
+	/*
 	// Useful for future, if a user deletes a friend, their chats should be deleted from the friend's chat
 	// Friend deletion can be pushed to clients using this
 	public void getUpdatedContacts() {
@@ -159,4 +177,5 @@ public class LayerClient {
 			  }
 			});
 	}
+	*/
 }

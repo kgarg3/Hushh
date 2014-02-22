@@ -17,10 +17,9 @@ public class HushApp extends Application {
         return selectedUsers;
     }
 
-    public void setSelectedUsers(List<GraphUser> selectedUsers) {
-        this.selectedUsers = selectedUsers;
+    public void setSelectedUsers(List<GraphUser> inSelectedUsers) {
+        selectedUsers = inSelectedUsers;
     }
-    
     
     @Override
     public void onCreate() {

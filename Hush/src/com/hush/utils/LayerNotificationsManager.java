@@ -18,8 +18,7 @@ public class LayerNotificationsManager implements NotificationManager {
 	}
 
 	@Override
-	public void onStateChanged(Context context, Recipient.State recipientState,
-			Recipient recipient, Message message) {
+	public void onStateChanged(Context context, Recipient.State recipientState, Recipient recipient, Message message) {
 		Log.d(TAG, "onStateChanged, recipientState= " + recipientState
 				+ "; recipient= " + recipient + "; message= " + message);
 	}
