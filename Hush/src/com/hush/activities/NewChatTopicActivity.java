@@ -1,5 +1,9 @@
 package com.hush.activities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import layer.sdk.contacts.Contact;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,14 +11,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
+import com.hush.HushApp;
 import com.hush.R;
+import com.hush.clients.LayerClient;
 
 public class NewChatTopicActivity extends Activity {
 
+	private static final int PICK_FRIENDS_ACTIVITY = 1;
+    private UiLifecycleHelper lifecycleHelper;
+    boolean pickFriendsWhenSessionOpened;
+    private ArrayList<Contact> layerContacts = new ArrayList<Contact>();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_chat_topic);
+		
+		lifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
+            @Override
+            public void call(Session session, SessionState state, Exception exception) {
+                onSessionStateChanged(session, state, exception);
+            }
+        });
+        lifecycleHelper.onCreate(savedInstanceState);
+
+        ensureOpenSession();
 	}
 
 	@Override
@@ -24,15 +49,81 @@ public class NewChatTopicActivity extends Activity {
 		return true;
 	}
 	
+	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	        switch (requestCode) {
+	            case PICK_FRIENDS_ACTIVITY:
+	                //displaySelectedFriends();
+	                uploadFriendsAsLayerContacts();
+	                break;
+	            default:
+	                Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+	                break;
+	        }
+	    }
+	
 	// actions
 	public void onInviteFriendsClick(View view) {
-		Intent i = new Intent(NewChatTopicActivity.this, InviteFriendsActivity.class);
-		startActivity(i);
+		startPickFriendsActivity();
 	}
 	
 	public void onDoneClick(MenuItem mi) {
 		Intent i = new Intent(NewChatTopicActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}
+	
+	// private methods
+	
+	private void startPickFriendsActivity() {
+        if (ensureOpenSession()) {
+            Intent intent = new Intent(this, PickFriendsActivity.class);
+            
+            // Note: The following line is optional, as multi-select behavior is the default for
+            // FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
+            // friend picker if single-select functionality was desired, or if a different user ID was
+            // desired (for instance, to see friends of a friend).
+            PickFriendsActivity.populateParameters(intent, null, true, true);
+            startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
+        } else {
+            pickFriendsWhenSessionOpened = true;
+        }
+    }
+	
+	private boolean ensureOpenSession() {
+        if (Session.getActiveSession() == null || !Session.getActiveSession().isOpened()) {
+            Session.openActiveSession(this, true, new Session.StatusCallback() {
+                @Override
+                public void call(Session session, SessionState state, Exception exception) {
+                    onSessionStateChanged(session, state, exception);
+                }
+            });
+            return false;
+        }
+        return true;
+    }
+
+    private void onSessionStateChanged(Session session, SessionState state, Exception exception) {
+        if (pickFriendsWhenSessionOpened && state.isOpened()) {
+            pickFriendsWhenSessionOpened = false;
+
+            startPickFriendsActivity();
+        }
+    }
+    
+    private void uploadFriendsAsLayerContacts() {
+    	HushApp application = (HushApp) getApplication();
+
+        Collection<GraphUser> selection = application.getSelectedUsers();
+        
+        if (selection == null || selection.size() == 0) { return; }
+
+        // Add the selected users as user's contacts into Layer 
+        for (GraphUser user : selection) {
+        	String userName = user.getName();
+        	String[] firstAndLastNames = userName.split(" ");
+        	Contact contact = LayerClient.getContactObject(firstAndLastNames[0], firstAndLastNames[1], user.getId());
+        	layerContacts.add(contact);
+        	LayerClient.addContact(contact);
+        }
+    }
 
 }
