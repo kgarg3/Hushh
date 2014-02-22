@@ -9,15 +9,48 @@
     tools:context=".InviteFriendsActivity" >
 
     <Button
-            android:id="@+id/pickFriendsButton"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Pick Friends"
-            />
+        android:id="@+id/btnPickFriends"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickPickFriends"
+        android:text="Pick Friends from FB and Upload as Hush Contacts" />
+
     <TextView
-            android:id="@+id/resultsTextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            />
+        android:id="@+id/tvResults"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pickFriendsButton"
+        android:layout_below="@+id/pickFriendsButton"
+        android:layout_marginTop="23dp"
+        android:textColor="#000000" />
+
+    <Button
+        android:id="@+id/btnStartNewChatWithSelectedUsers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnPickFriends"
+        android:layout_below="@+id/btnPickFriends"
+        android:layout_marginTop="26dp"
+        android:onClick="startNewGroupChatWithSelectedUsers"
+        android:text="Start new group chat with selected users" />
+
+    <Button
+        android:id="@+id/btnSendNewMessageOnChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnStartNewChatWithSelectedUsers"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:onClick="sendNewMessageOnChat"
+        android:text="Send new message on chat" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnSendNewMessageOnChat"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Print total participants to LogCat" />
+    
 </RelativeLayout>

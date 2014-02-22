@@ -8,8 +8,6 @@ import com.hush.R;
 
 /**
  * 
- * @author 
- * 
  * Login acitivity to verify users' credentials before loggin them into Hush. 
  *
  */
@@ -28,16 +26,4 @@ public class LoginActivity extends FragmentActivity {
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
     }
-    
-    /**
-     * Called when the login with facebook button is clicked. Perform facebook credential authorization here. 
-     * @param v
-     */
-    /*
-    public void loginWithFacebook(View v) {
-    	Intent i = new Intent(LoginActivity.this, ChatsListActivity.class);
-    	startActivity(i);
-    }
-    */
-    
 }

@@ -47,9 +47,7 @@ public class PickFriendsActivity extends FragmentActivity {
             // First time through, we create our fragment programmatically.
             final Bundle args = getIntent().getExtras();
             friendPickerFragment = new FriendPickerFragment(args);
-            fm.beginTransaction()
-                    .add(R.id.friend_picker_fragment, friendPickerFragment)
-                    .commit();
+            fm.beginTransaction().add(R.id.friend_picker_fragment, friendPickerFragment).commit();
         } else {
             // Subsequent times, our fragment is recreated by the framework and already has saved and
             // restored its state, so we don't need to specify args again. (In fact, this might be

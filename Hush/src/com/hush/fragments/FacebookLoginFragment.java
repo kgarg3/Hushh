@@ -1,7 +1,5 @@
 package com.hush.fragments;
 
-import java.util.Arrays;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,15 +46,14 @@ public class FacebookLoginFragment extends Fragment {
 	};
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, 
-	        ViewGroup container, 
-	        Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	    View view = inflater.inflate(R.layout.fragment_facebook_login, container, false);
 
 	    // Call the setFragment() method on the LoginButton instance to allow the fragment
 	    // to handle the onActivityResult() call rather than the calling activity handling it
 	    LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
 	    authButton.setFragment(this);
+	    // You can request additional permissions here
 	    // authButton.setReadPermissions(Arrays.asList("read_friendlists"));
 
 	    return view;

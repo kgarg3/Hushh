@@ -17,7 +17,7 @@ public class HushUser {
 	 protected HushUser() {
 	 }
 
-	 public static HushUser getInstance(String fbId, String firstName, String lastName) {
+	 public static HushUser getNewInstance(String fbId, String firstName, String lastName) {
 		 if(hushUser != null) {
 			 return hushUser;
 		 }
@@ -29,4 +29,5 @@ public class HushUser {
 		 
 		 return u;
 	 }
+
 }

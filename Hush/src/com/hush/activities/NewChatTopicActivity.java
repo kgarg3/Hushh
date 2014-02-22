@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.hush.R;
-import com.hush.utils.FacebookClient;
+import com.hush.clients.FacebookClient;
+import com.hush.clients.LayerClient;
+import com.hush.models.HushUser;
 
 public class NewChatTopicActivity extends Activity {
 
@@ -32,8 +35,7 @@ public class NewChatTopicActivity extends Activity {
 	}
 
 	
-	public void printAllFBFriendsToLogCat(View v) {
-        // Get the list of all friends
-        FacebookClient.getUserData();
+	public void createOrLoginUserIntoHush(View v) {
+        FacebookClient.setUserPropertiesFromFacebookAndLoginIntoLayer();
 	}
 }

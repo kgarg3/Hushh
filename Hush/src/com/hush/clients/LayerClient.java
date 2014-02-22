@@ -1,6 +1,11 @@
 package com.hush.clients;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 import layer.sdk.ContactManager;
 import layer.sdk.LayerAddress;
@@ -12,12 +17,13 @@ import layer.sdk.messages.Conversation;
 import layer.sdk.messages.Message;
 import layer.sdk.user.User;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.hush.models.HushUser;
 
 public class LayerClient {
 	
+	private final static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+	private final static String chatId = UUID.randomUUID().toString();
 	private final static String TAG = LayerClient.class.getSimpleName();
 	private final static String userDoesNotExistErrorMessage = "No user for "; 
 	private final static long userDoesNotExistErrorCode = 2; 
@@ -26,8 +32,9 @@ public class LayerClient {
 		return UserManager.getUser();
 	}
 	
-	public static void registerAndLoginUser(HushUser u) {
+	public static void createAndLoginUser(HushUser u) {
 		UserManager.create(u.fbIdLayerUserName, "", u.firstName, u.lastName, u.fbIdLayerUserName, u.fbIdLayerUserName, new UserManager.UserCreateCallback() {
+			
 			@Override
 			public void onCreated(User user) {
 				String text = "user successfully registered";
@@ -61,7 +68,7 @@ public class LayerClient {
 				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 
 				if (code == userDoesNotExistErrorCode && message.startsWith(userDoesNotExistErrorMessage)) {
-					LayerClient.registerAndLoginUser(hu);
+					LayerClient.createAndLoginUser(hu);
 				}
 
 				/*
@@ -73,22 +80,25 @@ public class LayerClient {
 		});
 	}
 
-	public static void addContact(String firstName, String lastName, long fbIdLayerUserName) {
-		final Contact layerContact = ContactManager.newContact(firstName, lastName, Long.toString(fbIdLayerUserName), Long.toString(fbIdLayerUserName));
+	public static Contact getContactObject(String firstName, String lastName, String fbIdLayerUserName) {
+		return ContactManager.newContact(firstName, lastName, fbIdLayerUserName, fbIdLayerUserName);
+	}
+	
+	public static void addContact(final Contact layerContact) {
 
 		ContactManager.addContact(layerContact, new ContactManager.ContactAddCallback() {
 
 			@Override
 			public void onContactsAdded() {
 				String text = "contact " + layerContact.getFirstName() + " " + layerContact.getLastName() + " successfully added";
-				Log.d("TAG", text);
+				Log.d(TAG, text);
 				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onError(int code, String message) {
 				String text = "onError; code=" + code + "; message=" + message;
-				Log.d("TAG", text);
+				Log.d(TAG, text);
 				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -102,14 +112,14 @@ public class LayerClient {
 		  @Override
 		  public void onContactsUpdated() {
 		    String text = "contact successfully updated";
-		    Log.d("TAG", text);
+		    Log.d(TAG, text);
 		    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		  }
 
 		  @Override
 		  public void onError(int code, String message) {
 		    String text = "onError; code=" + code + "; message=" + message;
-		    Log.d("TAG", text);
+		    Log.d(TAG, text);
 		    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		  }
 		});
@@ -121,43 +131,71 @@ public class LayerClient {
 			  @Override
 			  public void onContactsDeleted() {
 			  	String text = "contact deleted";
-			    Log.d("TAG", text);
+			    Log.d(TAG, text);
 		    	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onError(int code, String message) {
 			    String text = "onError; code=" + code + "; message=" + message;
-			    Log.d("TAG", text);
+			    Log.d(TAG, text);
     		    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 			});
 	}
 	*/
 	
-	public void sendMessageToContacts(List<Contact> contacts) {
-		MessageManager.sendMessageToContacts("message body", "subject", contacts);
+	public static void startNewGroupChatWithSelectedUsers(List<Contact> contacts) {
+		String date = dateFormat.format(new Date());
+		Message message = MessageManager.newMessage("Chat initiated, Test Msg Subject sent at " + date, ("Chat initiated, Test message sent at " + dateFormat.format(new Date())).getBytes(), "text/plain");
+		message.setThreadId(chatId);
+		MessageManager.sendMessageToContact(message, contacts);
 	}
 	
-	public List<Conversation> getConversationsForMatchingContacts(List<Contact> contacts) {
-		return MessageManager.getConversations(Conversation.Type.PARTICIPANTS, contacts, Conversation.ParticipantMatching.ONLY);
-	}
-	
-	public void startNewChatWithUsers(List<Contact> threadContacts) {
-		Message message = MessageManager.newMessage("Subject", "Hi, all!".getBytes(), "text/plain");
-		message.setThreadId("new random thread id, use a guid string");
-		MessageManager.sendMessageToContacts(message.getBody().toString(), "subject", threadContacts);
-	}
-	
-	public void getAllUsersInChat(String threadId) {
-		Conversation threadConversation = MessageManager.getConversationByThreadId(threadId);
-		List<LayerAddress> addresses = threadConversation.getParticipants();
-		Message message = MessageManager.newMessage("Subject", "Hi, all!".getBytes(), "text/plain");
+	public static void sendNewMessageOnChat() {
+		
+		Conversation chat = MessageManager.getConversationByThreadId(chatId);
+		List<LayerAddress> addresses = chat.getParticipants();
+		
+		String date = dateFormat.format(new Date());
+		Message message = MessageManager.newMessage("Test Msg Subject sent at " + date, ("Test message sent at " + dateFormat.format(new Date())).getBytes(), "text/plain");
+		message.setThreadId(chatId);
+
 		MessageManager.sendMessageToLayerAddresses(message, addresses);
 	}
+	
+	public static void getAllUsersInChat() {
+		Conversation chat = MessageManager.getConversationByThreadId(chatId);
+		List<LayerAddress> addresses = chat.getParticipants();
+		
+		String text = "Total participants = " + addresses.size();
+		Log.d(TAG, text);
+	}
 
+	public static void addContactsToChat(List<Contact> contacts) {
+		Conversation chat = MessageManager.getConversationByThreadId(chatId);
+		
+		List<LayerAddress> addresses = chat.getParticipants();
+		
+		// Add all the layer addresses of each contact in the input list into the existing list
+		for (Contact contact : contacts ) {
+			addresses.addAll(contact.getLayerAddresses());
+		}
+		
+		// Now send a msg to all the addresses
+		String date = dateFormat.format(new Date());
+		Message message = MessageManager.newMessage("Test Msg Subject sent at " + date, ("Test message sent at " + dateFormat.format(new Date())).getBytes(), "text/plain");
+		message.setThreadId(chatId);
+
+		MessageManager.sendMessageToLayerAddresses(message, addresses);
+	}
+	
 	
 	/*
+	public static List<Conversation> getConversationsForMatchingContacts(List<Contact> contacts) {
+		return MessageManager.getConversations(Conversation.Type.PARTICIPANTS, contacts, Conversation.ParticipantMatching.ONLY);
+	}
+
 	// Useful for future, if a user deletes a friend, their chats should be deleted from the friend's chat
 	// Friend deletion can be pushed to clients using this
 	public void getUpdatedContacts() {
@@ -165,19 +203,19 @@ public class LayerClient {
 			  @Override
 			  public void onContactsSynced(List<Contact> contacts) {
 			    String text = "new contact updates received; contact updates=" + contacts.toString();
-			    Log.d("TAG", text);
+			    Log.d(TAG, text);
 			   	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onContactsDeleted(List<String> contactIds) {
-			    Log.d("TAG", "existing contacts deleted");
+			    Log.d(TAG, "existing contacts deleted");
 			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onError(int code, String message) {
-			    Log.d("TAG", "onError; code=" + code + "; message=" + message);
+			    Log.d(TAG, "onError; code=" + code + "; message=" + message);
 			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 			});
@@ -188,19 +226,19 @@ public class LayerClient {
 		ContactManager.importContactsFromDevice(new ContactImportCallback() {
 			  @Override
 			  public void onContactsImported() {
-			    Log.d("TAG", "contacts successfully imported");
+			    Log.d(TAG, "contacts successfully imported");
 			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onProgress(double percentage) {
-			    Log.d("TAG", "Import " + percentage + "% done");
+			    Log.d(TAG, "Import " + percentage + "% done");
 			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onError(int code, String message) {
-			    Log.d("TAG", "onError; code=" + code + "; message=" + message);
+			    Log.d(TAG, "onError; code=" + code + "; message=" + message);
 			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 			});

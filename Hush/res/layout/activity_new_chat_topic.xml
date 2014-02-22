@@ -8,16 +8,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NewChatTopicActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
      <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="printAllFBFriendsToLogCat"
-            android:text="Print FB friends to logCat" />
+            android:onClick="createOrLoginUserIntoHush"
+            android:text="Register or Login User into Hush" />
      
 </RelativeLayout>

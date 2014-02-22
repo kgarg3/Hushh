@@ -1,18 +1,26 @@
-package com.hush.utils;
+package com.hush.clients;
 
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.Request;
+import com.facebook.Request.GraphUserListCallback;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
-import com.hush.clients.LayerClient;
 import com.hush.models.HushUser;
 
 
 public class FacebookClient {
 
-	public static void getUserData(){
+	public static void setUserPropertiesFromFacebookAndLoginIntoLayer(){
 	    final Session session = Session.getActiveSession();
 
 	    if(!session.getState().isOpened()) { return; }
@@ -22,10 +30,10 @@ public class FacebookClient {
 	    	@Override
 	        public void onCompleted(GraphUser user, Response response) {
 	            if(user != null && session == Session.getActiveSession()) {
-	            	
-	            	HushUser hu = HushUser.getInstance(user.getId(), user.getFirstName(), user.getLastName());
+	            	HushUser hu = HushUser.getNewInstance(user.getId(), user.getFirstName(), user.getLastName());
 	            	LayerClient.loginUser(hu);
 	            }
+	            
 	            if(response.getError() != null) {
 	            	String text = "Type = " + response.getError().getErrorType() + " Message = " + response.getError().getErrorMessage();
 	            	Log.d("ERROR GETTING FB USER", text);
@@ -37,6 +45,7 @@ public class FacebookClient {
 	    
 	    request.executeAsync();
 	}
+
 
 	/*
 	public static void getFBFriendsAndUploadToLayer(){
@@ -53,7 +62,7 @@ public class FacebookClient {
             	//Log.i("FRIENDS LIST", response.toString());
             	String text = response.getGraphObject().getInnerJSONObject().toString();
             	Log.i("FRIENDS LIST", text);
-            	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+            	//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
                 
             	JSONArray jsonArray;
             	try {
@@ -61,7 +70,7 @@ public class FacebookClient {
 			        for (int i = 0; i < jsonArray.length(); i++) {
 		           	     JSONObject jsonObject = jsonArray.getJSONObject(i);
 		           	     
-		           	     long fbId = jsonObject.getInt("id");
+		           	     String fbId = jsonObject.getString("id");
 		           	     String fullName = jsonObject.getString("name");
 		           	     String[] firstAndLastNames = fullName.split(" ");
 		           	     
@@ -80,6 +89,5 @@ public class FacebookClient {
         
         friendRequest.executeAsync();
     }
-    */
-
+	*/
 }
