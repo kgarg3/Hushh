@@ -13,18 +13,23 @@ public class LayerNotificationsManager implements NotificationManager {
 
 	@Override
 	public boolean onHeadersReceived(Context context, List<Message> messages) {
-		Log.d(TAG, "onHeadersReceived, messages= " + messages);
+		String text = "onHeadersReceived, messages= " + messages;
+		Log.d(TAG, text);
+		//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		return true;
 	}
 
 	@Override
 	public void onStateChanged(Context context, Recipient.State recipientState, Recipient recipient, Message message) {
-		Log.d(TAG, "onStateChanged, recipientState= " + recipientState
-				+ "; recipient= " + recipient + "; message= " + message);
+		String text = "onStateChanged, recipientState= " + recipientState + "; recipient= " + recipient + "; message= " + message;
+		Log.d(TAG, text);
+		//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onBodiesReceived(Context context, List<Message> messages) {
-		Log.d(TAG, "onBodiesReceived, messages= " + messages);
+		String text = "onBodiesReceived, messages= " + messages;
+		Log.d(TAG, text);
+		//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 	}
 }

@@ -27,7 +27,9 @@ public class FacebookClient {
 	            	LayerClient.loginUser(hu);
 	            }
 	            if(response.getError() != null) {
-	            	Log.d("ERROR GETTING FB USER: ", "Type = " + response.getError().getErrorType() + " Message = " + response.getError().getErrorMessage());
+	            	String text = "Type = " + response.getError().getErrorType() + " Message = " + response.getError().getErrorMessage();
+	            	Log.d("ERROR GETTING FB USER", text);
+	            	//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			        return;
 	            }
 	        }
@@ -49,7 +51,9 @@ public class FacebookClient {
             public void onCompleted(List<GraphUser> users, Response response) {
                 
             	//Log.i("FRIENDS LIST", response.toString());
-            	Log.i("FRIENDS LIST", response.getGraphObject().getInnerJSONObject().toString());
+            	String text = response.getGraphObject().getInnerJSONObject().toString();
+            	Log.i("FRIENDS LIST", text);
+            	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
                 
             	JSONArray jsonArray;
             	try {

@@ -12,6 +12,7 @@ import layer.sdk.messages.Conversation;
 import layer.sdk.messages.Message;
 import layer.sdk.user.User;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.hush.models.HushUser;
 
@@ -27,16 +28,20 @@ public class LayerClient {
 	
 	public static void registerAndLoginUser(HushUser u) {
 		UserManager.create(u.fbIdLayerUserName, "", u.firstName, u.lastName, u.fbIdLayerUserName, u.fbIdLayerUserName, new UserManager.UserCreateCallback() {
-			  @Override
-			  public void onCreated(User user) {
-			    Log.d(TAG, "user successfully registered");
-			  }
+			@Override
+			public void onCreated(User user) {
+				String text = "user successfully registered";
+				Log.d(TAG, text);
+				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+			}
 
-			  @Override
-			  public void onError(int code, String message) {
-			    Log.e(TAG, "onError, code= " + code + "; message= " + message);
-			  }
-			});
+			@Override
+			public void onError(int code, String message) {
+				String text = "onError, code= " + code + "; message= " + message;
+				Log.e(TAG, text);
+				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	public static void loginUser(final HushUser hu) {
@@ -44,12 +49,16 @@ public class LayerClient {
 
 			@Override
 			public void onLoggedIn(User user) {
-				Log.d(TAG, "user successfully logged in");
+				String text = "user successfully logged in"; 
+				Log.d(TAG, text);
+				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onError(int code, String message) {
-				Log.d(TAG, "onError; code=" + code + "; message=" + message);
+				String text = "onError; code=" + code + "; message=" + message; 
+				Log.d(TAG, text);
+				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 
 				if (code == userDoesNotExistErrorCode && message.startsWith(userDoesNotExistErrorMessage)) {
 					LayerClient.registerAndLoginUser(hu);
@@ -71,12 +80,16 @@ public class LayerClient {
 
 			@Override
 			public void onContactsAdded() {
-				Log.d("TAG", "contact " + layerContact.getFirstName() + " " + layerContact.getLastName() + " successfully added");
+				String text = "contact " + layerContact.getFirstName() + " " + layerContact.getLastName() + " successfully added";
+				Log.d("TAG", text);
+				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onError(int code, String message) {
-				Log.d("TAG", "onError; code=" + code + "; message=" + message);
+				String text = "onError; code=" + code + "; message=" + message;
+				Log.d("TAG", text);
+				//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -88,12 +101,16 @@ public class LayerClient {
 		ContactManager.updateContact(john, new ContactManager.ContactUpdateCallback() {
 		  @Override
 		  public void onContactsUpdated() {
-		    Log.d("TAG", "contact successfully updated");
+		    String text = "contact successfully updated";
+		    Log.d("TAG", text);
+		    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		  }
 
 		  @Override
 		  public void onError(int code, String message) {
-		    Log.d("TAG", "onError; code=" + code + "; message=" + message);
+		    String text = "onError; code=" + code + "; message=" + message;
+		    Log.d("TAG", text);
+		    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 		  }
 		});
 	}
@@ -103,12 +120,16 @@ public class LayerClient {
 		ContactManager.deleteContact(john, new ContactManager.ContactDeleteCallback() {
 			  @Override
 			  public void onContactsDeleted() {
-			    Log.d("TAG", "contact deleted");
+			  	String text = "contact deleted";
+			    Log.d("TAG", text);
+		    	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onError(int code, String message) {
-			    Log.d("TAG", "onError; code=" + code + "; message=" + message);
+			    String text = "onError; code=" + code + "; message=" + message;
+			    Log.d("TAG", text);
+    		    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 			});
 	}
@@ -143,17 +164,21 @@ public class LayerClient {
 		ContactManager.addContactListener(new ContactManager.ContactListener() {
 			  @Override
 			  public void onContactsSynced(List<Contact> contacts) {
-			    Log.d("TAG", "new contact updates received; contact updates=" + contacts.toString());
+			    String text = "new contact updates received; contact updates=" + contacts.toString();
+			    Log.d("TAG", text);
+			   	Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onContactsDeleted(List<String> contactIds) {
 			    Log.d("TAG", "existing contacts deleted");
+			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onError(int code, String message) {
 			    Log.d("TAG", "onError; code=" + code + "; message=" + message);
+			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 			});
 	}
@@ -164,16 +189,19 @@ public class LayerClient {
 			  @Override
 			  public void onContactsImported() {
 			    Log.d("TAG", "contacts successfully imported");
+			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onProgress(double percentage) {
 			    Log.d("TAG", "Import " + percentage + "% done");
+			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 
 			  @Override
 			  public void onError(int code, String message) {
 			    Log.d("TAG", "onError; code=" + code + "; message=" + message);
+			    Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			  }
 			});
 	}

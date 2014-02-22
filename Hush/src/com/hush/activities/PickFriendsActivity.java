@@ -79,8 +79,7 @@ public class PickFriendsActivity extends FragmentActivity {
 
     private void onError(Exception error) {
         String text = getString(R.string.facebook_exception, error.getMessage());
-        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
