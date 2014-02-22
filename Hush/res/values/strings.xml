@@ -30,4 +30,6 @@
     <!-- Layer App info -->
     <string name="layer_app_id">d3c87e6806e7091bfb92715650d2b220</string>
     
+    <string name="hint_new_chat">What\'s on your mind?</string>
+    
 </resources>
