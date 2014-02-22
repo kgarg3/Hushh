@@ -36,7 +36,8 @@
         </activity>
         <activity
             android:name="com.hush.activities.NewChatTopicActivity"
-            android:label="@string/title_activity_new_chat_topic" >
+            android:label="@string/title_activity_new_chat_topic" 
+            android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
         <activity
             android:name="com.hush.activities.InviteFriendsActivity"
