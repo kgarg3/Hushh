@@ -1,18 +1,21 @@
 package com.hush.activities;
 
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.hush.R;
 import com.hush.fragments.FriendsChatsFragment;
 import com.hush.fragments.MyChatsFragment;
-import com.hush.listeners.FragmentTabListener;
 
 /**
  * 
@@ -22,15 +25,56 @@ import com.hush.listeners.FragmentTabListener;
  */
 public class ChatsListActivity extends FragmentActivity {
 	public static final String CHAT = "chat";
-	private static final String TAB_MY_CHATS_TAG = "UserChatsFragment";
-	private static final String TAB_FRIENDS_CHATS_TAG = "FriendsChatsFragment";
+
+	private FragmentPagerAdapter adapterViewPager;
+	private ViewPager vpPager;
+
+	public static class MyPagerAdapter extends FragmentPagerAdapter {
+		private static int NUM_ITEMS = 2;
+		private final String privateChats, publicChats;
+
+		public MyPagerAdapter(FragmentManager fragmentManager, String privateChats, String publicChats) {
+			super(fragmentManager);
+			this.privateChats = privateChats;
+			this.publicChats = publicChats;
+		}
+
+		// Returns total number of pages
+		@Override
+		public int getCount() {
+			return NUM_ITEMS;
+		}
+
+		// Returns the fragment to display for that page
+		@Override
+		public Fragment getItem(int position) {
+			switch (position) {
+			case 0: return MyChatsFragment.newInstance(0, privateChats);
+			case 1: return FriendsChatsFragment.newInstance(1, publicChats);
+			default:
+				return MyChatsFragment.newInstance(0, privateChats);
+			}
+		}
+
+		// Returns the page title for the top indicator
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return position == 0 ? privateChats : publicChats;
+		}
+	}
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chats_list);
-		
-		setupNavgationTabs();
+
+		//create the page viewer
+		vpPager = (ViewPager) findViewById(R.id.vpPager);
+		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), 
+				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
+		vpPager.setAdapter(adapterViewPager);
+		setPagerListeners();
 	}
 
 	@Override
@@ -39,27 +83,34 @@ public class ChatsListActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.all_chats, menu);
 		return true;
 	}
-	
-	private void setupNavgationTabs() {
-		ActionBar actionBar = getActionBar();
-		//setup the navigation tabs
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
-		Tab tabMyChats = actionBar.newTab().setText(R.string.tab_my_chats)
-				.setTag(TAB_MY_CHATS_TAG).setTabListener(
-						new FragmentTabListener<MyChatsFragment>(R.id.flChatsActivityChatLists, this, 
-								TAB_MY_CHATS_TAG, MyChatsFragment.class));
 
-		Tab tabFrdsChats = actionBar.newTab().setText(R.string.tab_frds_chats)
-				.setTag(TAB_FRIENDS_CHATS_TAG).setTabListener(
-						new FragmentTabListener<FriendsChatsFragment>(R.id.flChatsActivityChatLists, this, 
-								TAB_FRIENDS_CHATS_TAG, FriendsChatsFragment.class));
+	/**
+	 * Listener for pageViewer
+	 */
+	private void setPagerListeners() {
+		// Attach the page change listener inside the activity
+		vpPager.setOnPageChangeListener(new OnPageChangeListener() {
 
-		actionBar.addTab(tabMyChats);
-		actionBar.addTab(tabFrdsChats);
-		actionBar.selectTab(tabMyChats);
+			// This method will be invoked when a new page becomes selected.
+			@Override
+			public void onPageSelected(int position) {
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				ft.replace(R.id.flChatsActivityChatLists, adapterViewPager.getItem(position));
+				ft.commit();
+			}
+
+			// This method will be invoked when the current page is scrolled
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+
+			// Called when the scroll state changes: 
+			// SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
+			@Override
+			public void onPageScrollStateChanged(int state) { }
+		});
+
 	}
-	
+
 	// menu actions
 	public void onNewChatClick(MenuItem mi) {
 		Intent i = new Intent(ChatsListActivity.this, NewChatTopicActivity.class);

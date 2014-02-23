@@ -13,8 +13,8 @@
 
     <!-- ChatsList Activity -->
     <string name="title_activity_all_chats">Chats</string>
-    <string name="tab_my_chats">My</string>
-    <string name="tab_frds_chats">Friends</string>
+    <string name="tab_private_chats">Private</string>
+    <string name="tab_public_chats">Public</string>
     <string name="title_activity_new_chat_topic">New Chat Topic</string>
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="title_activity_chat">Chat</string>
