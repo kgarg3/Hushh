@@ -33,6 +33,9 @@ public class ChatsListActivity extends FragmentActivity {
 		private static int NUM_ITEMS = 2;
 		private final String privateChats, publicChats;
 
+		private MyChatsFragment myChatsFragment;
+		private FriendsChatsFragment frdsChatFragment;
+
 		public MyPagerAdapter(FragmentManager fragmentManager, String privateChats, String publicChats) {
 			super(fragmentManager);
 			this.privateChats = privateChats;
@@ -49,10 +52,15 @@ public class ChatsListActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
-			case 0: return MyChatsFragment.newInstance(0, privateChats);
-			case 1: return FriendsChatsFragment.newInstance(1, publicChats);
+			case 1: 
+				if(frdsChatFragment == null)  
+					return frdsChatFragment = new FriendsChatsFragment();
+				return frdsChatFragment;
+			case 0: //fallthrough
 			default:
-				return MyChatsFragment.newInstance(0, privateChats);
+				if(myChatsFragment == null)  
+					return myChatsFragment = new MyChatsFragment();
+				return myChatsFragment;
 			}
 		}
 

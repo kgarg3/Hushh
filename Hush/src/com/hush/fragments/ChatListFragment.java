@@ -27,6 +27,7 @@ public abstract class ChatListFragment extends Fragment {
 	protected  PullToRefreshListView lvChats;
 	protected ProgressBar progressBarLoadingTweets;
 	protected ChatAdapter adapter;
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
