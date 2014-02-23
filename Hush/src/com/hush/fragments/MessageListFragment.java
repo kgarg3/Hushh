@@ -8,35 +8,28 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.hush.R;
-import com.hush.adapter.ChatAdapter;
+import com.hush.adapter.MessageAdapter;
 import com.hush.data.HushData;
 import com.hush.listeners.EndlessScrollListener;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
-/**
- * 
- * @author gargka
- *
- * Fragment to hold the list of chats
- */
-public abstract class ChatListFragment extends Fragment {
-
-	protected  PullToRefreshListView lvChats;
-	protected ProgressBar progressBarLoadingTweets;
-	protected ChatAdapter adapter;
+public class MessageListFragment extends Fragment{
+	protected  PullToRefreshListView lvMessages;
+	protected ProgressBar progressBarLoadingMessages;
+	protected MessageAdapter adapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Defines the xml file for the fragment
-		View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
+		View view = inflater.inflate(R.layout.fragment_message_list, container, false);
 
 		// Setup handles to view objects here
-		progressBarLoadingTweets = (ProgressBar) view.findViewById(R.id.pgbarChatListFragment);
-		lvChats = (PullToRefreshListView) view.findViewById(R.id.lvChatListFragmentChatsList);	
-		adapter = new ChatAdapter(getActivity(), HushData.getChatList());
-		lvChats.setAdapter(adapter);
+		progressBarLoadingMessages = (ProgressBar) view.findViewById(R.id.pgbarMessageListFragment);
+		lvMessages = (PullToRefreshListView) view.findViewById(R.id.lvMessageListFragmentMessageList);	
+		adapter = new MessageAdapter(getActivity(), HushData.getMessageList());
+		lvMessages.setAdapter(adapter);
 
 		setupListeners();
 
@@ -48,7 +41,7 @@ public abstract class ChatListFragment extends Fragment {
 	 */
 	private void setupListeners() {
 		//scrolling should load more chats 
-		lvChats.setOnScrollListener(new EndlessScrollListener() {
+		lvMessages.setOnScrollListener(new EndlessScrollListener() {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
 
@@ -56,7 +49,7 @@ public abstract class ChatListFragment extends Fragment {
 		});
 
 		// Set a listener to be invoked when the list should be refreshed.
-		lvChats.setOnRefreshListener(new OnRefreshListener() {
+		lvMessages.setOnRefreshListener(new OnRefreshListener() {
 			@Override
 			public void onRefresh() {
 				// Your code to refresh the list contents
@@ -65,15 +58,13 @@ public abstract class ChatListFragment extends Fragment {
 				// place such as when the network request has completed successfully.
 
 				// Now we call onRefreshComplete to signify refresh has finished
-				lvChats.onRefreshComplete();
+				lvMessages.onRefreshComplete();
 
 			}
 		});
 	}
 
-	public ChatAdapter getAdapter() {
+	public MessageAdapter getAdapter() {
 		return adapter;
 	}
-	
-	protected abstract void getChatListType();
 }

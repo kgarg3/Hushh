@@ -21,7 +21,7 @@ import com.hush.listeners.FragmentTabListener;
  * Activity that shows all the chats of the logged in user and his friends. 
  */
 public class ChatsListActivity extends FragmentActivity {
-	
+	public static final String CHAT = "chat";
 	private static final String TAB_MY_CHATS_TAG = "UserChatsFragment";
 	private static final String TAB_FRIENDS_CHATS_TAG = "FriendsChatsFragment";
 

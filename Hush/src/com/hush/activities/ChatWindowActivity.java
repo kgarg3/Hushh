@@ -7,9 +7,9 @@ import layer.sdk.MessageManager.MessageListener;
 import layer.sdk.messages.Message;
 import layer.sdk.messages.Recipient;
 import layer.sdk.messages.Tag;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.hush.R;
 
-public class ChatWindowActivity extends Activity implements MessageListener {
+public class ChatWindowActivity extends FragmentActivity implements MessageListener {
 	
 	private static final String TAG = ChatWindowActivity.class.getSimpleName();
 	

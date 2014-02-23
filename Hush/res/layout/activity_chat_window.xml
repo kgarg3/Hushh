@@ -9,10 +9,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ChatWindowActivity" >
 
-    <com.eevoskos.robotoviews.widget.RobotoTextView
+    
+     <fragment
+        android:id="@+id/fragmentMessageList"
+        android:name="com.hush.fragments.MessageListFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        roboto:typeface="light" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        tools:layout="@layout/fragment_message_list" />
 
 </RelativeLayout>
