@@ -32,7 +32,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		TextView tvMessage = (TextView) view.findViewById(R.id.message_text);
 		tvMessage.setText(String.valueOf(message.getContent()));
 		
-		if(message.isMine())
+		if(true) // message.isMine())
 		{
 			tvMessage.setBackgroundResource(R.drawable.bubble);
 		}

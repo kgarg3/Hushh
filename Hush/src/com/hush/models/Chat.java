@@ -2,61 +2,101 @@ package com.hush.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Chat implements Serializable {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+
+@ParseClassName("Chat")
+public class Chat extends ParseObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private String id;
-	private int notification;
-	private String chatTopic;
-	private Long timeRemaining;
-	 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	private String topic;
+	private String type;
+	private Date createdAt;
+	private User creator;
+	private ParseRelation<Chatter> chatters;
+	private ParseRelation<Message> messages;
+	
+	// Default public constructor, needed by Parse
+	public Chat() {
+		super();
 	}
 	
-	public int getNotification() {
-		return notification;
+	public Chat(String topic, String type) {
+		setTopic(topic);
+		setType(type);
+		setCreator();
+	}
+	
+	public String getTopic() {
+		topic = getString("topic");
+		return topic;
 	}
 
-	public void setNotification(int notification) {
-		this.notification = notification;
+	public void setTopic(String chatName) {
+		put("topic", chatName);
 	}
 
-	public String getChatTopic() {
-		return chatTopic;
+	public String getType() {
+		type = getString("type");
+		return type;
 	}
 
-	public void setChatTopic(String chatName) {
-		this.chatTopic = chatName;
+	public void setType(String type) {
+		put("type", type);
+	}
+	
+	public User getCreator() {
+		creator = (User) getParseObject("owner");
+		return creator;
 	}
 
-	public Long getTimeRemaining() {
-		return timeRemaining;
+	public void setCreator() {
+		put("creator", ParseUser.getCurrentUser());
+	}
+	
+	public Date getCreatedAt() {
+		createdAt = getCreatedAt();
+		return createdAt;
 	}
 
-	public void setTimeRemaining(Long timeRemaining) {
-		this.timeRemaining = timeRemaining;
+	public ParseRelation<Chatter> getChatters() {
+		chatters = getRelation("chatters");
+		return chatters;
 	}
 
+	public void addChatter(Chatter chatter) {
+		getChatters().add(chatter);
+	}
 
+	public void removeChatter(Chatter chatter) {
+		getChatters().remove(chatter);
+	}
+	
+	public ParseRelation<Message> getMessages() {
+		messages = getRelation("messages");
+		return messages;
+	}
+
+	public void addMessage(Message message) {
+		getMessages().add(message);
+	}
+	
+	
 	// Decodes business json into business model object
 	public static Chat fromJson(JSONObject jsonObject) {
 		Chat chat = new Chat();
 		// Deserialize json into object fields
 		try {
-			chat.id = jsonObject.getString("id");
-			chat.notification = Integer.valueOf(jsonObject.getString("notifications"));
-			chat.chatTopic = jsonObject.getString("topic");
-			chat.timeRemaining = Long.valueOf(jsonObject.getString("timeRemaining")); 	
+			chat.topic = jsonObject.getString("topic");
+			//chat.createdAt = getCreatedAt(); 	
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;

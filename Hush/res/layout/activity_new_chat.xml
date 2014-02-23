@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@android:color/white"
-    tools:context=".NewChatTopicActivity" >
+    tools:context=".NewChatActivity" >
 	
     
      <com.eevoskos.robotoviews.widget.RobotoEditText
@@ -21,7 +21,6 @@
     	 android:paddingRight="@dimen/activity_horizontal_margin"
          roboto:typeface="light"
          android:ems="10" >
-
          <requestFocus />
      </com.eevoskos.robotoviews.widget.RobotoEditText>
      
@@ -48,7 +47,7 @@
 		    android:src="@drawable/ic_action_invite_friends" />
 
 		<com.eevoskos.robotoviews.widget.RobotoToggleButton
-		    android:id="@+id/switch1"
+		    android:id="@+id/tbPublicPrivate"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_toRightOf="@+id/ibInviteFriends"

@@ -1,9 +1,7 @@
 package com.hush.activities;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import layer.sdk.contacts.Contact;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +19,6 @@ import com.hush.R;
 
 public class InviteFriendsActivity extends Activity {
 
-	private ArrayList<Contact> layerContacts = new ArrayList<Contact>();
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -136,7 +132,6 @@ public class InviteFriendsActivity extends Activity {
         // Add the selected users as user's contacts into Layer 
         for (GraphUser user : selection) {
         	String userName = user.getName();
-        	String[] firstAndLastNames = userName.split(" ");
         	//Contact contact = LayerClient.getContactObject(firstAndLastNames[0], firstAndLastNames[1], user.getId());
         	//layerContacts.add(contact);
         	//LayerClient.addContact(contact);

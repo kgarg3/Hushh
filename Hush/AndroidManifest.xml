@@ -29,9 +29,10 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Hush" >
         <activity
-            android:name="com.hush.activities.LoginActivity"
+            android:name="com.hush.activities.HushLoginActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,29 +41,39 @@
         </activity>
         <activity
             android:name="com.hush.activities.ChatsListActivity"
-            android:label="@string/title_activity_all_chats" >
+            android:label="@string/title_activity_all_chats"
+            android:screenOrientation="portrait"
+            android:icon="@drawable/ic_app_icon" >
         </activity>
         <activity
-            android:name="com.hush.activities.NewChatTopicActivity"
+            android:name="com.hush.activities.NewChatActivity"
             android:label="@string/title_activity_new_chat_topic" 
+            android:icon="@drawable/ic_app_icon"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible">
         </activity>
         <activity
             android:name="com.hush.activities.InviteFriendsActivity"
-            android:label="@string/title_activity_invite_friends" >
+            android:label="@string/title_activity_invite_friends"
+            android:screenOrientation="portrait"
+            android:icon="@drawable/ic_app_icon" >
         </activity>
         <activity
             android:name="com.hush.activities.ChatWindowActivity"
-            android:label="@string/title_activity_chat" >
+            android:label="@string/title_activity_chat"
+            android:screenOrientation="portrait"
+            android:icon="@drawable/ic_app_icon" >
         </activity>
         <activity
             android:name="com.hush.activities.PickFriendsActivity"
             android:label="@string/title_activity_pick_friends"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data

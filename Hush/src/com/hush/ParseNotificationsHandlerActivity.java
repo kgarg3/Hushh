@@ -1,7 +1,7 @@
 package com.hush;
 
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
 
 public class ParseNotificationsHandlerActivity extends Activity {

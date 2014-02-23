@@ -49,10 +49,10 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
 		//set up views here
 		TextView tvNotifications = (TextView) view.findViewById(R.id.tvChatItemNotificationCount);
-		tvNotifications.setText(String.valueOf(chat.getNotification()));
+		//tvNotifications.setText(String.valueOf(chat.getNotification()));
 
 		TextView tvChatTopic = (TextView) view.findViewById(R.id.tvChatItemChatTopic);
-		tvChatTopic.setText(chat.getChatTopic());
+		tvChatTopic.setText(chat.getTopic());
 
 		return view;
 	}

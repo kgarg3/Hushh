@@ -9,7 +9,7 @@
     
     <!-- Login Activity -->
     <string name="login_activity_join_hush">Use Hush to chat with your Facebook friends, anonymously!</string>
-    <string name="login_activity_join_hush_subtitle">Start by Logging In with Facebook</string>
+    <string name="login_activity_join_hush_subtitle">Start by Connecting with Facebook</string>
 
     <!-- ChatsList Activity -->
     <string name="title_activity_all_chats">Chats</string>

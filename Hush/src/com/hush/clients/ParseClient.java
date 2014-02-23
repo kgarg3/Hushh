@@ -1,39 +1,30 @@
 package com.hush.clients;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import layer.sdk.ContactManager;
-import layer.sdk.LayerAddress;
-import layer.sdk.MessageManager;
-import layer.sdk.SessionManager;
-import layer.sdk.UserManager;
-import layer.sdk.contacts.Contact;
-import layer.sdk.messages.Conversation;
-import layer.sdk.messages.Message;
-import layer.sdk.user.User;
 import android.util.Log;
 
-import com.hush.models.HushUser;
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
+import com.facebook.FacebookRequestError;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.model.GraphUser;
+import com.hush.models.Chat;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
 
 public class ParseClient {
 
+	private final static String TAG = ParseClient.class.getSimpleName();
+
+	/*
 	private final static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
 	private final static String chatId = UUID.randomUUID().toString();
-	private final static String TAG = ParseClient.class.getSimpleName();
 	private final static String userDoesNotExistErrorMessage = "No user for "; 
 	private final static long userDoesNotExistErrorCode = 2; 
 
-	public static User getCurrentLayerUser() {
-		return UserManager.getUser();
-	}
-	
 	public static void createAndLoginUser(HushUser u) {
 		UserManager.create(u.fbIdLayerUserName, "", u.firstName, u.lastName, u.fbIdLayerUserName, u.fbIdLayerUserName, new UserManager.UserCreateCallback() {
 			
@@ -145,5 +136,90 @@ public class ParseClient {
 
 		MessageManager.sendMessageToLayerAddresses(message, addresses);
 	}
+	*/
 	
+	public void setParseObject() {
+    	ParseObject testObject = new ParseObject("TestObject");
+    	testObject.put("foo", "bar");
+    	testObject.saveInBackground();
+    	
+    	Chat chat = new Chat();
+    	chat.setTopic("Do laundry");
+    	// Immediately save the data asynchronously
+    	chat.saveInBackground();
+    	// or for a more robust offline save
+    	// todoItem.saveEventually();
+	}
+	
+	public void requestMyDetails() {
+		Request request = Request.newMeRequest(ParseFacebookUtils.getSession(), new Request.GraphUserCallback() {
+			@Override
+			public void onCompleted(GraphUser user, Response response) {
+				if (user != null) {
+					// Create a JSON object to hold the profile info
+					JSONObject userProfile = new JSONObject();
+					try {
+						// Populate the JSON object
+						userProfile.put("facebookId", user.getId());
+						userProfile.put("name", user.getName());
+
+						if (user.getProperty("gender") != null) {
+							userProfile.put("gender", (String) user.getProperty("gender"));
+						}
+						if (user.getBirthday() != null) {
+							userProfile.put("birthday",user.getBirthday());
+						}
+
+						// Save the user profile info in a user property
+						ParseUser currentUser = ParseUser.getCurrentUser();
+						currentUser.put("profile", userProfile);
+						currentUser.saveInBackground();
+
+						// Show the user info
+						getUserProfileAttributesFromFacebook();
+						
+					} catch (JSONException e) {
+						Log.d(TAG,"Error parsing returned user data.");
+					}
+
+				} else if (response.getError() != null) {
+					if ((response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_RETRY)
+							|| (response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_REOPEN_SESSION)) {
+						Log.d(TAG, "The facebook session was invalidated.");
+					} else {
+						Log.d(TAG, "Some other error: " + response.getError().getErrorMessage());
+					}
+				}
+			}
+		});
+		request.executeAsync();
+
+	}
+
+	public void getUserProfileAttributesFromFacebook() {
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser.get("profile") != null) {
+			JSONObject userProfile = currentUser.getJSONObject("profile");
+			try {
+				if (userProfile.getString("facebookId") != null) {
+					String facebookId = userProfile.get("facebookId").toString();
+				}
+				if (userProfile.getString("name") != null) {
+					// userNameView.setText("");
+				}
+				
+				if (userProfile.getString("gender") != null) {
+					// userGenderView.setText(userProfile.getString("gender"));
+				}
+
+				if (userProfile.getString("birthday") != null) {
+					// userDateOfBirthView.setText(userProfile.getString("birthday"));
+				}
+			} catch (JSONException e) {
+				Log.d(TAG,"Error parsing saved user data.");
+			}
+
+		}
+	}
+
 }
