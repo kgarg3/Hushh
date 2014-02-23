@@ -147,7 +147,8 @@ public class LayerClient {
 	
 	public static void startNewGroupChatWithSelectedUsers(List<Contact> contacts) {
 		String date = dateFormat.format(new Date());
-		Message message = MessageManager.newMessage("Chat initiated, Test Msg Subject sent at " + date, ("Chat initiated, Test message sent at " + dateFormat.format(new Date())).getBytes(), "text/plain");
+		String messageBody = "Chat initiated, Test message sent at " + dateFormat.format(new Date());
+		Message message = MessageManager.newMessage("Chat initiated, Test Msg Subject sent at " + date, messageBody.getBytes(), "text/plain");
 		message.setThreadId(chatId);
 		MessageManager.sendMessageToContact(message, contacts);
 	}

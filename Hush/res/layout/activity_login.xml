@@ -56,7 +56,6 @@
         android:text="@string/login_activity_join_hush_subtitle"
         android:textSize="@dimen/text_size_large" />
 
-
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -65,7 +64,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" >
 
-        <fragment
+        <!-- fragment
             android:id="@+id/fragment1"
             android:name="com.hush.fragments.FacebookLoginFragment"
             android:layout_width="wrap_content"
@@ -74,10 +73,18 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            tools:layout="@layout/fragment_facebook_login" />
+            tools:layout="@layout/fragment_facebook_login" / -->
+
+	    <Button
+	        android:id="@+id/btnLoginActivityFacebook"
+	        android:layout_width="175dp"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="38dp"
+	        android:layout_marginTop="30dp"
+	        android:onClick="loginWithParseUsingFacebook"
+	        android:text="@string/login" />
         
     </FrameLayout>
-
 
 
 </RelativeLayout>
