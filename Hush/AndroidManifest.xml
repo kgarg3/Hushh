@@ -29,7 +29,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Hush" >
         <activity
-            android:name="com.hush.activities.LoginActivity"
+            android:name="com.hush.activities.HushLoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar" >

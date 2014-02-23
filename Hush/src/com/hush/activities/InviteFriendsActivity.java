@@ -1,9 +1,7 @@
 package com.hush.activities;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import layer.sdk.contacts.Contact;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +19,6 @@ import com.hush.R;
 
 public class InviteFriendsActivity extends Activity {
 
-	private ArrayList<Contact> layerContacts = new ArrayList<Contact>();
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

@@ -1,9 +1,7 @@
 package com.hush.activities;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-import layer.sdk.contacts.Contact;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +21,6 @@ public class NewChatTopicActivity extends Activity {
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
     private UiLifecycleHelper lifecycleHelper;
     boolean pickFriendsWhenSessionOpened;
-    private ArrayList<Contact> layerContacts = new ArrayList<Contact>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -6,14 +6,13 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
-import com.hush.models.HushUser;
+import com.hush.models.User;
 
 
 public class FacebookClient {
 
-	public static void setUserPropertiesFromFacebookAndLoginIntoLayer(){
+	public static void setUserNameInParse(){
 	    final Session session = Session.getActiveSession();
-
 	    if(!session.getState().isOpened()) { return; }
 	    
 	    Request request = Request.newMeRequest(session, new Request.GraphUserCallback() {
@@ -21,8 +20,7 @@ public class FacebookClient {
 	    	@Override
 	        public void onCompleted(GraphUser user, Response response) {
 	            if(user != null && session == Session.getActiveSession()) {
-	            	HushUser hu = HushUser.getNewInstance(user.getId(), user.getFirstName(), user.getLastName());
-	            	//LayerClient.loginUser(hu);
+	            	User.setNameInParse(user.getName());
 	            }
 	            
 	            if(response.getError() != null) {

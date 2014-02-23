@@ -6,7 +6,7 @@ package com.hush.fragments;
  *
  * Fragment to hold the users chats
  */
-public class MyChatsFragment extends ChatListFragment{
+public class MyChatsFragment extends ChatListFragment {
 
 	@Override
 	protected void getChatListType() {

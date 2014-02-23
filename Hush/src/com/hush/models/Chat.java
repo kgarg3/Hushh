@@ -7,14 +7,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Chat implements Serializable {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
+@ParseClassName("Chat")
+public class Chat extends ParseObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String id;
 	private int notification;
 	private String chatTopic;
 	private Long timeRemaining;
-	 
+	
+	// Default public constructor, needed by Parse
+	public Chat() {
+	}
+	
 	public String getId() {
 		return id;
 	}

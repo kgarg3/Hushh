@@ -6,7 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Message {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
+@ParseClassName("Message")
+public class Message extends ParseObject {
 
 	private String id;
 	private String content;
