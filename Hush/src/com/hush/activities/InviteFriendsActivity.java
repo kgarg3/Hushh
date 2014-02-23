@@ -18,7 +18,6 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.hush.HushApp;
 import com.hush.R;
-import com.hush.clients.LayerClient;
 
 public class InviteFriendsActivity extends Activity {
 
@@ -138,9 +137,9 @@ public class InviteFriendsActivity extends Activity {
         for (GraphUser user : selection) {
         	String userName = user.getName();
         	String[] firstAndLastNames = userName.split(" ");
-        	Contact contact = LayerClient.getContactObject(firstAndLastNames[0], firstAndLastNames[1], user.getId());
-        	layerContacts.add(contact);
-        	LayerClient.addContact(contact);
+        	//Contact contact = LayerClient.getContactObject(firstAndLastNames[0], firstAndLastNames[1], user.getId());
+        	//layerContacts.add(contact);
+        	//LayerClient.addContact(contact);
         }
     }
     
@@ -149,11 +148,11 @@ public class InviteFriendsActivity extends Activity {
     }
     
     public void startNewGroupChatWithSelectedUsers(View v) {
-    	LayerClient.startNewGroupChatWithSelectedUsers(layerContacts);
+    	//LayerClient.startNewGroupChatWithSelectedUsers(layerContacts);
     }
     
     public void sendNewMessageOnChat(View v) {
-    	LayerClient.sendNewMessageOnChat();
+    	//LayerClient.sendNewMessageOnChat();
     }
 
     private void startPickFriendsActivity() {

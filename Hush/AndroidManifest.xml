@@ -10,11 +10,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
+    	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -87,17 +84,6 @@
 		    <category android:name="com.hush" />
 		  </intent-filter>
 		</receiver>
-
-        <!--
-        service android:name="layer.sdk.internal.services.LayerService"></service>
-		<receiver android:name="layer.sdk.internal.receivers.LayerReceiver">
-			<intent-filter>
-			    <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-			    <action android:name="android.intent.action.ANY_DATA_STATE"/>
-			    <action android:name="android.intent.action.BOOT_COMPLETED"/>
-			</intent-filter>
-		</receiver
-        -->
         
         <activity
             android:name="com.hush.ParseNotificationsHandlerActivity"

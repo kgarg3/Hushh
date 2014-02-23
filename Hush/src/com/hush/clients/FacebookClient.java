@@ -31,7 +31,7 @@ public class FacebookClient {
 	        public void onCompleted(GraphUser user, Response response) {
 	            if(user != null && session == Session.getActiveSession()) {
 	            	HushUser hu = HushUser.getNewInstance(user.getId(), user.getFirstName(), user.getLastName());
-	            	LayerClient.loginUser(hu);
+	            	//LayerClient.loginUser(hu);
 	            }
 	            
 	            if(response.getError() != null) {
