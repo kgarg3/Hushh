@@ -6,6 +6,7 @@ import android.app.Application;
 
 import com.facebook.model.GraphUser;
 import com.hush.models.Chat;
+import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.models.User;
 import com.parse.Parse;
@@ -15,16 +16,35 @@ import com.parse.PushService;
 
 public class HushApp extends Application {
 
-    private List<GraphUser> selectedUsers;
+    private static User currentUser;
+    private static Chat currentChat;
+    
+    private static List<GraphUser> selectedUsers;
 
-    public List<GraphUser> getSelectedUsers() {
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+    
+    public static void setCurrentUser(User inCurrentUser) {
+        currentUser = inCurrentUser;
+    }
+    
+    public static Chat getCurrentChat() {
+        return currentChat;
+    }
+    
+    public static void setCurrentChat(Chat inCurrentChat) {
+        currentChat = inCurrentChat;
+    }
+    
+    public static List<GraphUser> getSelectedUsers() {
         return selectedUsers;
     }
 
-    public void setSelectedUsers(List<GraphUser> inSelectedUsers) {
+    public static void setSelectedUsers(List<GraphUser> inSelectedUsers) {
         selectedUsers = inSelectedUsers;
     }
-    
+
     @Override
     public void onCreate() {
     	super.onCreate();
@@ -35,6 +55,7 @@ public class HushApp extends Application {
     	
     	ParseObject.registerSubclass(User.class);
     	ParseObject.registerSubclass(Chat.class);
+    	ParseObject.registerSubclass(Chatter.class);
     	ParseObject.registerSubclass(Message.class);
     }
 }

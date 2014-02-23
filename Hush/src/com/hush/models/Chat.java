@@ -1,6 +1,5 @@
 package com.hush.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -14,11 +13,11 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 @ParseClassName("Chat")
-public class Chat extends ParseObject implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Chat extends ParseObject {
 	
 	private String topic;
 	private String type;
+	private boolean isDeleted;
 	private Date createdAt;
 	private User creator;
 	private ParseRelation<Chatter> chatters;
@@ -51,6 +50,15 @@ public class Chat extends ParseObject implements Serializable {
 
 	public void setType(String type) {
 		put("type", type);
+	}
+	
+	public boolean getIsDeleted() {
+		isDeleted = getBoolean("isDeleted");
+		return isDeleted;
+	}
+
+	public void setIsDeleted() {
+		put("isDeleted", true);
 	}
 	
 	public User getCreator() {

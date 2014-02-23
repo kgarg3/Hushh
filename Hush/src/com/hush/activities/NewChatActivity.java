@@ -70,18 +70,24 @@ public class NewChatActivity extends Activity {
 		// Create chat and chatters objects in parse
 		String chatType = tbPublicPrivate.isChecked() ? "public" : "private";
 		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
+		chat.saveInBackground();
 		
-		// Upload chatters to parse
-    	HushApp application = (HushApp) getApplication();
-        Collection<GraphUser> selection = application.getSelectedUsers();
+        Collection<GraphUser> selection = HushApp.getSelectedUsers();
         for (GraphUser user : selection) {
         	Chatter chatter = new Chatter(user.getId(), user.getName());
         	chatter.saveInBackground();
         	chat.addChatter(chatter);
         }
+        
+        // Add the original user to the chat
+    	Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
+    	chatter.saveInBackground();
+    	chat.addChatter(chatter);
+
         chat.saveInBackground();
 
-        // Navigate to chat window
+        // Set active chat and navigate to a chat window
+        HushApp.setCurrentChat(chat);
 		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}
