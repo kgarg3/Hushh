@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@android:color/white"
     tools:context=".NewChatActivity" >
 	
     
@@ -13,7 +12,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:hint="@string/hint_new_chat"
-         android:background="@android:color/white"
+         android:background="@android:color/transparent"
          android:layout_alignParentLeft="true"
          android:layout_alignParentTop="true"
          android:layout_alignParentRight="true"
@@ -32,7 +31,7 @@
 		android:layout_alignParentRight="true" 
 		android:layout_alignParentLeft="true"
 		android:padding="0dp"
-		android:background="#F5F5F5">
+		android:background="#dfd6e0">
 
 		<ImageButton
 		    android:id="@+id/ibInviteFriends"
@@ -40,19 +39,22 @@
 		    android:layout_height="wrap_content"
 		    android:background="@null"
 		    android:onClick="onInviteFriendsClick"
+		    android:scaleType="fitXY"
+		    android:layout_marginRight="@dimen/activity_horizontal_margin"
+		    android:layout_alignParentRight="true"
 		    android:contentDescription="invite friends"
-		    android:layout_marginBottom="@dimen/activity_vertical_margin"
-			android:layout_marginTop="@dimen/activity_vertical_margin"
-		    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-		    android:src="@drawable/ic_action_invite_friends" />
+		    android:src="@drawable/add_friend_icon" />
 
-		<com.eevoskos.robotoviews.widget.RobotoToggleButton
-		    android:id="@+id/tbPublicPrivate"
+		
+		<com.eevoskos.robotoviews.widget.RobotoSwitch
+		    android:id="@+id/swPublicPrivate"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_toRightOf="@+id/ibInviteFriends"
-		    android:layout_alignBaseline="@+id/ibInviteFriends"
-		    android:text="Switch" />
+		    android:layout_centerVertical="true"
+			android:layout_alignParentLeft="true"
+		    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+		    roboto:typeface="light"
+		    android:text="PRIVATE: " /> 
 	 
 	</RelativeLayout>
      

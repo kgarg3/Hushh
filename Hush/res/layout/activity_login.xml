@@ -23,7 +23,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:contentDescription="white chat bubble"
         android:src="@drawable/chat_icon_white" />
    	
@@ -69,21 +69,10 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="60dp"
-        android:background="@android:color/white"
+        android:background="#dfd6e0"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" >
-
-        <!-- fragment
-            android:id="@+id/fragment1"
-            android:name="com.hush.fragments.FacebookLoginFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            tools:layout="@layout/fragment_facebook_login" / -->
 
 	    <ImageButton
 	        android:id="@+id/btnLoginActivityFacebook"
