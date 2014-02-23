@@ -31,7 +31,7 @@
 		android:layout_alignParentRight="true" 
 		android:layout_alignParentLeft="true"
 		android:padding="0dp"
-		android:background="#D8BFD8">
+		android:background="#dfd6e0">
 
 		<ImageButton
 		    android:id="@+id/ibInviteFriends"
