@@ -2,11 +2,11 @@ package com.hush;
 
 import java.util.List;
 
-import layer.sdk.Layer;
 import android.app.Application;
 
 import com.facebook.model.GraphUser;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 import com.parse.PushService;
 
 public class HushApp extends Application {
@@ -24,9 +24,8 @@ public class HushApp extends Application {
     @Override
     public void onCreate() {
     	super.onCreate();
-    	Layer.init(getApplicationContext(), getString(R.string.layer_app_id));
     	
-    	Parse.initialize(this, "psNJCoT9RhlnjpthicNrxPVM9llJOrSFbRNgXHjO", "DEdGrNxRUjMX6BZqdonXdSkX7AapKqkGxzVQObGW");
+    	Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
     	
     	/*
     	ParseObject testObject = new ParseObject("TestObject");
@@ -34,6 +33,7 @@ public class HushApp extends Application {
     	testObject.saveInBackground();
     	*/
     	
+    	ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
     	PushService.setDefaultPushCallback(this, ParseNotificationsHandlerActivity.class);
     }
 }

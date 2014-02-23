@@ -28,9 +28,10 @@
     <string name="facebook_exception">Exception: %1$s</string>
     <string name="ok_button">OK</string>
 
-    <!-- Layer App info -->
-    <string name="layer_app_id">d3c87e6806e7091bfb92715650d2b220</string>
-
+    <!-- Parse App info -->
+    <string name="parse_app_id">psNJCoT9RhlnjpthicNrxPVM9llJOrSFbRNgXHjO</string>
+    <string name="parse_client_key">DEdGrNxRUjMX6BZqdonXdSkX7AapKqkGxzVQObGW</string>
+    
     <string name="hint_new_chat">What\'s on your mind?</string>
     <string name="title_activity_parse_notifications_handler">ParseNotificationsHandlerActivity</string>
 </resources>

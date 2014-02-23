@@ -1,5 +1,8 @@
 package com.hush.activities;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -20,7 +23,8 @@ import com.parse.ParseUser;
  */
 public class LoginActivity extends FragmentActivity {
 	
-	private static ProgressDialog progressDiaglog;
+	private final static String TAG = LoginActivity.class.getSimpleName();
+	private static ProgressDialog progressDialog;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,28 +41,22 @@ public class LoginActivity extends FragmentActivity {
     }
     
     public void loginWithParseUsingFacebook(View v) {
-    	/*
-    	LoginActivity.this.progressDialog = ProgressDialog.show(
+    	progressDialog = ProgressDialog.show(
             LoginActivity.this, "", "Logging in...", true);
-	        // List<String> permissions = Arrays.asList("basic_info", "user_about_me", "user_relationships", "user_birthday", "user_location");
+	        List<String> permissions = Arrays.asList("basic_info"); // , "user_about_me", "user_relationships", "user_birthday", "user_location");
 	        ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+	        	
 	            @Override
 	            public void done(ParseUser user, ParseException err) {
-	                LoginActivity.this.progressDialog.dismiss();
+	                progressDialog.dismiss();
 	                if (user == null) {
-	                    Log.d(.TAG,
-	                            "Uh oh. The user cancelled the Facebook login.");
+	                    Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
 	                } else if (user.isNew()) {
-	                    Log.d(IntegratingFacebookTutorialApplication.TAG,
-	                            "User signed up and logged in through Facebook!");
-	                    showUserDetailsActivity();
+	                    Log.d(TAG, "User signed up and logged in through Facebook!");
 	                } else {
-	                    Log.d(IntegratingFacebookTutorialApplication.TAG,
-	                            "User logged in through Facebook!");
-	                    showUserDetailsActivity();
+	                    Log.d(TAG, "User logged in through Facebook!");
 	                }
 	            }
         });
-        */
     }
 }

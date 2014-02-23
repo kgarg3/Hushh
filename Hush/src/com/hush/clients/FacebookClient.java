@@ -1,17 +1,8 @@
 package com.hush.clients;
 
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.facebook.Request;
-import com.facebook.Request.GraphUserListCallback;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
