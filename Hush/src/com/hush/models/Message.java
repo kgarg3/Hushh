@@ -10,7 +10,7 @@ public class Message {
 
 	private String id;
 	private String content;
-	private String chatId;
+	private boolean isMine;
 
 	public String getId() {
 		return id;
@@ -28,12 +28,12 @@ public class Message {
 		this.content = content;
 	}
 
-	public String getChatId() {
-		return chatId;
+	public boolean isMine() {
+		return isMine;
 	}
 
-	public void setChatId(String chatId) {
-		this.chatId = chatId;
+	public void setMine(boolean isMine) {
+		this.isMine = isMine;
 	}
 
 	// Decodes business json into business model object
@@ -43,7 +43,7 @@ public class Message {
 		try {
 			message.id = jsonObject.getString("id");
 			message.content = jsonObject.getString("content");
-			message.chatId = jsonObject.getString("chatId");	
+			message.isMine = Boolean.valueOf(jsonObject.getString("isMine"));	
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;

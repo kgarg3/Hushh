@@ -29,8 +29,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		final Message message = getItem(position);
 
 		//set up views here
-		TextView tvMessage = (TextView) view.findViewById(R.id.tvMessage);
+		TextView tvMessage = (TextView) view.findViewById(R.id.message_text);
 		tvMessage.setText(String.valueOf(message.getContent()));
+		
+		if(message.isMine())
+		{
+			tvMessage.setBackgroundResource(R.drawable.bubble);
+		}
+		//If not mine then it is from sender to show orange background and align to left
+		else
+		{
+			tvMessage.setBackgroundResource(R.drawable.bubble);
+		}
+		
 
 		return view;
 	}

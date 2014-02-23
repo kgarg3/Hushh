@@ -29,7 +29,10 @@ public class HushData {
 			
 			message.setId(String.valueOf(i));
 			message.setContent("Message" + i);
-			message.setChatId(String.valueOf(i));
+			if(i % 2 == 0)
+				message.setMine(true);
+			else
+				message.setMine(false);
 			
 			chatlist.add(message);
 		}	
