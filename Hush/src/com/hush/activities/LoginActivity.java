@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -41,6 +42,10 @@ public class LoginActivity extends FragmentActivity {
     }
     
     public void loginWithParseUsingFacebook(View v) {
+		Intent i = new Intent(LoginActivity.this, ChatsListActivity.class);
+		startActivity(i);
+
+		/*
     	progressDialog = ProgressDialog.show(
             LoginActivity.this, "", "Logging in...", true);
 	        List<String> permissions = Arrays.asList("basic_info"); // , "user_about_me", "user_relationships", "user_birthday", "user_location");
@@ -58,5 +63,6 @@ public class LoginActivity extends FragmentActivity {
 	                }
 	            }
         });
+        */
     }
 }
