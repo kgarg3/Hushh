@@ -9,6 +9,7 @@ import com.facebook.FacebookRequestError;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.model.GraphUser;
+import com.hush.models.Chat;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -141,6 +142,13 @@ public class ParseClient {
     	ParseObject testObject = new ParseObject("TestObject");
     	testObject.put("foo", "bar");
     	testObject.saveInBackground();
+    	
+    	Chat chat = new Chat();
+    	chat.setTopic("Do laundry");
+    	// Immediately save the data asynchronously
+    	chat.saveInBackground();
+    	// or for a more robust offline save
+    	// todoItem.saveEventually();
 	}
 	
 	public void requestMyDetails() {

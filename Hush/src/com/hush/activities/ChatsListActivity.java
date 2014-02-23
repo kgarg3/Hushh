@@ -62,7 +62,7 @@ public class ChatsListActivity extends FragmentActivity {
 	
 	// menu actions
 	public void onNewChatClick(MenuItem mi) {
-		Intent i = new Intent(ChatsListActivity.this, NewChatTopicActivity.class);
+		Intent i = new Intent(ChatsListActivity.this, NewChatActivity.class);
 		startActivity(i);
 	}
 

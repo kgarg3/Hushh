@@ -132,7 +132,6 @@ public class InviteFriendsActivity extends Activity {
         // Add the selected users as user's contacts into Layer 
         for (GraphUser user : selection) {
         	String userName = user.getName();
-        	String[] firstAndLastNames = userName.split(" ");
         	//Contact contact = LayerClient.getContactObject(firstAndLastNames[0], firstAndLastNames[1], user.getId());
         	//layerContacts.add(contact);
         	//LayerClient.addContact(contact);

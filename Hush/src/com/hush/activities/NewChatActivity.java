@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -15,17 +17,26 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.hush.HushApp;
 import com.hush.R;
+import com.hush.models.Chat;
+import com.hush.models.Chatter;
 
-public class NewChatTopicActivity extends Activity {
+public class NewChatActivity extends Activity {
 
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
     private UiLifecycleHelper lifecycleHelper;
     boolean pickFriendsWhenSessionOpened;
-	
+    
+	private EditText etChatTopic; 
+	private ToggleButton tbPublicPrivate;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_chat_topic);
+		setContentView(R.layout.activity_new_chat);
+		
+		// Populate view variables
+		etChatTopic = (EditText) findViewById(R.id.etChatTopic);
+		tbPublicPrivate = (ToggleButton) findViewById(R.id.tbPublicPrivate);
 		
 		lifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
             @Override
@@ -45,17 +56,9 @@ public class NewChatTopicActivity extends Activity {
 		return true;
 	}
 	
-	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	        switch (requestCode) {
-	            case PICK_FRIENDS_ACTIVITY:
-	                //displaySelectedFriends();
-	                uploadFriendsAsLayerContacts();
-	                break;
-	            default:
-	                Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-	                break;
-	        }
-	    }
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// Do nothing
+    }
 	
 	// actions
 	public void onInviteFriendsClick(View view) {
@@ -63,12 +66,27 @@ public class NewChatTopicActivity extends Activity {
 	}
 	
 	public void onDoneClick(MenuItem mi) {
-		Intent i = new Intent(NewChatTopicActivity.this, ChatWindowActivity.class);
+		
+		// Create chat and chatters objects in parse
+		String chatType = tbPublicPrivate.isChecked() ? "public" : "private";
+		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
+		
+		// Upload chatters to parse
+    	HushApp application = (HushApp) getApplication();
+        Collection<GraphUser> selection = application.getSelectedUsers();
+        for (GraphUser user : selection) {
+        	Chatter chatter = new Chatter(user.getId(), user.getName());
+        	chatter.saveInBackground();
+        	chat.addChatter(chatter);
+        }
+        chat.saveInBackground();
+
+        // Navigate to chat window
+		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}
 	
 	// private methods
-	
 	private void startPickFriendsActivity() {
         if (ensureOpenSession()) {
             Intent intent = new Intent(this, PickFriendsActivity.class);
@@ -104,22 +122,4 @@ public class NewChatTopicActivity extends Activity {
             startPickFriendsActivity();
         }
     }
-    
-    private void uploadFriendsAsLayerContacts() {
-    	HushApp application = (HushApp) getApplication();
-
-        Collection<GraphUser> selection = application.getSelectedUsers();
-        
-        if (selection == null || selection.size() == 0) { return; }
-
-        // Add the selected users as user's contacts into Layer 
-        for (GraphUser user : selection) {
-        	String userName = user.getName();
-        	String[] firstAndLastNames = userName.split(" ");
-        	//Contact contact = LayerClient.getContactObject(firstAndLastNames[0], firstAndLastNames[1], user.getId());
-        	//layerContacts.add(contact);
-        	//LayerClient.addContact(contact);
-        }
-    }
-
 }

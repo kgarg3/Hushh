@@ -1,6 +1,7 @@
 package com.hush.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,42 +13,41 @@ import com.parse.ParseObject;
 @ParseClassName("Message")
 public class Message extends ParseObject {
 
-	private String id;
 	private String content;
-	private boolean isMine;
+	private Date createdAt;
+	private Chatter chatter;
 
-	public String getId() {
-		return id;
+	public Message() {
+		super();
 	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
 	public String getContent() {
+		content = getString("content");
 		return content;
 	}
 
 	public void setContent(String content) {
-		this.content = content;
+		put("content", content);
 	}
 
-	public boolean isMine() {
-		return isMine;
+	public Date getCreatedAt() {
+		createdAt = getCreatedAt();
+		return createdAt;
 	}
 
-	public void setMine(boolean isMine) {
-		this.isMine = isMine;
+	public Chatter getChatter() {
+		chatter = (Chatter) getParseObject("chatter");
+		return chatter;
 	}
+	
 
 	// Decodes business json into business model object
 	public static Message fromJson(JSONObject jsonObject) {
 		Message message = new Message();
 		// Deserialize json into object fields
 		try {
-			message.id = jsonObject.getString("id");
 			message.content = jsonObject.getString("content");
-			message.isMine = Boolean.valueOf(jsonObject.getString("isMine"));	
+			//message.chatter = Boolean.valueOf(jsonObject.getString("isMine"));	
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;

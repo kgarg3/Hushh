@@ -34,49 +34,4 @@ public class FacebookClient {
 	    
 	    request.executeAsync();
 	}
-
-
-	/*
-	public static void getFBFriendsAndUploadToLayer(){
-		
-	    Session session = Session.getActiveSession();
-	    
-	    if(!session.getState().isOpened()) { return; }
-	    
-        Request friendRequest = Request.newMyFriendsRequest(session, new GraphUserListCallback() {
-        	
-            @Override
-            public void onCompleted(List<GraphUser> users, Response response) {
-                
-            	//Log.i("FRIENDS LIST", response.toString());
-            	String text = response.getGraphObject().getInnerJSONObject().toString();
-            	Log.i("FRIENDS LIST", text);
-            	//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-                
-            	JSONArray jsonArray;
-            	try {
-			        jsonArray = response.getGraphObject().getInnerJSONObject().getJSONArray("data");
-			        for (int i = 0; i < jsonArray.length(); i++) {
-		           	     JSONObject jsonObject = jsonArray.getJSONObject(i);
-		           	     
-		           	     String fbId = jsonObject.getString("id");
-		           	     String fullName = jsonObject.getString("name");
-		           	     String[] firstAndLastNames = fullName.split(" ");
-		           	     
-		           	     LayerClient.addContact(firstAndLastNames[0], firstAndLastNames[1], fbId);
-		           	}
-            	} catch (JSONException e) {
-			        e.printStackTrace();
-			        return;
-			    }
-            }
-        });
-        
-        Bundle params = new Bundle();
-        params.putString("fields", "id,name");
-        friendRequest.setParameters(params);
-        
-        friendRequest.executeAsync();
-    }
-	*/
 }
