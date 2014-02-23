@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.hush.R;
 import com.hush.clients.FacebookClient;
-import com.hush.models.User;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;

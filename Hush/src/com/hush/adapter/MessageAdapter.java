@@ -32,16 +32,19 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		TextView tvMessage = (TextView) view.findViewById(R.id.message_text);
 		tvMessage.setText(String.valueOf(message.getContent()));
 		
-		if(true) // message.isMine())
-		{
-			tvMessage.setBackgroundResource(R.drawable.bubble);
-		}
-		//If not mine then it is from sender to show orange background and align to left
-		else
-		{
-			tvMessage.setBackgroundResource(R.drawable.bubble);
-		}
-		
+		//TODO: Message model needs to know which user it is for, 
+		//if user == parseCurrentUser, then message is mine 
+		//else not
+//		if(true) // message.isMine())
+//		{
+//			tvMessage.setBackgroundResource(R.drawable.bubble);
+//		}
+//		//If not mine then it is from sender to show orange background and align to left
+//		else
+//		{
+//			tvMessage.setBackgroundResource(R.drawable.bubble);
+//		}
+//		
 
 		return view;
 	}

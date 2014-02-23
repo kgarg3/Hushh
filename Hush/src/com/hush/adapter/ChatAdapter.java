@@ -47,12 +47,13 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 			}
 		});
 
-		//set up views here
-		TextView tvNotifications = (TextView) view.findViewById(R.id.tvChatItemNotificationCount);
-		//tvNotifications.setText(String.valueOf(chat.getNotification()));
-
 		TextView tvChatTopic = (TextView) view.findViewById(R.id.tvChatItemChatTopic);
 		tvChatTopic.setText(chat.getTopic());
+		
+		//TODO: if chat has notifications and is unread
+		//if(chat is unread)
+		//make the text bold, else normal 
+		//make the view background gray else white
 
 		return view;
 	}
