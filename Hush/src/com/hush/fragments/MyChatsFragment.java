@@ -10,9 +10,8 @@ package com.hush.fragments;
 public class MyChatsFragment extends ChatListFragment {
 
 	@Override
-	protected void getChatListType() {
-		// TODO Auto-generated method stub
-		
+	protected String getChatListType() {
+		return "private";
 	}
 
 

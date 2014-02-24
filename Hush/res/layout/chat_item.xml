@@ -10,28 +10,17 @@
     tools:context=".ChatWindowActivity" >
 
     <TextView
-        android:id="@+id/tvChatItemNotificationCount"
-        android:layout_width="@dimen/notifications_width"
-        android:layout_height="@dimen/chat_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="2" />
-
-    <TextView
         android:id="@+id/tvChatItemChatTopic"
         android:layout_width="@dimen/chat_topic_width"
         android:layout_height="@dimen/chat_height"
-        android:layout_toLeftOf="@+id/btnChatItemTimebomb"
-        android:layout_toRightOf="@+id/tvChatItemNotificationCount"
-        android:text="smelly coworkers" />
+        android:layout_alignParentLeft="true"
+        android:text="@string/empty" 
+        android:padding="0dip"/>
 
-    <ImageView
-        android:id="@+id/btnChatItemTimebomb"
+    <com.hush.timer.view.PieChartView
+        android:id="@+id/pieChart"
         android:layout_width="@dimen/timer_width"
         android:layout_height="@dimen/chat_height"
-        android:layout_alignBottom="@+id/tvChatItemChatTopic"
-        android:layout_alignParentRight="true"
-        android:contentDescription="@string/empty"
-        android:src="@drawable/bombcountdown" />
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

@@ -10,8 +10,7 @@ package com.hush.fragments;
 public class FriendsChatsFragment extends ChatListFragment{
 	
 	@Override
-	protected void getChatListType() {
-		// TODO return a qualifier 
-		
+	protected String getChatListType() {
+		return "public";
 	}
 }

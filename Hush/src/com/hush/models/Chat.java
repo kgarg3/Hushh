@@ -63,8 +63,12 @@ public class Chat extends ParseObject implements Serializable {
 	}
 	
 	public Date getCreatedAt() {
-		createdAt = getCreatedAt();
+		//createdAt = getCreatedAt(); --- this will crash , infinite loop 
 		return createdAt;
+	}
+	
+	public void setCreatedAt(Date d) {
+		createdAt = d;
 	}
 
 	public ParseRelation<Chatter> getChatters() {

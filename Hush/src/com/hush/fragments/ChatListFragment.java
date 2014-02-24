@@ -1,5 +1,7 @@
 package com.hush.fragments;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import com.hush.R;
 import com.hush.adapter.ChatAdapter;
 import com.hush.data.HushData;
 import com.hush.listeners.EndlessScrollListener;
+import com.hush.models.Chat;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -24,9 +27,11 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
  */
 public abstract class ChatListFragment extends Fragment {
 
-	protected  PullToRefreshListView lvChats;
+	protected PullToRefreshListView lvChats;
 	protected ProgressBar progressBarLoadingTweets;
 	protected ChatAdapter adapter;
+	
+	protected String previousChatType;
 	
 
 	@Override
@@ -53,7 +58,8 @@ public abstract class ChatListFragment extends Fragment {
 		lvChats.setOnScrollListener(new EndlessScrollListener() {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
-
+				//setChatsInAdpater();
+				//adapter.addAll(HushData.getChatList());
 			}
 		});
 
@@ -77,5 +83,27 @@ public abstract class ChatListFragment extends Fragment {
 		return adapter;
 	}
 	
-	protected abstract void getChatListType();
+	protected abstract String getChatListType();
+	
+	private void setChatsInAdapter() {
+		String chatType = getChatListType();
+		//if we have switched from public to private or vice versa, clear out the adapter before adding chats to it
+		if(!previousChatType.equals(chatType)) {
+			adapter.clear();
+		}
+		//make a call to get the current user's chats based on teh type
+//		ArrayList<Chat> userChats = User.getCurrentUser().getChats();
+//		if(userChats != null && userChats.size() > 0) {
+//			ArrayList<Chat> chatsToShow = new ArrayList<Chat>();
+//			for(Chat c : userChats) {
+//				if(c.getType().equals(chatType))
+//					chatsToShow.add(c);
+//			}
+//			
+//			adapter.addAll(chatsToShow);
+//		}
+//		
+		
+	}
+	
 }

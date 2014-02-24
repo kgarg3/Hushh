@@ -1,6 +1,7 @@
 package com.hush.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.hush.models.Chat;
 import com.hush.models.Message;
@@ -15,7 +16,8 @@ public class HushData {
 			chat.setTopic("Chat" + i);
 			//chat.setNotification(i);
 			//chat.setId(String.valueOf(i));
-			//chat.setTimeRemaining((long)i*50);
+			//set the created time to current time - 12 hours
+			chat.setCreatedAt( (new Date( new Date().getTime() - (long)12*60*60*1000 )) ); 
 			
 			chatlist.add(chat);
 		}	
