@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.facebook.Session;
@@ -27,7 +28,7 @@ public class NewChatActivity extends Activity {
     boolean pickFriendsWhenSessionOpened;
     
 	private EditText etChatTopic; 
-	private ToggleButton tbPublicPrivate;
+	private Switch swPublicPrivate;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class NewChatActivity extends Activity {
 		
 		// Populate view variables
 		etChatTopic = (EditText) findViewById(R.id.etChatTopic);
-		tbPublicPrivate = (ToggleButton) findViewById(R.id.tbPublicPrivate);
+		swPublicPrivate = (Switch) findViewById(R.id.swPublicPrivate);
 		
 		lifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
             @Override
@@ -68,20 +69,26 @@ public class NewChatActivity extends Activity {
 	public void onDoneClick(MenuItem mi) {
 		
 		// Create chat and chatters objects in parse
-		String chatType = tbPublicPrivate.isChecked() ? "public" : "private";
+		String chatType = swPublicPrivate.isChecked() ? "private" : "public";
 		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
+		chat.saveInBackground();
 		
-		// Upload chatters to parse
-    	HushApp application = (HushApp) getApplication();
-        Collection<GraphUser> selection = application.getSelectedUsers();
+        Collection<GraphUser> selection = HushApp.getSelectedUsers();
         for (GraphUser user : selection) {
         	Chatter chatter = new Chatter(user.getId(), user.getName());
         	chatter.saveInBackground();
         	chat.addChatter(chatter);
         }
+        
+        // Add the original user to the chat
+    	Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
+    	chatter.saveInBackground();
+    	chat.addChatter(chatter);
+
         chat.saveInBackground();
 
-        // Navigate to chat window
+        // Set active chat and navigate to a chat window
+        HushApp.setCurrentChat(chat);
 		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}

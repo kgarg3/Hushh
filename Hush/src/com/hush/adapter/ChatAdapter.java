@@ -52,7 +52,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getContext(), ChatWindowActivity.class);
-				intent.putExtra(ChatsListActivity.CHAT, chat);
+				//intent.putExtra(ChatsListActivity.CHAT, chat);
 				getContext().startActivity(intent);
 			}
 		});

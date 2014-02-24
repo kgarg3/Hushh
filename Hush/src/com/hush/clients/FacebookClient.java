@@ -11,7 +11,7 @@ import com.hush.models.User;
 
 public class FacebookClient {
 
-	public static void setUserNameInParse(){
+	public static void getAndSetUserAttributesInParse(final User inUser){
 	    final Session session = Session.getActiveSession();
 	    if(!session.getState().isOpened()) { return; }
 	    
@@ -20,7 +20,7 @@ public class FacebookClient {
 	    	@Override
 	        public void onCompleted(GraphUser user, Response response) {
 	            if(user != null && session == Session.getActiveSession()) {
-	            	User.setNameInParse(user.getName());
+	            	inUser.setUserAttributesInParse(user.getName(), user.getId());
 	            }
 	            
 	            if(response.getError() != null) {

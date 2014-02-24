@@ -13,8 +13,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.hush.HushApp;
 import com.hush.R;
-import com.hush.clients.FacebookClient;
+import com.hush.models.User;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -62,9 +63,11 @@ public class HushLoginActivity extends Activity {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if ((currentUser == null) || !ParseFacebookUtils.isLinked(currentUser)) {
     		progressDialog = ProgressDialog.show(HushLoginActivity.this, "", "Logging in...", true);
-			List<String> permissions = Arrays.asList("basic_info");  // , "user_about_me", "user_relationships", "user_birthday", "user_location");
-
-			ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+    		
+			//List<String> permissions = Arrays.asList("basic_info", "user_about_me", "user_relationships", "user_birthday", "user_location");
+			//ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+    		
+			ParseFacebookUtils.logIn(null, this, new LogInCallback() {
 				@Override
 				public void done(ParseUser user, ParseException err) {
 					boolean loginSuccessful = false;
@@ -81,14 +84,19 @@ public class HushLoginActivity extends Activity {
 					}
 					
 					if (loginSuccessful) {
-						FacebookClient.setUserNameInParse();
-						// Navigate user to chat lists
-						Intent i = new Intent(HushLoginActivity.this, ChatsListActivity.class);
-						startActivity(i);
+						// Set the user globally in Hush 
+						HushApp.setCurrentUser(new User(user));
+						showChatsListActivity();
 					}
 				}
 			});
 		}
+    }
+    
+    private void showChatsListActivity() {
+		// Navigate user to chat lists
+		Intent i = new Intent(HushLoginActivity.this, ChatsListActivity.class);
+		startActivity(i);
     }
     
 	public void logout(View v) {
