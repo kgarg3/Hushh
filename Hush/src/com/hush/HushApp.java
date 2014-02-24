@@ -17,7 +17,6 @@ import com.parse.PushService;
 public class HushApp extends Application {
 
     private static User currentUser;
-    private static Chat currentChat;
     
     private static List<GraphUser> selectedUsers;
 
@@ -27,14 +26,6 @@ public class HushApp extends Application {
     
     public static void setCurrentUser(User inCurrentUser) {
         currentUser = inCurrentUser;
-    }
-    
-    public static Chat getCurrentChat() {
-        return currentChat;
-    }
-    
-    public static void setCurrentChat(Chat inCurrentChat) {
-        currentChat = inCurrentChat;
     }
     
     public static List<GraphUser> getSelectedUsers() {

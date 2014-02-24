@@ -1,8 +1,5 @@
 package com.hush.activities;
 
-import java.util.Arrays;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -24,7 +21,7 @@ import com.parse.ParseUser;
 
 /**
  * 
- * Login acitivity to verify users' credentials before logging them into Hush. 
+ * Login activity to verify users' credentials before logging them into Hush. 
  *
  */
 public class HushLoginActivity extends Activity {
@@ -64,7 +61,7 @@ public class HushLoginActivity extends Activity {
 		if ((currentUser == null) || !ParseFacebookUtils.isLinked(currentUser)) {
     		progressDialog = ProgressDialog.show(HushLoginActivity.this, "", "Logging in...", true);
     		
-			//List<String> permissions = Arrays.asList("basic_info", "user_about_me", "user_relationships", "user_birthday", "user_location");
+			//List<String> permissions = Arrays.asList("basic_info", "user_about_me", "user_birthday", "user_location");
 			//ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
     		
 			ParseFacebookUtils.logIn(null, this, new LogInCallback() {

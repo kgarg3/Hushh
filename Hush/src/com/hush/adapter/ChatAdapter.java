@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.hush.R;
 import com.hush.activities.ChatWindowActivity;
-import com.hush.activities.ChatsListActivity;
 import com.hush.models.Chat;
 
 /**

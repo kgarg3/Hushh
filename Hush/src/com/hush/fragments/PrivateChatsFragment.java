@@ -7,12 +7,10 @@ package com.hush.fragments;
  *
  * Fragment to hold the users chats
  */
-public class MyChatsFragment extends ChatListFragment {
+public class PrivateChatsFragment extends ChatListFragment {
 
 	@Override
 	protected void getChatListType() {
-		// TODO Auto-generated method stub
-		
 	}
 
 

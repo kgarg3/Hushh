@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
-import android.widget.ToggleButton;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -71,24 +70,24 @@ public class NewChatActivity extends Activity {
 		// Create chat and chatters objects in parse
 		String chatType = swPublicPrivate.isChecked() ? "private" : "public";
 		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
-		chat.saveInBackground();
+		chat.saveToParse();
 		
         Collection<GraphUser> selection = HushApp.getSelectedUsers();
         for (GraphUser user : selection) {
         	Chatter chatter = new Chatter(user.getId(), user.getName());
-        	chatter.saveInBackground();
+        	chatter.saveToParse();
         	chat.addChatter(chatter);
         }
         
         // Add the original user to the chat
     	Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
-    	chatter.saveInBackground();
+    	chatter.saveToParse();
     	chat.addChatter(chatter);
 
-        chat.saveInBackground();
+        chat.saveToParse();
 
         // Set active chat and navigate to a chat window
-        HushApp.setCurrentChat(chat);
+        HushApp.getCurrentUser().setCurrentChat(chat);
 		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}

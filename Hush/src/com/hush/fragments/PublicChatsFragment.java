@@ -7,11 +7,9 @@ package com.hush.fragments;
  * 
  * Fragment to hold friends chats
  */
-public class FriendsChatsFragment extends ChatListFragment{
+public class PublicChatsFragment extends ChatListFragment{
 	
 	@Override
 	protected void getChatListType() {
-		// TODO return a qualifier 
-		
 	}
 }

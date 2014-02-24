@@ -19,6 +19,10 @@ public class Chatter extends ParseObject {
 		setName(name);
 	}
 
+	public void saveToParse() {
+		saveInBackground();
+	}
+
 	public String getFacebookId() {
 		facebookId = getString("facebookId");
 		return facebookId;

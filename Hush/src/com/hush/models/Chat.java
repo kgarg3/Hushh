@@ -2,12 +2,16 @@ package com.hush.models;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.hush.utils.AsyncHelper;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -20,8 +24,8 @@ public class Chat extends ParseObject {
 	private boolean isDeleted;
 	private Date createdAt;
 	private User creator;
-	private ParseRelation<Chatter> chatters;
-	private ParseRelation<Message> messages;
+	private List<Chatter> chatters;
+	private List<Message> messages;
 	
 	// Default public constructor, needed by Parse
 	public Chat() {
@@ -32,6 +36,10 @@ public class Chat extends ParseObject {
 		setTopic(topic);
 		setType(type);
 		setCreator();
+	}
+	
+	public void saveToParse() {
+		saveInBackground();
 	}
 	
 	public String getTopic() {
@@ -74,28 +82,77 @@ public class Chat extends ParseObject {
 		createdAt = getCreatedAt();
 		return createdAt;
 	}
+	
 
-	public ParseRelation<Chatter> getChatters() {
-		chatters = getRelation("chatters");
-		return chatters;
+	// Chatters APIs
+	public ParseRelation<Chatter> getChattersRelation() {
+		ParseRelation<Chatter> relation = getRelation("chatters");
+		return relation;
+	}
+	
+	public void fetchChattersFromParse(final AsyncHelper ah) {
+
+		//this.getRelation("chatters").getQuery().findInBackground( new FindCallback<Chatter>() {
+		getChattersRelation().getQuery().findInBackground(new FindCallback<Chatter>() {
+
+			@Override
+			public void done(List<Chatter> chatterResults, ParseException e) {
+				if (e == null) {
+					chatters = chatterResults;
+				} else {
+					chatters = null;
+				}
+				// Inform the caller that the operation was completed, so they can query the results back
+				ah.chattersFetched();
+			}
+		});
 	}
 
+	public List<Chatter> getChatters() {
+		return chatters;
+	}
+	
 	public void addChatter(Chatter chatter) {
-		getChatters().add(chatter);
+		getChattersRelation().add(chatter);
 	}
 
 	public void removeChatter(Chatter chatter) {
-		getChatters().remove(chatter);
+		getChattersRelation().remove(chatter);
 	}
 	
-	public ParseRelation<Message> getMessages() {
-		messages = getRelation("messages");
-		return messages;
+	
+	// Messages APIs
+	public ParseRelation<Message> getMessagesRelation() {
+		ParseRelation<Message> relation = getRelation("messages");
+		return relation;
+	}
+	
+	public void fetchMessagesFromParse(final AsyncHelper ah) {
+
+		//this.getRelation("chatters").getQuery().findInBackground( new FindCallback<Chatter>() {
+		getMessagesRelation().getQuery().findInBackground(new FindCallback<Message>() {
+
+			@Override
+			public void done(List<Message> messageResults, ParseException e) {
+				if (e == null) {
+					messages = messageResults;
+				} else {
+					messages = null;
+				}
+				// Inform the caller that the operation was completed, so they can query the results back
+				ah.messagesFetched();
+			}
+		});
 	}
 
-	public void addMessage(Message message) {
-		getMessages().add(message);
+	public List<Message> getMessages() {
+		return messages;
 	}
+	
+	public void sendMessage(Message message) {
+		getMessagesRelation().add(message);
+	}
+	
 	
 	
 	// Decodes business json into business model object

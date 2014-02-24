@@ -1,7 +1,13 @@
 package com.hush.models;
 
+import java.util.List;
+
 import com.hush.clients.FacebookClient;
+import com.hush.utils.AsyncHelper;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 @ParseClassName("User")
@@ -10,6 +16,8 @@ public class User extends ParseUser {
 	private ParseUser parseUser;
 	private String name;
 	private String facebookId;
+	private Chat currentChat;
+	private List<Chat> chats;
 
 	// Default constructor needed by parse
 	public User() {
@@ -25,6 +33,11 @@ public class User extends ParseUser {
 		return parseUser;
 	}
 
+	public void saveToParse() {
+		saveInBackground();
+	}
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -45,4 +58,48 @@ public class User extends ParseUser {
 		user.put("name", name);
 		user.saveInBackground();
 	}
+	
+    public Chat getCurrentChat() {
+        return currentChat;
+    }
+    
+    public void setCurrentChat(Chat inCurrentChat) {
+        currentChat = inCurrentChat;
+    }
+    
+
+	
+	
+	// Chat APIs
+	public ParseRelation<Chat> getChatsRelation() {
+		ParseRelation<Chat> relation = getRelation("chats");
+		return relation;
+	}
+	
+	public void fetchMessagesFromParse(final AsyncHelper ah) {
+
+		//this.getRelation("chatters").getQuery().findInBackground( new FindCallback<Chatter>() {
+		getChatsRelation().getQuery().findInBackground(new FindCallback<Chat>() {
+
+			@Override
+			public void done(List<Chat> chatResults, ParseException e) {
+				if (e == null) {
+					chats = chatResults;
+				} else {
+					chats = null;
+				}
+				// Inform the caller that the operation was completed, so they can query the results back
+				ah.chatsFetched();
+			}
+		});
+	}
+
+	public List<Chat> getChats() {
+		return chats;
+	}
+	
+	public void sendMessage(Chat chat) {
+		getChatsRelation().add(chat);
+	}
+
 }

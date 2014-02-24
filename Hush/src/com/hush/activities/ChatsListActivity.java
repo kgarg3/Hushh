@@ -1,6 +1,8 @@
 package com.hush.activities;
 
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +15,12 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.hush.HushApp;
 import com.hush.R;
-import com.hush.fragments.FriendsChatsFragment;
-import com.hush.fragments.MyChatsFragment;
+import com.hush.fragments.PrivateChatsFragment;
+import com.hush.fragments.PublicChatsFragment;
+import com.hush.models.Chat;
+import com.hush.utils.AsyncHelper;
 
 /**
  * 
@@ -23,20 +28,21 @@ import com.hush.fragments.MyChatsFragment;
  *
  * Activity that shows all the chats of the logged in user and his friends. 
  */
-public class ChatsListActivity extends FragmentActivity {
+public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 	public static final String CHAT = "chat";
 
 	private FragmentPagerAdapter adapterViewPager;
 	private ViewPager vpPager;
+	private static List<Chat> chats;
 
-	public static class MyPagerAdapter extends FragmentPagerAdapter {
+	public static class ChatsListPagerAdapter extends FragmentPagerAdapter {
 		private static int NUM_ITEMS = 2;
 		private final String privateChats, publicChats;
 
-		private MyChatsFragment myChatsFragment;
-		private FriendsChatsFragment frdsChatFragment;
+		private PrivateChatsFragment privateChatsFragment;
+		private PublicChatsFragment publicChatFragment;
 
-		public MyPagerAdapter(FragmentManager fragmentManager, String privateChats, String publicChats) {
+		public ChatsListPagerAdapter(FragmentManager fragmentManager, String privateChats, String publicChats) {
 			super(fragmentManager);
 			this.privateChats = privateChats;
 			this.publicChats = publicChats;
@@ -53,14 +59,16 @@ public class ChatsListActivity extends FragmentActivity {
 		public Fragment getItem(int position) {
 			switch (position) {
 			case 1: 
-				if(frdsChatFragment == null)  
-					return frdsChatFragment = new FriendsChatsFragment();
-				return frdsChatFragment;
+				if(publicChatFragment == null) {  
+					return publicChatFragment = new PublicChatsFragment();
+				}
+				return publicChatFragment;
 			case 0: //fallthrough
 			default:
-				if(myChatsFragment == null)  
-					return myChatsFragment = new MyChatsFragment();
-				return myChatsFragment;
+				if(privateChatsFragment == null) { 
+					return privateChatsFragment = new PrivateChatsFragment();
+				}
+				return privateChatsFragment;
 			}
 		}
 
@@ -79,10 +87,12 @@ public class ChatsListActivity extends FragmentActivity {
 
 		//create the page viewer
 		vpPager = (ViewPager) findViewById(R.id.vpPager);
-		adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), 
+		adapterViewPager = new ChatsListPagerAdapter(getSupportFragmentManager(), 
 				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
 		vpPager.setAdapter(adapterViewPager);
 		setPagerListeners();
+		
+		
 	}
 
 	@Override
@@ -123,6 +133,21 @@ public class ChatsListActivity extends FragmentActivity {
 	public void onNewChatClick(MenuItem mi) {
 		Intent i = new Intent(ChatsListActivity.this, NewChatActivity.class);
 		startActivity(i);
+	}
+
+	@Override
+	public void chatsFetched() {
+		chats = HushApp.getCurrentUser().getChats();
+	}
+
+	@Override
+	public void chattersFetched() {
+		// Ignore in this activity
+	}
+
+	@Override
+	public void messagesFetched() {
+		// Ignore in this activity
 	}
 
 }
