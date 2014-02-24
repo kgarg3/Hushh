@@ -19,6 +19,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	
 	private static final String TAG = ChatWindowActivity.class.getSimpleName();
 	
+	private int maxMessages = 50;
+	
 	private static Chat chat;
 	private static List<Chatter> chatters;
 	private static List<Message> messages;
@@ -30,7 +32,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		
 		chat = HushApp.getCurrentUser().getCurrentChat();
 		chat.fetchChattersFromParse(this);
-		chat.fetchMessagesFromParse(this);
+		chat.fetchMessagesFromParse(maxMessages, this);
 	}
 	
 	@Override

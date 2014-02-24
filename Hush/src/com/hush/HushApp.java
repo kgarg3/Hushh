@@ -15,11 +15,10 @@ import com.parse.ParseObject;
 import com.parse.PushService;
 
 public class HushApp extends Application {
-
+	
     private static User currentUser;
     
     private static List<GraphUser> selectedUsers;
-
     public static User getCurrentUser() {
         return currentUser;
     }

@@ -7,6 +7,7 @@ import com.hush.utils.AsyncHelper;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
@@ -77,9 +78,11 @@ public class User extends ParseUser {
 	}
 	
 	public void fetchMessagesFromParse(final AsyncHelper ah) {
-
-		//this.getRelation("chatters").getQuery().findInBackground( new FindCallback<Chatter>() {
-		getChatsRelation().getQuery().findInBackground(new FindCallback<Chat>() {
+		ParseQuery<Chat> query = getChatsRelation().getQuery();
+		
+		// Show chats expiring sooner on top. Deleted chats will automatically be at the bottom
+		query.addAscendingOrder("createdAt");
+		query.findInBackground(new FindCallback<Chat>() {
 
 			@Override
 			public void done(List<Chat> chatResults, ParseException e) {

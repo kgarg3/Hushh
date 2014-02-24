@@ -13,6 +13,7 @@ import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
@@ -92,7 +93,6 @@ public class Chat extends ParseObject {
 	
 	public void fetchChattersFromParse(final AsyncHelper ah) {
 
-		//this.getRelation("chatters").getQuery().findInBackground( new FindCallback<Chatter>() {
 		getChattersRelation().getQuery().findInBackground(new FindCallback<Chatter>() {
 
 			@Override
@@ -127,11 +127,15 @@ public class Chat extends ParseObject {
 		return relation;
 	}
 	
-	public void fetchMessagesFromParse(final AsyncHelper ah) {
+	public void fetchMessagesFromParse(int totalMessages, final AsyncHelper ah) {
 
-		//this.getRelation("chatters").getQuery().findInBackground( new FindCallback<Chatter>() {
-		getMessagesRelation().getQuery().findInBackground(new FindCallback<Message>() {
-
+		ParseQuery<Message> query = getMessagesRelation().getQuery();
+		
+		// Fetch only the last 50 messages with newest at the end
+		query.setLimit(totalMessages);
+		query.addAscendingOrder("createdAt");
+		
+		query.findInBackground(new FindCallback<Message>() {
 			@Override
 			public void done(List<Message> messageResults, ParseException e) {
 				if (e == null) {
@@ -152,6 +156,7 @@ public class Chat extends ParseObject {
 	public void sendMessage(Message message) {
 		getMessagesRelation().add(message);
 	}
+	
 	
 	
 	
