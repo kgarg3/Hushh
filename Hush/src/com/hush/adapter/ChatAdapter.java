@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.hush.R;
 import com.hush.activities.ChatWindowActivity;
 import com.hush.models.Chat;
+import com.hush.timer.view.PieChartView;
 
 /**
  * 
@@ -30,7 +31,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 	private static final int COUNTDOWN_TICK_INTERVALL = 300;
 	public static final int GUI_UPDATE_INTERVALL = COUNTDOWN_TICK_INTERVALL / 4;
 
-	//private PieChartView pieChart;
+	private PieChartView pieChart;
 
 	public ChatAdapter(Context context, ArrayList<Chat> chats) {
 		super(context, 0, chats);
@@ -65,7 +66,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
 
 		//set the timer
-		//pieChart = (PieChartView) view.findViewById(R.id.pieChart);
+		pieChart = (PieChartView) view.findViewById(R.id.pieChart);
 
 		//long currentTime = (new Date()).getTime();
 		//Date currentDate = new Date(currentTime);
