@@ -13,6 +13,11 @@
 bin/
 gen/
 
+# Mac files
+.DS_Store
+
+# Eclipse 
+.metadata/
 
 # Local configuration file (sdk path, etc)
 local.properties
