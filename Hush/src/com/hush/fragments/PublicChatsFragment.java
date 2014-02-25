@@ -10,6 +10,7 @@ package com.hush.fragments;
 public class PublicChatsFragment extends ChatListFragment{
 	
 	@Override
-	protected void getChatListType() {
+	protected String getChatListType() {
+		return "public";
 	}
 }

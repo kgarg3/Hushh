@@ -31,7 +31,7 @@ public class Message extends ParseObject {
 	}
 
 	public Date getCreatedAt() {
-		createdAt = getCreatedAt();
+		createdAt = super.getCreatedAt();
 		return createdAt;
 	}
 

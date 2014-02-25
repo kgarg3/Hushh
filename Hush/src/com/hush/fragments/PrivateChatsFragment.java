@@ -10,7 +10,8 @@ package com.hush.fragments;
 public class PrivateChatsFragment extends ChatListFragment {
 
 	@Override
-	protected void getChatListType() {
+	protected String getChatListType() {
+		return "private";
 	}
 
 

@@ -8,7 +8,7 @@
     <dimen name="text_size_small">12sp</dimen>
     <!-- Chat Item -->
     <dimen name="notifications_width">20dp</dimen>
-    <dimen name="chat_topic_width">150dp</dimen>
+    <dimen name="chat_topic_width">200dp</dimen>
     <dimen name="timer_width">20dp</dimen>
     <dimen name="chat_height">20dp</dimen>
 

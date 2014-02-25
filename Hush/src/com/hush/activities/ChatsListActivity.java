@@ -9,9 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -90,8 +88,7 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 		adapterViewPager = new ChatsListPagerAdapter(getSupportFragmentManager(), 
 				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
 		vpPager.setAdapter(adapterViewPager);
-		setPagerListeners();
-		
+
 		HushApp.getCurrentUser().fetchMessagesFromParse(this);
 	}
 
@@ -100,33 +97,6 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.all_chats, menu);
 		return true;
-	}
-
-	/**
-	 * Listener for pageViewer
-	 */
-	private void setPagerListeners() {
-		// Attach the page change listener inside the activity
-		vpPager.setOnPageChangeListener(new OnPageChangeListener() {
-
-			// This method will be invoked when a new page becomes selected.
-			@Override
-			public void onPageSelected(int position) {
-				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-				ft.replace(R.id.flChatsActivityChatLists, adapterViewPager.getItem(position));
-				ft.commit();
-			}
-
-			// This method will be invoked when the current page is scrolled
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
-
-			// Called when the scroll state changes: 
-			// SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
-			@Override
-			public void onPageScrollStateChanged(int state) { }
-		});
-
 	}
 
 	// menu actions

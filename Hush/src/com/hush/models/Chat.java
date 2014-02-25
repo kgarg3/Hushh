@@ -80,10 +80,9 @@ public class Chat extends ParseObject {
 	}
 	
 	public Date getCreatedAt() {
-		createdAt = getCreatedAt();
+		createdAt = super.getCreatedAt(); 
 		return createdAt;
 	}
-	
 
 	// Chatters APIs
 	public ParseRelation<Chatter> getChattersRelation() {
