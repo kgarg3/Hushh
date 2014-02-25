@@ -92,7 +92,7 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 		vpPager.setAdapter(adapterViewPager);
 		setPagerListeners();
 		
-		
+		HushApp.getCurrentUser().fetchMessagesFromParse(this);
 	}
 
 	@Override

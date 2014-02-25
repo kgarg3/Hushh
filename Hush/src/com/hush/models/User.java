@@ -27,7 +27,7 @@ public class User extends ParseUser {
 
 	public User(ParseUser inParseUser) {
 		parseUser = inParseUser;
-		FacebookClient.getAndSetUserAttributesInParse(this);
+		FacebookClient.fetchAndSetUserAttributesInParse(this);
 	}
 	
 	public ParseUser getParseUser() {

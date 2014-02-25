@@ -11,7 +11,7 @@ import com.hush.models.User;
 
 public class FacebookClient {
 
-	public static void getAndSetUserAttributesInParse(final User inUser){
+	public static void fetchAndSetUserAttributesInParse(final User inUser){
 	    final Session session = Session.getActiveSession();
 	    if(!session.getState().isOpened()) { return; }
 	    

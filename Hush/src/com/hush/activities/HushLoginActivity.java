@@ -81,7 +81,7 @@ public class HushLoginActivity extends Activity {
 					}
 					
 					if (loginSuccessful) {
-						// Set the user globally in Hush 
+						// Set the user globally in HushApp
 						HushApp.setCurrentUser(new User(user));
 						showChatsListActivity();
 					}
