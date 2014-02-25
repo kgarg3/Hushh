@@ -45,7 +45,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 			view = inflater.inflate(R.layout.chat_item, null);
 		}
 
-		final Chat chat = getItem(position);
+		//final Chat chat = getItem(position);
 
 		view.setOnClickListener( new OnClickListener() {			
 			@Override
@@ -57,7 +57,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 		});
 
 		TextView tvChatTopic = (TextView) view.findViewById(R.id.tvChatItemChatTopic);
-		tvChatTopic.setText(chat.getTopic());
+		//tvChatTopic.setText(chat.getTopic());
 
 		//TODO: if chat has notifications and is unread
 		//if(chat is unread)
@@ -66,45 +66,45 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
 
 		//set the timer
-		pieChart = (PieChartView) view.findViewById(R.id.pieChart);
-
-		//long currentTime = (new Date()).getTime();
-		//Date currentDate = new Date(currentTime);
-		long expirationTime = chat.getCreatedAt().getTime() + (long)24*60*60*1000;
-		//Date expirationDate = new Date(expirationTime);
-		long millisInFuture = expirationTime/* - currentTime*/;
-		//Date millisInFutureDate = new Date(millisInFuture);
-		//this.initialSecondsRoundedUp = BigDecimal.valueOf(millisInFuture).divide(THOUSAND, 0, RoundingMode.UP);
-		startRefreshTimer(millisInFuture, chat);
+//		pieChart = (PieChartView) view.findViewById(R.id.pieChart);
+//
+//		//long currentTime = (new Date()).getTime();
+//		//Date currentDate = new Date(currentTime);
+//		long expirationTime = chat.getCreatedAt().getTime() + (long)24*60*60*1000;
+//		//Date expirationDate = new Date(expirationTime);
+//		long millisInFuture = expirationTime/* - currentTime*/;
+//		//Date millisInFutureDate = new Date(millisInFuture);
+//		//this.initialSecondsRoundedUp = BigDecimal.valueOf(millisInFuture).divide(THOUSAND, 0, RoundingMode.UP);
+//		startRefreshTimer(millisInFuture, chat);
 
 		return view;
 	}
 
 	private void startRefreshTimer(long millisInFuture, Chat c) {
-		final Chat chat = c;
-		new CountDownTimer(millisInFuture, 1000) {
-			public void onTick(long millisUntilFinished) {
-				long secUntilFinished = millisUntilFinished/1000;
-				long previousSecUntilFinished = secUntilFinished - 1;
-				BigDecimal previousSecInBD = new BigDecimal(previousSecUntilFinished);
-				
-				float fraction = getRemainingFractionRoundedUpToFullSeconds(previousSecInBD, millisUntilFinished);
-				pieChart.setFraction(fraction);
-
-//						Date fraction = new Date(millisUntilFinished - chat.getCreatedAt().getTime());
-//				long minsExpired = (millisUntilFinished - chat.getCreatedAt().getTime())/60000;
-
-				//TODO: we need to convert everything to bigdecimal otherwise the division will default to 0 for very small
-				//decimal values. 
-			//	BigDecimal msExpiredInBD = new BigDecimal(millisUntilFinished - chat.getCreatedAt().getTime());
-			//	BigDecimal totalms = new Big
-						//	pieChart.setFraction(minsExpired / 1440);
-			}
-
-			public void onFinish() {
-				//do cleanup on finish
-			}
-		}.start();
+//		final Chat chat = c;
+//		new CountDownTimer(millisInFuture, 1000) {
+//			public void onTick(long millisUntilFinished) {
+//				long secUntilFinished = millisUntilFinished/1000;
+//				long previousSecUntilFinished = secUntilFinished - 1;
+//				BigDecimal previousSecInBD = new BigDecimal(previousSecUntilFinished);
+//				
+//				float fraction = getRemainingFractionRoundedUpToFullSeconds(previousSecInBD, millisUntilFinished);
+//				pieChart.setFraction(fraction);
+//
+////						Date fraction = new Date(millisUntilFinished - chat.getCreatedAt().getTime());
+////				long minsExpired = (millisUntilFinished - chat.getCreatedAt().getTime())/60000;
+//
+//				//TODO: we need to convert everything to bigdecimal otherwise the division will default to 0 for very small
+//				//decimal values. 
+//			//	BigDecimal msExpiredInBD = new BigDecimal(millisUntilFinished - chat.getCreatedAt().getTime());
+//			//	BigDecimal totalms = new Big
+//						//	pieChart.setFraction(minsExpired / 1440);
+//			}
+//
+//			public void onFinish() {
+//				//do cleanup on finish
+//			}
+//		}.start();
 	}
 
 	/**
@@ -118,16 +118,16 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 	 * @return fraction of initial milliseconds divided by remaining
 	 *         milliseconds
 	 */
-	public float getRemainingFractionRoundedUpToFullSeconds(BigDecimal initialSecondsRoundedUp, long remainingMillis) {
-		if (initialSecondsRoundedUp != null
-				&& BigDecimal.ZERO.compareTo(initialSecondsRoundedUp) < 0) {
-			BigDecimal remainingMinsRoundedUp = new BigDecimal(remainingMillis).divide(THOUSAND, 0, RoundingMode.UP);
-			BigDecimal fraction = remainingMinsRoundedUp.divide(initialSecondsRoundedUp, 3, RoundingMode.DOWN);
-			return fraction.floatValue();
-		} else {
-			return 0f;
-		}
-	}
+//	public float getRemainingFractionRoundedUpToFullSeconds(BigDecimal initialSecondsRoundedUp, long remainingMillis) {
+//		if (initialSecondsRoundedUp != null
+//				&& BigDecimal.ZERO.compareTo(initialSecondsRoundedUp) < 0) {
+//			BigDecimal remainingMinsRoundedUp = new BigDecimal(remainingMillis).divide(THOUSAND, 0, RoundingMode.UP);
+//			BigDecimal fraction = remainingMinsRoundedUp.divide(initialSecondsRoundedUp, 3, RoundingMode.DOWN);
+//			return fraction.floatValue();
+//		} else {
+//			return 0f;
+//		}
+//	}
 
 
 //	public float getRemainingFractionRoundedUpToFullMins(BigDecimal initialSecondsRoundedUp, long remainingMillis) {

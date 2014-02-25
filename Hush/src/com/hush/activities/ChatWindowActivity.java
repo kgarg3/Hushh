@@ -30,9 +30,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_window);
 		
-		chat = HushApp.getCurrentUser().getCurrentChat();
-		chat.fetchChattersFromParse(this);
-		chat.fetchMessagesFromParse(maxMessages, this);
+		//chat = HushApp.getCurrentUser().getCurrentChat();
+		//chat.fetchChattersFromParse(this);
+		//chat.fetchMessagesFromParse(maxMessages, this);
 	}
 	
 	@Override
