@@ -1,8 +1,8 @@
 package com.hush.adapter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.hush.R;
 import com.hush.activities.ChatWindowActivity;
-import com.hush.activities.ChatsListActivity;
 import com.hush.models.Chat;
 import com.hush.timer.view.PieChartView;
 
@@ -83,16 +82,23 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
 	private void startRefreshTimer(long millisInFuture, Chat c) {
 		final Chat chat = c;
-		new CountDownTimer(millisInFuture, 60000) {
+		new CountDownTimer(millisInFuture, 1000) {
 			public void onTick(long millisUntilFinished) {
-				Date fraction = new Date(millisUntilFinished - chat.getCreatedAt().getTime());
-				long minsExpired = (millisUntilFinished - chat.getCreatedAt().getTime())/60000;
+				long secUntilFinished = millisUntilFinished/1000;
+				long previousSecUntilFinished = secUntilFinished - 1;
+				BigDecimal previousSecInBD = new BigDecimal(previousSecUntilFinished);
+				
+				float fraction = getRemainingFractionRoundedUpToFullSeconds(previousSecInBD, millisUntilFinished);
+				pieChart.setFraction(fraction);
+
+//						Date fraction = new Date(millisUntilFinished - chat.getCreatedAt().getTime());
+//				long minsExpired = (millisUntilFinished - chat.getCreatedAt().getTime())/60000;
 
 				//TODO: we need to convert everything to bigdecimal otherwise the division will default to 0 for very small
 				//decimal values. 
-				//BigDecimal msExpiredInBD = new BigDecimal(millisUntilFinished - chat.getCreatedAt().getTime());
-
-				//	pieChart.setFraction(minsExpired / 1440);
+			//	BigDecimal msExpiredInBD = new BigDecimal(millisUntilFinished - chat.getCreatedAt().getTime());
+			//	BigDecimal totalms = new Big
+						//	pieChart.setFraction(minsExpired / 1440);
 			}
 
 			public void onFinish() {
@@ -112,14 +118,26 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 	 * @return fraction of initial milliseconds divided by remaining
 	 *         milliseconds
 	 */
-	//	public float getRemainingFractionRoundedUpToFullSeconds() {
-	//		if (this.initialSecondsRoundedUp != null
-	//				&& BigDecimal.ZERO.compareTo(this.initialSecondsRoundedUp) < 0) {
-	//			BigDecimal remainingSecondsRoundedUp = new BigDecimal(this.remainingMillis).divide(THOUSAND, 0, RoundingMode.UP);
-	//			BigDecimal fraction = remainingSecondsRoundedUp.divide(this.initialSecondsRoundedUp, 3, RoundingMode.DOWN);
-	//			return fraction.floatValue();
-	//		} else {
-	//			return 0f;
-	//		}
-	//	}
+	public float getRemainingFractionRoundedUpToFullSeconds(BigDecimal initialSecondsRoundedUp, long remainingMillis) {
+		if (initialSecondsRoundedUp != null
+				&& BigDecimal.ZERO.compareTo(initialSecondsRoundedUp) < 0) {
+			BigDecimal remainingMinsRoundedUp = new BigDecimal(remainingMillis).divide(THOUSAND, 0, RoundingMode.UP);
+			BigDecimal fraction = remainingMinsRoundedUp.divide(initialSecondsRoundedUp, 3, RoundingMode.DOWN);
+			return fraction.floatValue();
+		} else {
+			return 0f;
+		}
+	}
+
+
+//	public float getRemainingFractionRoundedUpToFullMins(BigDecimal initialSecondsRoundedUp, long remainingMillis) {
+//		if (initialSecondsRoundedUp != null
+//				&& BigDecimal.ZERO.compareTo(initialSecondsRoundedUp) < 0) {
+//			BigDecimal remainingMinsRoundedUp = new BigDecimal(remainingMillis).divide(THOUSAND, 0, RoundingMode.UP);
+//			BigDecimal fraction = remainingMinsRoundedUp.divide(initialSecondsRoundedUp, 3, RoundingMode.DOWN);
+//			return fraction.floatValue();
+//		} else {
+//			return 0f;
+//		}
+//	}
 }
