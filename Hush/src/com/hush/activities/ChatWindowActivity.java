@@ -38,13 +38,19 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.chat, menu);
+		getMenuInflater().inflate(R.menu.chat_window, menu);
 		return true;
 	}
 
 	// menu actions
 	public void onInviteFriendsClick(MenuItem mi) {
 		Intent i = new Intent(ChatWindowActivity.this, InviteFriendsActivity.class);
+		startActivity(i);
+	}
+
+	public void onLeaveChatClick(MenuItem mi) {
+		// TODO: Remove the user from parse
+		Intent i = new Intent(ChatWindowActivity.this, ChatsListActivity.class);
 		startActivity(i);
 	}
 

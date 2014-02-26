@@ -7,11 +7,9 @@
     <string name="empty"></string>
     <string name="login">Login</string>
     
-    <!-- Login Activity -->
+    <!-- Activities -->
     <string name="login_activity_join_hush">Use Hush to chat with your Facebook friends, anonymously!</string>
     <string name="login_activity_join_hush_subtitle">Start by Connecting with Facebook</string>
-
-    <!-- ChatsList Activity -->
     <string name="title_activity_all_chats">Chats</string>
     <string name="tab_private_chats">Private</string>
     <string name="tab_public_chats">Public</string>
@@ -20,7 +18,8 @@
     <string name="title_activity_chat">Chat</string>
     <string name="action_new_chat">New Chat</string>
     <string name="action_logout">Logout</string>
-    <string name="action_invite_friends">Add</string>
+    <string name="action_invite_friends">Add Friends</string>
+    <string name="action_leave_chat">Leave Chat</string>
     <string name="action_view_chat">Done</string>
     <string name="title_activity_pick_friends">PickFriendsActivity</string>
 
