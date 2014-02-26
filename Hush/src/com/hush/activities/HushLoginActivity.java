@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.facebook.Session;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.models.User;
@@ -39,6 +40,7 @@ public class HushLoginActivity extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		autoLoginUser();
 	}
  
     @Override
@@ -54,51 +56,56 @@ public class HushLoginActivity extends Activity {
 		ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
 	}
 	
-    public void login(View v) {
-    	
-		// Check if there is a currently logged in user and they are linked to a Facebook account.
+    private void autoLoginUser() {
+
+		// If there is an auth token for the user and the user is linked to a Facebook account
+    	// then log them in
 		ParseUser currentUser = ParseUser.getCurrentUser();
-		if ((currentUser == null) || !ParseFacebookUtils.isLinked(currentUser)) {
-    		progressDialog = ProgressDialog.show(HushLoginActivity.this, "", "Logging in...", true);
-    		
-			//List<String> permissions = Arrays.asList("basic_info", "user_about_me", "user_birthday", "user_location");
-			//ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
-    		
-			ParseFacebookUtils.logIn(null, this, new LogInCallback() {
-				@Override
-				public void done(ParseUser user, ParseException err) {
-					boolean loginSuccessful = false;
-					
-					progressDialog.dismiss();
-					if (user == null) {
-						Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
-					} else if (user.isNew()) {
-						Log.d(TAG, "User signed up and logged in through Facebook!");
-						loginSuccessful = true;
-					} else {
-						Log.d(TAG, "User logged in through Facebook!");
-						loginSuccessful = true;
-					}
-					
-					if (loginSuccessful) {
-						// Set the user globally in HushApp
-						HushApp.setCurrentUser(new User(user));
-						showChatsListActivity();
-					}
-				}
-			});
+		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
+			// Set the user globally in HushApp
+			HushApp.setCurrentUser(new User(currentUser));
+			showChatsListActivity();
+			return;
 		}
     }
     
+    public void login(View v) {
+		// Auth token not found, so log them in
+		progressDialog = ProgressDialog.show(HushLoginActivity.this, "", "Logging in...", true);
+		
+		//List<String> permissions = Arrays.asList("basic_info", "user_about_me", "user_birthday", "user_location");
+		//ParseFacebookUtils.logIn(permissions, this, new LogInCallback() {
+		
+		ParseFacebookUtils.logIn(null, this, new LogInCallback() {
+			@Override
+			public void done(ParseUser user, ParseException err) {
+				boolean loginSuccessful = false;
+				
+				progressDialog.dismiss();
+				if (user == null) {
+					Log.d(TAG, "Uh oh. The user cancelled the Facebook login.");
+				} else if (user.isNew()) {
+					Log.d(TAG, "User signed up and logged in through Facebook!");
+					loginSuccessful = true;
+				} else {
+					Log.d(TAG, "User logged in through Facebook!");
+					loginSuccessful = true;
+				}
+				
+				if (loginSuccessful) {
+					// Set the user globally in HushApp
+					HushApp.setCurrentUser(new User(user));
+					showChatsListActivity();
+					return;
+				}
+			}
+		});
+    }
+    
+
     private void showChatsListActivity() {
 		// Navigate user to chat lists
 		Intent i = new Intent(HushLoginActivity.this, ChatsListActivity.class);
 		startActivity(i);
     }
-    
-	public void logout(View v) {
-		// Log the user out
-		ParseUser.logOut();
-		Toast.makeText(this, "Logged out!", Toast.LENGTH_SHORT).show();
-	}
 }

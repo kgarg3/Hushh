@@ -19,6 +19,7 @@
     <string name="title_activity_invite_friends">Invite Friends</string>
     <string name="title_activity_chat">Chat</string>
     <string name="action_new_chat">New Chat</string>
+    <string name="action_logout">Logout</string>
     <string name="action_invite_friends">Add</string>
     <string name="action_view_chat">Done</string>
     <string name="title_activity_pick_friends">PickFriendsActivity</string>

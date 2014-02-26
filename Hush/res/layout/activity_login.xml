@@ -6,15 +6,6 @@
     android:background="@drawable/login_background"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".HushLoginActivity" >
-
-            
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="logout"
-        android:onClick="logout" />
     
    	<ImageView
         android:id="@+id/ivChatIconWhite"

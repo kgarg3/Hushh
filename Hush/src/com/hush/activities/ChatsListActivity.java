@@ -12,13 +12,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.facebook.Session;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.fragments.PrivateChatsFragment;
 import com.hush.fragments.PublicChatsFragment;
 import com.hush.models.Chat;
 import com.hush.utils.AsyncHelper;
+import com.parse.ParseUser;
 
 /**
  * 
@@ -102,6 +105,23 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 	// menu actions
 	public void onNewChatClick(MenuItem mi) {
 		Intent i = new Intent(ChatsListActivity.this, NewChatActivity.class);
+		startActivity(i);
+	}
+
+	public void onLogoutClick(MenuItem mi) {
+		// Log the user out
+		ParseUser.logOut();
+		
+		// Also close the session and clear theauth token
+		Session facebookSession = Session.getActiveSession();
+		if (facebookSession == null) {
+			facebookSession = new com.facebook.Session(this);
+			com.facebook.Session.setActiveSession(facebookSession);
+		}
+		facebookSession.closeAndClearTokenInformation();
+		
+		Toast.makeText(this, "Logged out!", Toast.LENGTH_SHORT).show();
+		Intent i = new Intent(ChatsListActivity.this, HushLoginActivity.class);
 		startActivity(i);
 	}
 
