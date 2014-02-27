@@ -13,6 +13,4 @@ public class PrivateChatsFragment extends ChatListFragment {
 	protected String getChatListType() {
 		return "private";
 	}
-
-
 }

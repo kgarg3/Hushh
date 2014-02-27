@@ -8,12 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.hush.HushApp;
 import com.hush.R;
 import com.hush.adapter.ChatAdapter;
 import com.hush.data.HushData;
 import com.hush.listeners.EndlessScrollListener;
 import com.hush.models.Chat;
+import com.hush.models.User;
+import com.hush.utils.AsyncHelper;
+import com.parse.ParseException;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -25,7 +30,7 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
  *
  * Fragment to hold the list of chats
  */
-public abstract class ChatListFragment extends Fragment {
+public abstract class ChatListFragment extends Fragment implements AsyncHelper{
 
 	protected PullToRefreshListView lvChats;
 	protected ProgressBar progressBarLoadingTweets;
@@ -33,6 +38,9 @@ public abstract class ChatListFragment extends Fragment {
 	
 	protected String previousChatType;
 	
+	protected User user = HushApp.getCurrentUser();
+	protected ArrayList<Chat> chats;
+	protected ParseException exception;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +50,23 @@ public abstract class ChatListFragment extends Fragment {
 		// Setup handles to view objects here
 		progressBarLoadingTweets = (ProgressBar) view.findViewById(R.id.pgbarChatListFragment);
 		lvChats = (PullToRefreshListView) view.findViewById(R.id.lvChatListFragmentChatsList);	
-		adapter = new ChatAdapter(getActivity(), HushData.getChatList());
+		adapter = new ChatAdapter(getActivity(), new ArrayList<Chat>());
 		lvChats.setAdapter(adapter);
 
 		setupListeners();
 
 		return view;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		try {
+			HushApp.getCurrentUser().fetchChatsFromParse(this);
+		} catch (ParseException e) {
+			exception = e;
+		}
 	}
 
 	/**
@@ -58,8 +77,7 @@ public abstract class ChatListFragment extends Fragment {
 		lvChats.setOnScrollListener(new EndlessScrollListener() {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
-				//setChatsInAdpater();
-				//adapter.addAll(HushData.getChatList());
+				loadChats();
 			}
 		});
 
@@ -71,7 +89,8 @@ public abstract class ChatListFragment extends Fragment {
 				// Make sure you call listView.onRefreshComplete()
 				// once the loading is done. This can be done from here or any
 				// place such as when the network request has completed successfully.
-
+				loadChats();
+				
 				// Now we call onRefreshComplete to signify refresh has finished
 				lvChats.onRefreshComplete();
 
@@ -85,25 +104,50 @@ public abstract class ChatListFragment extends Fragment {
 	
 	protected abstract String getChatListType();
 	
-	private void setChatsInAdapter() {
+	protected void loadChats() {
+		//make the progress bar visible
+		progressBarLoadingTweets.setVisibility(ProgressBar.VISIBLE);
+		
 		String chatType = getChatListType();
 		//if we have switched from public to private or vice versa, clear out the adapter before adding chats to it
-		if(!previousChatType.equals(chatType)) {
+		if(!chatType.equals(previousChatType)) {
 			adapter.clear();
 		}
-		//make a call to get the current user's chats based on teh type
-//		ArrayList<Chat> userChats = User.getCurrentUser().getChats();
-//		if(userChats != null && userChats.size() > 0) {
-//			ArrayList<Chat> chatsToShow = new ArrayList<Chat>();
-//			for(Chat c : userChats) {
-//				if(c.getType().equals(chatType))
-//					chatsToShow.add(c);
-//			}
-//			
-//			adapter.addAll(chatsToShow);
-//		}
-//		
 		
+		//make a call to get the current user's chats based on the type
+		if(chats != null && chats.size() > 0) {
+			ArrayList<Chat> chatsToShow = new ArrayList<Chat>();
+			for(Chat c : chats) {
+				if(c.getType().equals(chatType))
+					chatsToShow.add(c);
+			}
+			
+			adapter.addAll(chatsToShow);
+			//set the progress bar to invisible
+			progressBarLoadingTweets.setVisibility(ProgressBar.INVISIBLE);
+		}
+		else if(exception != null) {
+			//we have a parse exception, alert the user
+			Toast.makeText(getActivity(), getString(R.string.chat_list_parse_exception), Toast.LENGTH_SHORT).show();
+		}
+			
 	}
+	
+	@Override
+	public void chatsFetched() {
+		chats = (ArrayList<Chat>) user.getChats();
+		
+		//TODO: At this point chats should not be null or should at least return a zero size list
+		if(chats == null)
+			chats = HushData.getChatList();
+		
+		loadChats();
+	}
+	
+	@Override
+	public void chattersFetched() { }
+
+	@Override
+	public void messagesFetched() { }
 	
 }

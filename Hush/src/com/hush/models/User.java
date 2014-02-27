@@ -1,5 +1,6 @@
 package com.hush.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.hush.clients.FacebookClient;
@@ -89,7 +90,7 @@ public class User extends ParseUser {
 				if (e == null) {
 					chats = chatResults;
 				} else {
-					chats = null;
+					chats = new ArrayList<Chat>();
 				}
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.chatsFetched();
