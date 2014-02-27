@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Toast;
 
-import com.facebook.Session;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.models.User;
