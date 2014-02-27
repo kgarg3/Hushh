@@ -77,7 +77,7 @@ public class User extends ParseUser {
 		return relation;
 	}
 	
-	public void fetchMessagesFromParse(final AsyncHelper ah) {
+	public void fetchChatsFromParse(final AsyncHelper ah) {
 		ParseQuery<Chat> query = getChatsRelation().getQuery();
 		
 		// Show chats expiring sooner on top. Deleted chats will automatically be at the bottom
