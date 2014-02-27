@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Application;
 
 import com.facebook.model.GraphUser;
+import com.hush.activities.HushLoginActivity;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
@@ -41,7 +42,7 @@ public class HushApp extends Application {
     	
     	Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
     	ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
-    	PushService.setDefaultPushCallback(this, ParseNotificationsHandlerActivity.class);
+    	PushService.setDefaultPushCallback(this, HushLoginActivity.class);
     	
     	ParseObject.registerSubclass(User.class);
     	ParseObject.registerSubclass(Chat.class);
