@@ -15,6 +15,7 @@ import com.hush.models.User;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 
@@ -91,8 +92,15 @@ public class HushLoginActivity extends Activity {
 				}
 				
 				if (loginSuccessful) {
-					// Set the user globally in HushApp
-					HushApp.setCurrentUser(new User(user));
+					User loggedInUser = new User(user);
+					HushApp.setCurrentUser(loggedInUser);
+
+					// doing this on login, since an existing user can log in to multiple devices
+					ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+			    	// Associate the device with a user
+			    	installation.put("user", loggedInUser);
+			    	installation.saveInBackground();
+			    	
 					showChatsListActivity();
 					return;
 				}

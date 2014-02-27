@@ -124,10 +124,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name="com.hush.ParseNotificationsHandlerActivity"
-            android:label="@string/title_activity_parse_notifications_handler" >
-        </activity>
     </application>
 
 </manifest>
