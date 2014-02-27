@@ -83,6 +83,10 @@ public class Chat extends ParseObject {
 		createdAt = super.getCreatedAt(); 
 		return createdAt;
 	}
+	
+	public void setCreatedAt(Date time) {
+		createdAt = time;
+	}
 
 	// Chatters APIs
 	public ParseRelation<Chatter> getChattersRelation() {

@@ -13,7 +13,7 @@ import com.parse.ParseUser;
 
 @ParseClassName("User")
 public class User extends ParseUser {
-	
+
 	private ParseUser parseUser;
 	private String name;
 	private String facebookId;
@@ -29,7 +29,7 @@ public class User extends ParseUser {
 		parseUser = inParseUser;
 		FacebookClient.fetchAndSetUserAttributesInParse(this);
 	}
-	
+
 	public ParseUser getParseUser() {
 		return parseUser;
 	}
@@ -37,59 +37,64 @@ public class User extends ParseUser {
 	public void saveToParse() {
 		saveInBackground();
 	}
-	
-	
+
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getFacebookId() {
 		return facebookId;
 	}
-	
+
 	public boolean getIsNew() {
 		return ParseUser.getCurrentUser().isNew();
 	}
-	
+
 	public void setUserAttributesInParse(String inName, String inFacebookId) {
 		facebookId = inFacebookId;
-		
+
 		name = inName;
 		ParseUser user = ParseUser.getCurrentUser();
 		user.put("name", name);
 		user.saveInBackground();
 	}
-	
-    public Chat getCurrentChat() {
-        return currentChat;
-    }
-    
-    public void setCurrentChat(Chat inCurrentChat) {
-        currentChat = inCurrentChat;
-    }
-    
 
-	
-	
+	public Chat getCurrentChat() {
+		return currentChat;
+	}
+
+	public void setCurrentChat(Chat inCurrentChat) {
+		currentChat = inCurrentChat;
+	}
+
+
+
+
 	// Chat APIs
 	public ParseRelation<Chat> getChatsRelation() {
 		ParseRelation<Chat> relation = getRelation("chats");
 		return relation;
 	}
-	
-	public void fetchMessagesFromParse(final AsyncHelper ah) {
+
+	public void fetchChatsFromParse(final AsyncHelper ah) throws ParseException{
 		ParseQuery<Chat> query = getChatsRelation().getQuery();
-		
+
 		// Show chats expiring sooner on top. Deleted chats will automatically be at the bottom
 		query.addAscendingOrder("createdAt");
+		query.whereEqualTo("userId", parseUser.getObjectId());
 		query.findInBackground(new FindCallback<Chat>() {
 
 			@Override
 			public void done(List<Chat> chatResults, ParseException e) {
 				if (e == null) {
 					chats = chatResults;
-				} else {
-					chats = null;
+				} else {					
+					try {
+						throw e;
+					} catch (ParseException e1) { 
+						chats = null;
+					}
 				}
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.chatsFetched();
@@ -100,7 +105,7 @@ public class User extends ParseUser {
 	public List<Chat> getChats() {
 		return chats;
 	}
-	
+
 	public void sendMessage(Chat chat) {
 		getChatsRelation().add(chat);
 	}

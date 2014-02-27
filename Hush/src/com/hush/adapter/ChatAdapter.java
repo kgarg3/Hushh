@@ -41,18 +41,18 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getContext(), ChatWindowActivity.class);
-				//intent.putExtra(ChatsListActivity.CHAT, chat);
 				getContext().startActivity(intent);
 			}
 		});
 
 		TextView tvChatTopic = (TextView) view.findViewById(R.id.tvChatItemChatTopic);
-		//tvChatTopic.setText(chat.getTopic());
+		tvChatTopic.setText(chat.getTopic());
 
 		//TODO: if chat has notifications and is unread
 		//if(chat is unread)
 		//make the text bold, else normal 
 		//make the view background gray else white
+		
 
 		return view;
 	}

@@ -1,8 +1,6 @@
 package com.hush.activities;
 
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,8 +17,6 @@ import com.hush.HushApp;
 import com.hush.R;
 import com.hush.fragments.PrivateChatsFragment;
 import com.hush.fragments.PublicChatsFragment;
-import com.hush.models.Chat;
-import com.hush.utils.AsyncHelper;
 import com.parse.ParseUser;
 
 /**
@@ -29,13 +25,12 @@ import com.parse.ParseUser;
  *
  * Activity that shows all the chats of the logged in user and his friends. 
  */
-public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
+public class ChatsListActivity extends FragmentActivity {
 	public static final String CHAT = "chat";
 
 	private FragmentPagerAdapter adapterViewPager;
 	private ViewPager vpPager;
-	private static List<Chat> chats;
-
+	
 	public static class ChatsListPagerAdapter extends FragmentPagerAdapter {
 		private static int NUM_ITEMS = 2;
 		private final String privateChats, publicChats;
@@ -91,8 +86,6 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 		adapterViewPager = new ChatsListPagerAdapter(getSupportFragmentManager(), 
 				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
 		vpPager.setAdapter(adapterViewPager);
-
-		HushApp.getCurrentUser().fetchMessagesFromParse(this);
 	}
 
 	@Override
@@ -124,20 +117,4 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 		Intent i = new Intent(ChatsListActivity.this, HushLoginActivity.class);
 		startActivity(i);
 	}
-
-	@Override
-	public void chatsFetched() {
-		chats = HushApp.getCurrentUser().getChats();
-	}
-
-	@Override
-	public void chattersFetched() {
-		// Ignore in this activity
-	}
-
-	@Override
-	public void messagesFetched() {
-		// Ignore in this activity
-	}
-
 }

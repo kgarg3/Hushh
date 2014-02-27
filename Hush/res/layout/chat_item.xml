@@ -12,15 +12,29 @@
     <TextView
         android:id="@+id/tvChatItemChatTopic"
         android:layout_width="@dimen/chat_topic_width"
-        android:layout_height="@dimen/chat_height"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/rlClock"
         android:layout_alignParentLeft="true"
-        android:text="@string/empty" 
-        android:padding="0dip"/>
+        android:layout_alignTop="@+id/rlClock"
+        android:gravity="center_horizontal"
+        android:padding="0dip"
+        android:text="@string/empty"
+        android:textAlignment="viewStart" />
 
-    <com.hush.timer.view.PieChartView
-        android:id="@+id/pieChart"
-        android:layout_width="@dimen/timer_width"
-        android:layout_height="@dimen/chat_height"
-        android:layout_alignParentRight="true" />
+    <RelativeLayout
+        android:id="@+id/rlClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/tvChatItemChatTopic" >
+
+        <ImageView
+            android:id="@+id/ivClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/ic_clock" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -34,4 +34,7 @@
     
     <string name="hint_new_chat">What\'s on your mind?</string>
     <string name="title_activity_parse_notifications_handler">ParseNotificationsHandlerActivity</string>
+    
+    <!-- ChatListFragment -->
+    <string name="chat_list_parse_exception">Cannot load chats</string>
 </resources>

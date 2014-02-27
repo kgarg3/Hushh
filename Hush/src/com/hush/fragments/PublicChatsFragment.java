@@ -13,4 +13,5 @@ public class PublicChatsFragment extends ChatListFragment{
 	protected String getChatListType() {
 		return "public";
 	}
+
 }
