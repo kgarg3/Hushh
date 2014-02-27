@@ -92,7 +92,7 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
 		vpPager.setAdapter(adapterViewPager);
 
-		HushApp.getCurrentUser().fetchChatsFromParse(this);
+		//HushApp.getCurrentUser().fetchChatsFromParse(this);
 	}
 
 	@Override

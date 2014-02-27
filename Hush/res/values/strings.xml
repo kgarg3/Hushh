@@ -23,6 +23,22 @@
     <string name="action_view_chat">Done</string>
     <string name="title_activity_pick_friends">PickFriendsActivity</string>
 
+    <string-array name="message_bubble_colors">
+        <item>#48365e</item>
+		<item>#33b5e5</item>
+		<item>#1b8c75</item>
+		<item>#aa66cc</item>
+		<item>#99cc00</item>
+		<item>#ffbb33</item>
+		<item>#ff4444</item>
+		<item>#697fee</item>
+		<item>#f76abd</item>
+		<item>#9d8f9a</item>
+		<item>#ea907a</item>
+		<item>#edc999</item>
+    </string-array>
+    
+    
     <!-- FB App info -->
     <string name="facebook_app_id">1390710907863212</string>
     <string name="facebook_exception">Exception: %1$s</string>

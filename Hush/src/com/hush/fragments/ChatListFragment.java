@@ -62,11 +62,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		try {
-			HushApp.getCurrentUser().fetchChatsFromParse(this);
-		} catch (ParseException e) {
-			exception = e;
-		}
+		//HushApp.getCurrentUser().fetchChatsFromParse(this);
 	}
 
 	/**
