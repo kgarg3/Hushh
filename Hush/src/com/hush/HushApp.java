@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Application;
 
+import com.facebook.model.GraphUser;
 import com.hush.activities.HushLoginActivity;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
