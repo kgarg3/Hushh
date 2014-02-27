@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.Session;
-import com.hush.HushApp;
 import com.hush.R;
 import com.hush.fragments.PrivateChatsFragment;
 import com.hush.fragments.PublicChatsFragment;

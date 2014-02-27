@@ -1,6 +1,8 @@
 package com.hush.adapter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
@@ -52,10 +54,38 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 		//if(chat is unread)
 		//make the text bold, else normal 
 		//make the view background gray else white
-		
+
+//		TextView tvExpirationTime = (TextView) view.findViewById(R.id.tvExpirationTime);
+//		tvExpirationTime.setText(getExpirationTime(chat.getCreatedAt()));
 
 		return view;
 	}
 
-	
+
+	/**
+	 * Returns the expiration time in sec if #min is less than 1 
+	 * else the minutes if the #hours is less than 1
+	 * else the hours
+	 * @param createdAt
+	 * @return
+	 */
+	private String getExpirationTime(Date createdAt) {
+		Date expirationTime = new Date(createdAt.getTime() + (long)24*60*60*1000 - (new Date()).getTime());
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(expirationTime);
+		int hours = calendar.get(Calendar.HOUR_OF_DAY);
+
+		if(hours < 1) {
+			int min = calendar.get(Calendar.MINUTE);
+			if(min < 1) {
+				int sec = calendar.get(Calendar.SECOND);
+				return String.valueOf(sec) + "s";
+			}
+			else
+				return String.valueOf(min) + "m";
+		}	
+		return String.valueOf(hours) + "h";
+	}
+
+
 }

@@ -137,7 +137,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper{
 	public void chatsFetched() {
 		chats = (ArrayList<Chat>) user.getChats();
 		
-		//TODO: At this point chats should not be null or should at least return a zero size arr
+		//TODO: At this point chats should not be null or should at least return a zero size list
 		if(chats == null)
 			chats = HushData.getChatList();
 		

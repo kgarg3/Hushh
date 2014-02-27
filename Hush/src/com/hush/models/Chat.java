@@ -80,7 +80,7 @@ public class Chat extends ParseObject {
 	}
 	
 	public Date getCreatedAt() {
-		createdAt = super.getCreatedAt(); 
+		//createdAt = super.getCreatedAt(); 
 		return createdAt;
 	}
 	
