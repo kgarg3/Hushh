@@ -98,7 +98,7 @@ public class HushLoginActivity extends Activity {
 					// doing this on login, since an existing user can log in to multiple devices
 					ParseInstallation installation = ParseInstallation.getCurrentInstallation();
 			    	// Associate the device with a user
-			    	installation.put("user", loggedInUser);
+			    	installation.put("user", user);
 			    	installation.saveInBackground();
 			    	
 					showChatsListActivity();
