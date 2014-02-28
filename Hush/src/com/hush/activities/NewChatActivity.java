@@ -80,11 +80,15 @@ public class NewChatActivity extends Activity {
         }
         
         // Add the original user to the chat
-    	//Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
-    	//chatter.saveToParse();
-    	//chat.addChatter(chatter);
-
-        //chat.saveToParse();
+    	Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
+    	chatter.saveToParse();
+    	chat.addChatter(chatter);
+        chat.saveToParse();
+        
+        // Add the chat to user's chats 
+    	HushApp.getCurrentUser().addChat(chat);
+    	HushApp.getCurrentUser().saveToParse();
+    	
 
         // Set active chat and navigate to a chat window
         HushApp.getCurrentUser().setCurrentChat(chat);

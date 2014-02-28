@@ -40,7 +40,7 @@ public class Chat extends ParseObject {
 	}
 	
 	public void saveToParse() {
-		saveInBackground();
+		saveEventually();
 	}
 	
 	public String getTopic() {

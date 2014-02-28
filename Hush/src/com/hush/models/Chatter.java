@@ -20,7 +20,7 @@ public class Chatter extends ParseObject {
 	}
 
 	public void saveToParse() {
-		saveInBackground();
+		saveEventually();
 	}
 
 	public String getFacebookId() {

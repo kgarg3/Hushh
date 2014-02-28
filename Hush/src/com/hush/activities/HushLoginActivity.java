@@ -62,7 +62,7 @@ public class HushLoginActivity extends Activity {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
 			// Set the user globally in HushApp
-			HushApp.setCurrentUser(new User(currentUser));
+			HushApp.setCurrentUser(new User());
 			showChatsListActivity();
 			return;
 		}
@@ -92,14 +92,14 @@ public class HushLoginActivity extends Activity {
 				}
 				
 				if (loginSuccessful) {
-					User loggedInUser = new User(user);
+					User loggedInUser = new User();
 					HushApp.setCurrentUser(loggedInUser);
 
 					// doing this on login, since an existing user can log in to multiple devices
 					ParseInstallation installation = ParseInstallation.getCurrentInstallation();
 			    	// Associate the device with a user
-			    	installation.put("user", user);
-			    	installation.saveInBackground();
+			    	installation.getRelation("user").add(ParseUser.getCurrentUser());
+			    	installation.saveEventually();
 			    	
 					showChatsListActivity();
 					return;

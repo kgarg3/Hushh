@@ -85,11 +85,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	@Override
-	public void chatsFetched() {
-		// Ignore in this activity
-	}
-
-	@Override
 	public void chattersFetched() {
 		chatters = chat.getChatters();
 	}
@@ -98,5 +93,11 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	public void messagesFetched() {
 		messages = chat.getMessages();
 	}
+
+	@Override
+	public void chatsFetched() { }
+
+	@Override
+	public void userAttributesFetched(String inName, String inFacebookId) {	}
 
 }

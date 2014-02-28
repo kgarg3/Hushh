@@ -23,12 +23,6 @@ import com.hush.models.Chat;
 import com.hush.utils.AsyncHelper;
 import com.parse.ParseUser;
 
-/**
- * 
- * @author 
- *
- * Activity that shows all the chats of the logged in user and his friends. 
- */
 public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 	public static final String CHAT = "chat";
 
@@ -92,7 +86,7 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
 		vpPager.setAdapter(adapterViewPager);
 
-		//HushApp.getCurrentUser().fetchChatsFromParse(this);
+		HushApp.getCurrentUser().fetchChatsFromParse(this);
 	}
 
 	@Override
@@ -131,13 +125,12 @@ public class ChatsListActivity extends FragmentActivity implements AsyncHelper {
 	}
 
 	@Override
-	public void chattersFetched() {
-		// Ignore in this activity
-	}
+	public void chattersFetched() { }
 
 	@Override
-	public void messagesFetched() {
-		// Ignore in this activity
-	}
+	public void messagesFetched() {	}
+
+	@Override
+	public void userAttributesFetched(String inName, String inFacebookId) { }
 
 }

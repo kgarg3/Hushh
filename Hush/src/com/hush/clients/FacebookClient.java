@@ -6,12 +6,12 @@ import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
-import com.hush.models.User;
+import com.hush.utils.AsyncHelper;
 
 
 public class FacebookClient {
 
-	public static void fetchAndSetUserAttributesInParse(final User inUser){
+	public static void fetchAndSetUserAttributes(final AsyncHelper ah){
 	    final Session session = Session.getActiveSession();
 	    if(!session.getState().isOpened()) { return; }
 	    
@@ -20,13 +20,13 @@ public class FacebookClient {
 	    	@Override
 	        public void onCompleted(GraphUser user, Response response) {
 	            if(user != null && session == Session.getActiveSession()) {
-	            	inUser.setUserAttributesInParse(user.getName(), user.getId());
+	            	ah.userAttributesFetched(user.getName(), user.getId());
+	            	return;
 	            }
 	            
 	            if(response.getError() != null) {
 	            	String text = "Type = " + response.getError().getErrorType() + " Message = " + response.getError().getErrorMessage();
 	            	Log.d("ERROR GETTING FB USER", text);
-	            	//Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
 			        return;
 	            }
 	        }

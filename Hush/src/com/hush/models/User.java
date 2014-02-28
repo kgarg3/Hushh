@@ -1,6 +1,5 @@
 package com.hush.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.hush.clients.FacebookClient;
@@ -13,52 +12,47 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 @ParseClassName("User")
-public class User extends ParseUser {
+public class User extends ParseUser implements AsyncHelper {
 	
-	private ParseUser parseUser;
 	private String name;
 	private String facebookId;
 	private Chat currentChat;
 	private List<Chat> chats;
 
-	// Default constructor needed by parse
+	// Construct a new user
 	public User() {
 		super();
-	}
-
-	public User(ParseUser inParseUser) {
-		parseUser = inParseUser;
-		FacebookClient.fetchAndSetUserAttributesInParse(this);
+		FacebookClient.fetchAndSetUserAttributes(this);
 	}
 	
-	public ParseUser getParseUser() {
-		return parseUser;
-	}
-
 	public void saveToParse() {
-		saveInBackground();
+		getCurrentUser().saveEventually();
 	}
-	
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String inName) {
+		name = inName;
 	}
 	
 	public String getFacebookId() {
 		return facebookId;
 	}
 	
+	public void setFacebookId(String inFacebookId) {
+		facebookId = inFacebookId;
+	}
+	
 	public boolean getIsNew() {
-		return ParseUser.getCurrentUser().isNew();
+		return getCurrentUser().isNew();
 	}
 	
 	public void setUserAttributesInParse(String inName, String inFacebookId) {
-		facebookId = inFacebookId;
-		
-		name = inName;
-		ParseUser user = ParseUser.getCurrentUser();
-		user.put("name", name);
-		user.saveInBackground();
+		getCurrentUser().put("name", name);
+		getCurrentUser().put("facebookId", inFacebookId);
+		getCurrentUser().saveEventually();
 	}
 	
     public Chat getCurrentChat() {
@@ -69,12 +63,11 @@ public class User extends ParseUser {
         currentChat = inCurrentChat;
     }
     
-
 	
 	
 	// Chat APIs
 	public ParseRelation<Chat> getChatsRelation() {
-		ParseRelation<Chat> relation = getRelation("chats");
+		ParseRelation<Chat> relation = getCurrentUser().getRelation("chats");
 		return relation;
 	}
 	
@@ -90,12 +83,16 @@ public class User extends ParseUser {
 				if (e == null) {
 					chats = chatResults;
 				} else {
-					chats = new ArrayList<Chat>();
+					chats = null;
 				}
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.chatsFetched();
 			}
 		});
+	}
+	
+	public void addChat(Chat chat) {
+		getChatsRelation().add(chat);
 	}
 
 	public List<Chat> getChats() {
@@ -105,5 +102,23 @@ public class User extends ParseUser {
 	public void sendMessage(Chat chat) {
 		getChatsRelation().add(chat);
 	}
+
+	
+	@Override
+	public void userAttributesFetched(String inName, String inFacebookId) {
+		setName(inName);
+		setFacebookId(inFacebookId);
+		setUserAttributesInParse(name, facebookId);
+	}
+	
+
+	@Override
+	public void chatsFetched() { }
+
+	@Override
+	public void chattersFetched() { }
+
+	@Override
+	public void messagesFetched() { }
 
 }

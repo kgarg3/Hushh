@@ -30,7 +30,7 @@ import eu.erikw.PullToRefreshListView.OnRefreshListener;
  *
  * Fragment to hold the list of chats
  */
-public abstract class ChatListFragment extends Fragment implements AsyncHelper{
+public abstract class ChatListFragment extends Fragment implements AsyncHelper { 
 
 	protected PullToRefreshListView lvChats;
 	protected ProgressBar progressBarLoadingTweets;
@@ -146,4 +146,6 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper{
 	@Override
 	public void messagesFetched() { }
 	
+	@Override
+	public void userAttributesFetched(String inName, String inFacebookId) {}
 }
