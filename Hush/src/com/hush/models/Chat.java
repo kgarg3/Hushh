@@ -10,9 +10,13 @@ import com.hush.utils.AsyncHelper;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 @ParseClassName("Chat")
 public class Chat extends ParseObject {
@@ -31,6 +35,42 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
+	public void saveToParseWithPush(final ArrayList<String> fbChattersToNotify) 
+	{
+		saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException arg0) {
+				ParseQuery<ParseUser> chatterUserQuery = ParseUser.getQuery();
+				chatterUserQuery.whereContainedIn("facebookId", fbChattersToNotify);	
+				
+				try {
+					List<ParseUser> parseUsers = chatterUserQuery.find();					
+					
+					ParseQuery<ParseInstallation> userQuery = ParseInstallation.getQuery();
+					userQuery.whereContainedIn("user", parseUsers);
+					
+					JSONObject data= null;
+					try {
+						data = new JSONObject("{\"title\" : \"Hush!\"," +
+												"\"intent\" : \"ChatWindowActivity\"," +
+												"\"chatId\" :" + getObjectId() + "}");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					
+					ParsePush push = new ParsePush();
+					push.setQuery(userQuery);
+					push.setData(data);
+					push.setMessage("One of your friends wants to chat...");
+					push.sendInBackground();
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+		
 	public String getTopic() {
 		return getString("topic");
 	}

@@ -1,5 +1,6 @@
 package com.hush.activities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import android.app.Activity;
@@ -81,9 +82,11 @@ public class NewChatActivity extends Activity {
 		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
 		chat.saveToParse();
 		
+		final ArrayList<String> fbChatterIds = new ArrayList<String>();
         Collection<GraphUser> selection = HushApp.getSelectedUsers();
         for (GraphUser user : selection) {
         	Chatter chatter = new Chatter(user.getId(), user.getName());
+        	fbChatterIds.add(chatter.getFacebookId());
         	chatter.saveToParse();
         	chat.addChatter(chatter);
         }
@@ -92,8 +95,7 @@ public class NewChatActivity extends Activity {
     	Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
     	chatter.saveToParse();
     	chat.addChatter(chatter);
-        chat.saveToParse();
-        
+    	chat.saveToParseWithPush(fbChatterIds);    
         // Add the chat to user's chats 
     	HushApp.getCurrentUser().addChat(chat);
     	HushApp.getCurrentUser().saveToParse();
