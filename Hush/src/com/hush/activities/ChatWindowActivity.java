@@ -28,22 +28,20 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private MessageAdapter adapterMessages;
 
 	private static Chat chat;
-	private static ArrayList<Chatter> chatters;
-	private static ArrayList<Message> messages;
+	private static List<Chatter> chatters;
+	private static List<Message> messages;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_window);
 		
-		/*
-		chat = getCurrentUser().getCurrentChat();
+		chat = HushApp.getCurrentUser().getCurrentChat();
 		chat.fetchChattersFromParse(this);
 		chat.fetchMessagesFromParse(maxMessages, this);
-		*/
 
         lvMessages = (ListView) findViewById(R.id.lvMessages);
-        adapterMessages = new MessageAdapter(this, messages);
+        adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
 	}
 	
@@ -67,13 +65,13 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	@Override
-	public void chattersFetched() {
-		chatters = (ArrayList<Chatter>) chat.getChatters();
+	public void chattersFetched(List<Chatter> inChatters) {
+		chatters = inChatters;
 	}
 
 	@Override
-	public void messagesFetched() {
-		messages = (ArrayList<Message>) chat.getMessages();
+	public void messagesFetched(List<Message> inMessages) {
+		adapterMessages.addAll(inMessages);
 	}
 
 	@Override
@@ -81,5 +79,4 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {	}
-
 }

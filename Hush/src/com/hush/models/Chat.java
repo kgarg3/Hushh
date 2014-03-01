@@ -1,7 +1,10 @@
 package com.hush.models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import android.util.Log;
 
 import com.hush.utils.AsyncHelper;
 import com.parse.FindCallback;
@@ -10,14 +13,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
-import com.parse.ParseUser;
 
 @ParseClassName("Chat")
 public class Chat extends ParseObject {
 	
-	private static List<Chat> chats;
-
-	private List<Chatter> chatters;
 	private List<Message> messages;
 	
 	// Default public constructor, needed by Parse
@@ -28,7 +27,6 @@ public class Chat extends ParseObject {
 	public Chat(String topic, String type) {
 		putTopic(topic);
 		putType(type);
-		putCreator();
 	}
 	
 	public void saveToParse() {
@@ -59,14 +57,6 @@ public class Chat extends ParseObject {
 		put("isDeleted", true);
 	}
 	
-	public User getCreator() {
-		return (User) getParseObject("owner");
-	}
-
-	public void putCreator() {
-		put("creator", ParseUser.getCurrentUser());
-	}
-	
 	public Date getCreatedAt() {
 		return super.getCreatedAt(); 
 	}
@@ -79,25 +69,27 @@ public class Chat extends ParseObject {
 	
 	public void fetchChattersFromParse(final AsyncHelper ah) {
 
+		final List<Chatter> chatters = new ArrayList<Chatter>();
+		
 		getChattersRelation().getQuery().findInBackground(new FindCallback<Chatter>() {
 
 			@Override
 			public void done(List<Chatter> chatterResults, ParseException e) {
 				if (e == null) {
-					chatters = chatterResults;
+					for (Chatter chatter : chatterResults) {
+		    			chatter.getString("name");
+		    			chatter.getString("facebookId");
+		    			chatters.add(chatter);
+		    		}
 				} else {
-					chatters = null;
+					Log.d("HEY", "you're screwed");
 				}
 				// Inform the caller that the operation was completed, so they can query the results back
-				ah.chattersFetched();
+				ah.chattersFetched(chatters);
 			}
 		});
 	}
 
-	public List<Chatter> getChatters() {
-		return chatters;
-	}
-	
 	public void addChatter(Chatter chatter) {
 		getChattersRelation().add(chatter);
 	}
@@ -129,7 +121,7 @@ public class Chat extends ParseObject {
 					messages = null;
 				}
 				// Inform the caller that the operation was completed, so they can query the results back
-				ah.messagesFetched();
+				ah.messagesFetched(messages);
 			}
 		});
 	}

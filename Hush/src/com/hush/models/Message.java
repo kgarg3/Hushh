@@ -1,11 +1,6 @@
 package com.hush.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;

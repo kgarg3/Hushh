@@ -15,6 +15,8 @@ import com.hush.HushApp;
 import com.hush.R;
 import com.hush.adapter.ChatAdapter;
 import com.hush.models.Chat;
+import com.hush.models.Chatter;
+import com.hush.models.Message;
 import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
 import com.parse.ParseException;
@@ -126,10 +128,10 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	}
 	
 	@Override
-	public void chattersFetched() { }
+	public void chattersFetched(List<Chatter> chatters) { }
 
 	@Override
-	public void messagesFetched() { }
+	public void messagesFetched(List<Message> messages) { }
 	
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {}

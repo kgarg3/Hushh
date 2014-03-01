@@ -8,15 +8,15 @@
     <com.eevoskos.robotoviews.widget.RobotoTextView
         android:id="@+id/tvChatItemChatTopic"
         android:layout_width="@dimen/chat_topic_width"
-        android:layout_height="30dp"
+        android:layout_height="22dp"
         android:layout_alignBottom="@+id/rlClock"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/rlClock"
         android:gravity="center_horizontal"
-        android:padding="0dip"
+        android:padding="3dip"
         android:text="@string/empty"
-        roboto:typeface="light"
-        android:textAlignment="viewStart" />
+        android:textAlignment="viewStart"
+        roboto:typeface="light" />
 
     <RelativeLayout
         android:id="@+id/rlClock"
@@ -26,14 +26,17 @@
 
         <ImageView
             android:id="@+id/ivClock"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:scaleType="fitXY"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/empty"
+            android:layout_marginTop="3dip"
+            android:layout_marginBottom="3dip"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_clock" />
 
-     <!--     <TextView
+        <!--
+              <TextView
             android:id="@+id/tvExpirationTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +45,8 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:text="@string/empty"
-            android:textAppearance="?android:attr/textAppearanceSmall" /> -->
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        -->
 
     </RelativeLayout>
 

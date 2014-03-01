@@ -21,28 +21,37 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private int chatterIndex = 0;
 	private String[] colorCodes;
 	
+	// View lookup cache
+	private static class ViewHolder {
+		TextView content;
+	}
+	
 	public MessageAdapter(Context context, ArrayList<Message> messages) {
 		super(context, 0, messages);
 		activityContext = context;
-		
 		colorCodes = activityContext.getResources().getStringArray(R.array.message_bubble_colors);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = convertView;
-		if (view == null) {
+		ViewHolder viewHolder; // view lookup cache stored in tag
+		if (convertView == null) {
+			viewHolder = new ViewHolder();
 			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.message_item, null);
+			convertView = inflater.inflate(R.layout.message_item, null);
+			viewHolder.content = (TextView) convertView.findViewById(R.id.tvContent);
+			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
 		}
-
-		//Set up views
-		((TextView) view.findViewById(R.id.message_text)).setText(String.valueOf(getItem(position).getContent()));
 		
+		viewHolder.content.setText(String.valueOf(getItem(position).getContent()));
+
         final LayerDrawable bubble = (LayerDrawable) activityContext.getResources().getDrawable(R.drawable.message_bubble);
 		GradientDrawable outerRect = (GradientDrawable) bubble.findDrawableByLayerId(R.id.outerRectangle);
 		outerRect.setColor(Color.parseColor(colorCodes[chatterIndex++ % colorCodes.length]));
 
-		return view;
+		return convertView;
 	}
 }

@@ -20,6 +20,8 @@ public class User extends ParseUser implements AsyncHelper {
 	
 	private final static String TAG = ParseUser.class.getSimpleName();
 	
+	private Chat currentChat;
+	
 	// Construct a new user
 	public User() {
 		super();
@@ -59,13 +61,12 @@ public class User extends ParseUser implements AsyncHelper {
 	public void fetchChatsFromParse(final AsyncHelper ah) {
 		
 		final List<Chat> chats = new ArrayList<Chat>();
+
+		ParseQuery<Chat> query = getChatsRelation().getQuery();
 		
-		// Define the class we would like to query
-		ParseQuery<Chat> query = ParseQuery.getQuery(Chat.class);
-		query.whereEqualTo("creator", ParseUser.getCurrentUser());
 		// Show chats expiring sooner on top. Deleted chats will automatically be at the bottom
 		query.addAscendingOrder("createdAt");
-		// Execute the find asynchronously
+		
 		query.findInBackground(new FindCallback<Chat>() {
 		    public void done(List<Chat> chatsResults, ParseException e) {
 		    	if (e == null) {
@@ -91,6 +92,15 @@ public class User extends ParseUser implements AsyncHelper {
 	public void sendMessage(Chat chat) {
 		getChatsRelation().add(chat);
 	}
+
+	public Chat getCurrentChat() {
+		return currentChat;
+	}
+
+	public void setCurrentChat(Chat inCurrentChat) {
+		currentChat = inCurrentChat;
+	}
+	
 	
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {
@@ -103,9 +113,9 @@ public class User extends ParseUser implements AsyncHelper {
 	public void chatsFetched(List<Chat> chats) { }
 
 	@Override
-	public void chattersFetched() { }
+	public void chattersFetched(List<Chatter> chatters) { }
 
 	@Override
-	public void messagesFetched() { }
+	public void messagesFetched(List<Message> messages) { }
 
 }
