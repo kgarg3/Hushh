@@ -4,12 +4,15 @@ import java.util.Collection;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -57,7 +60,14 @@ public class NewChatActivity extends Activity {
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// Do nothing
+		switch (requestCode) {
+        case PICK_FRIENDS_ACTIVITY:
+        	displayFriendCount();       
+            break;
+        default:
+            Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+            break;
+    }
     }
 	
 	// actions
@@ -131,5 +141,17 @@ public class NewChatActivity extends Activity {
 
             startPickFriendsActivity();
         }
+    }
+    
+    private void displayFriendCount() {
+    	HushApp application = (HushApp) getApplication();
+
+        Collection<GraphUser> selectedFriends = application.getSelectedUsers();
+        
+        if (selectedFriends == null || selectedFriends.size() == 0) { return; }
+
+        TextView tvFriendCount = (TextView) findViewById(R.id.tvFriendCount);
+        tvFriendCount.setText("(" + selectedFriends.size() + ")");
+    	tvFriendCount.setTextColor(Color.parseColor("#669900"));
     }
 }
