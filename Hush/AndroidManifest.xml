@@ -28,30 +28,28 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Hush" >
+        android:theme="@style/Theme.Hush"
+        android:screenOrientation="portrait" >
+        
         <activity
             android:name="com.hush.activities.HushLoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.hush.activities.ChatsListActivity"
             android:icon="@drawable/ic_app_icon"
-            android:label="@string/title_activity_all_chats"
-            android:screenOrientation="portrait" >
+            android:label="@string/title_activity_all_chats" >
         </activity>
         <activity
             android:name="com.hush.activities.NewChatActivity"
             android:icon="@drawable/ic_app_icon"
             android:label="@string/title_activity_new_chat_topic"
             android:parentActivityName="com.hush.activities.ChatsListActivity"
-            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysVisible" >
 
             <!-- Parent activity meta-data to support API level 7+ -->
@@ -63,8 +61,7 @@
             android:name="com.hush.activities.InviteFriendsActivity"
             android:icon="@drawable/ic_app_icon"
             android:label="@string/title_activity_invite_friends"
-            android:parentActivityName="com.hush.activities.ChatsListActivity"
-            android:screenOrientation="portrait" >
+            android:parentActivityName="com.hush.activities.ChatsListActivity" >
 
             <!-- Parent activity meta-data to support API level 7+ -->
             <meta-data
@@ -76,7 +73,8 @@
             android:icon="@drawable/ic_app_icon"
             android:label="@string/title_activity_chat"
             android:parentActivityName="com.hush.activities.ChatsListActivity"
-            android:screenOrientation="portrait" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
+            android:imeOptions="actionDone" >
 
             <!-- Parent activity meta-data to support API level 7+ -->
             <meta-data
@@ -87,7 +85,6 @@
             android:name="com.hush.activities.PickFriendsActivity"
             android:label="@string/title_activity_pick_friends"
             android:parentActivityName="com.hush.activities.ChatsListActivity"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
 
             <!-- Parent activity meta-data to support API level 7+ -->
@@ -98,7 +95,6 @@
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data

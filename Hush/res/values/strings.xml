@@ -20,6 +20,7 @@
     <string name="action_logout">Logout</string>
     <string name="action_invite_friends">Add Friends</string>
     <string name="action_leave_chat">Leave Chat</string>
+    <string name="action_total_chatters">Total Chatters</string>
     <string name="action_view_chat">Done</string>
     <string name="title_activity_pick_friends">PickFriendsActivity</string>
 

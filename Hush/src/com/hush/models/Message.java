@@ -12,11 +12,19 @@ public class Message extends ParseObject {
 		super();
 	}
 	
+	public Message(String content) {
+		putContent(content);
+	}
+	
+	public void saveToParse() {
+		saveEventually();
+	}
+
 	public String getContent() {
 		return getString("content");
 	}
 
-	public void setContent(String content) {
+	public void putContent(String content) {
 		put("content", content);
 	}
 

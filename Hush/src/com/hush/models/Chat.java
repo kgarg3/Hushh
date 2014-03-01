@@ -17,8 +17,6 @@ import com.parse.ParseRelation;
 @ParseClassName("Chat")
 public class Chat extends ParseObject {
 	
-	private List<Message> messages;
-	
 	// Default public constructor, needed by Parse
 	public Chat() {
 		super();
@@ -106,31 +104,33 @@ public class Chat extends ParseObject {
 	
 	public void fetchMessagesFromParse(int totalMessages, final AsyncHelper ah) {
 
+		final List<Message> messages = new ArrayList<Message>();
+		
 		ParseQuery<Message> query = getMessagesRelation().getQuery();
 		
-		// Fetch only the last 50 messages with newest at the end
-		query.setLimit(totalMessages);
+		// Show chats expiring sooner on top. Deleted chats will automatically be at the bottom
 		query.addAscendingOrder("createdAt");
 		
 		query.findInBackground(new FindCallback<Message>() {
+
 			@Override
 			public void done(List<Message> messageResults, ParseException e) {
 				if (e == null) {
-					messages = messageResults;
+					for (Message message : messageResults) {
+		    			message.getString("content");
+		    			messages.add(message);
+		    		}
 				} else {
-					messages = null;
+					Log.d("HEY", "you're screwed");
 				}
+				
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.messagesFetched(messages);
 			}
 		});
 	}
 
-	public List<Message> getMessages() {
-		return messages;
-	}
-	
-	public void sendMessage(Message message) {
+	public void addMessage(Message message) {
 		getMessagesRelation().add(message);
 	}
 

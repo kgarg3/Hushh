@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.hush.HushApp;
@@ -29,7 +31,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	private static Chat chat;
 	private static List<Chatter> chatters;
-	private static List<Message> messages;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		chat = HushApp.getCurrentUser().getCurrentChat();
 		chat.fetchChattersFromParse(this);
 		chat.fetchMessagesFromParse(maxMessages, this);
-
-        lvMessages = (ListView) findViewById(R.id.lvMessages);
+		
+        lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
 	}
@@ -64,6 +65,21 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		startActivity(i);
 	}
 
+	public void onSendClicked(View v) {
+		String content = ((EditText) findViewById(R.id.etChatWindowMessage)).getText().toString();
+		
+		Message message = new Message(content);
+    	message.saveToParse();
+    	
+    	chat.addMessage(message);
+        chat.saveToParse();
+        
+        adapterMessages.add(message);
+        
+		// TODO: Call the push notif function for the function
+	}
+
+	
 	@Override
 	public void chattersFetched(List<Chatter> inChatters) {
 		chatters = inChatters;
