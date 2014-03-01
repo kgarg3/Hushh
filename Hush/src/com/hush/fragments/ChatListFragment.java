@@ -1,6 +1,7 @@
 package com.hush.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +15,6 @@ import com.hush.HushApp;
 import com.hush.R;
 import com.hush.adapter.ChatAdapter;
 import com.hush.data.HushData;
-import com.hush.listeners.EndlessScrollListener;
 import com.hush.models.Chat;
 import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
@@ -39,7 +39,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	protected String previousChatType;
 	
 	protected User user = HushApp.getCurrentUser();
-	protected ArrayList<Chat> chats;
+	protected List<Chat> chats;
 	protected ParseException exception;
 
 	@Override
@@ -62,21 +62,13 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		//HushApp.getCurrentUser().fetchChatsFromParse(this);
+		HushApp.getCurrentUser().fetchChatsFromParse(this);
 	}
 
 	/**
 	 * Add a scroll and pull to refresh listener to the chats list view
 	 */
 	private void setupListeners() {
-		//scrolling should load more chats 
-		lvChats.setOnScrollListener(new EndlessScrollListener() {
-			@Override
-			public void onLoadMore(int page, int totalItemsCount) {
-				loadChats();
-			}
-		});
-
 		// Set a listener to be invoked when the list should be refreshed.
 		lvChats.setOnRefreshListener(new OnRefreshListener() {
 			@Override
@@ -131,7 +123,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	
 	@Override
 	public void chatsFetched() {
-		chats = (ArrayList<Chat>) user.getChats();
+		chats = user.getChats();
 		
 		//TODO: At this point chats should not be null or should at least return a zero size list
 		if(chats == null)
