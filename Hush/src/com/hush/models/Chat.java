@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.util.Log;
 
 import com.hush.utils.AsyncHelper;
@@ -17,6 +20,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
 
 @ParseClassName("Chat")
 public class Chat extends ParseObject {
@@ -44,29 +48,32 @@ public class Chat extends ParseObject {
 				ParseQuery<ParseUser> chatterUserQuery = ParseUser.getQuery();
 				chatterUserQuery.whereContainedIn("facebookId", fbChattersToNotify);	
 				
-				try {
-					List<ParseUser> parseUsers = chatterUserQuery.find();					
-					
-					ParseQuery<ParseInstallation> userQuery = ParseInstallation.getQuery();
-					userQuery.whereContainedIn("user", parseUsers);
-					
-					JSONObject data= null;
-					try {
-						data = new JSONObject("{\"title\" : \"Hush!\"," +
-												"\"intent\" : \"ChatWindowActivity\"," +
-												"\"chatId\" :" + getObjectId() + "}");
-					} catch (JSONException e) {
-						e.printStackTrace();
+				chatterUserQuery.findInBackground(new FindCallback<ParseUser>() {
+
+					@Override
+					public void done(List<ParseUser> arg0, ParseException arg1) {
+						ParseQuery<ParseInstallation> userQuery = ParseInstallation.getQuery();
+						userQuery.whereContainedIn("user", arg0);
+						
+						JSONObject data= null;
+						try {
+							data = new JSONObject("{\"title\" : \"Hush!\"," +
+													"\"intent\" : \"ChatWindowActivity\"," +
+													"\"action\" : \"com.hush.UPDATE_STATUS\"," +
+													"\"chatId\" :" + getObjectId() + "}");
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+						
+						ParsePush push = new ParsePush();
+						push.setQuery(userQuery);
+						push.setData(data);
+						push.setMessage("One of your friends wants to chat...");
+						push.sendInBackground();
+						
 					}
-					
-					ParsePush push = new ParsePush();
-					push.setQuery(userQuery);
-					push.setData(data);
-					push.setMessage("One of your friends wants to chat...");
-					push.sendInBackground();
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				
+				});
 			}
 		});
 	}
