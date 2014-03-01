@@ -12,14 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.hush.HushApp;
 import com.hush.R;
 import com.hush.models.Message;
 
 public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	Context activityContext;
-	private int chatterIndex = 0;
-	private String[] colorCodes;
 	
 	// View lookup cache
 	private static class ViewHolder {
@@ -29,7 +28,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	public MessageAdapter(Context context, ArrayList<Message> messages) {
 		super(context, 0, messages);
 		activityContext = context;
-		colorCodes = activityContext.getResources().getStringArray(R.array.message_bubble_colors);
 	}
 
 	@Override
@@ -46,11 +44,18 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		viewHolder.content.setText(String.valueOf(getItem(position).getContent()));
+		Message message = getItem(position);
+		
+		viewHolder.content.setText(message.getContent());
 
         final LayerDrawable bubble = (LayerDrawable) activityContext.getResources().getDrawable(R.drawable.message_bubble);
 		GradientDrawable outerRect = (GradientDrawable) bubble.findDrawableByLayerId(R.id.outerRectangle);
-		outerRect.setColor(Color.parseColor(colorCodes[chatterIndex++ % colorCodes.length]));
+		
+		if (message.getChatterFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
+			outerRect.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
+		} else {
+			outerRect.setColor(Color.parseColor(getContext().getString(R.color.purple)));
+		}
 
 		return convertView;
 	}

@@ -12,8 +12,9 @@ public class Message extends ParseObject {
 		super();
 	}
 	
-	public Message(String content) {
+	public Message(String content, String chatterFacebookId) {
 		putContent(content);
+		putChatterFacebookId(chatterFacebookId);
 	}
 	
 	public void saveToParse() {
@@ -28,12 +29,16 @@ public class Message extends ParseObject {
 		put("content", content);
 	}
 
-	public Date getCreatedAt() {
-		return super.getCreatedAt();
+	public String getChatterFacebookId() {
+		return getString("chatterFacebookId");
 	}
 
-	public Chatter getChatter() {
-		return (Chatter) getParseObject("chatter");
+	public void putChatterFacebookId(String chatterFacebookId) {
+		put("chatterFacebookId", chatterFacebookId);
+	}
+
+	public Date getCreatedAt() {
+		return super.getCreatedAt();
 	}
 }
 

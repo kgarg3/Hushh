@@ -66,7 +66,7 @@ public class NewChatActivity extends Activity {
         default:
             Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
             break;
-    }
+		}
     }
 	
 	// actions
@@ -81,15 +81,16 @@ public class NewChatActivity extends Activity {
 		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
 		chat.saveToParse();
 		
+		Chatter chatter;
         Collection<GraphUser> selection = HushApp.getSelectedUsers();
         for (GraphUser user : selection) {
-        	Chatter chatter = new Chatter(user.getId(), user.getName());
+        	chatter = new Chatter(user.getId(), user.getName());
         	chatter.saveToParse();
         	chat.addChatter(chatter);
         }
         
         // Add the original user to the chat
-    	Chatter chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
+    	chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
     	chatter.saveToParse();
     	chat.addChatter(chatter);
         chat.saveToParse();
@@ -100,7 +101,7 @@ public class NewChatActivity extends Activity {
     	
 
         // Set active chat and navigate to a chat window
-        //HushApp.getCurrentUser().setCurrentChat(chat);
+        HushApp.getCurrentUser().setCurrentChat(chat);
 		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}

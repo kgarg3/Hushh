@@ -2,6 +2,7 @@ package com.hush.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	private static Chat chat;
 	private static List<Chatter> chatters;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	public void onSendClicked(View v) {
 		String content = ((EditText) findViewById(R.id.etChatWindowMessage)).getText().toString();
 		
-		Message message = new Message(content);
+		Message message = new Message(content, HushApp.getCurrentUser().getFacebookId());
     	message.saveToParse();
     	
     	chat.addMessage(message);
@@ -78,7 +79,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         
 		// TODO: Call the push notif function for the function
 	}
-
 	
 	@Override
 	public void chattersFetched(List<Chatter> inChatters) {

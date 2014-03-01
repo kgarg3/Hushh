@@ -101,7 +101,6 @@ public class User extends ParseUser implements AsyncHelper {
 		currentChat = inCurrentChat;
 	}
 	
-	
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {
 		putName(inName);
