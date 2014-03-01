@@ -6,17 +6,14 @@ import com.parse.ParseObject;
 @ParseClassName("Chatter")
 public class Chatter extends ParseObject {
 
-	public String facebookId;
-	public String name;
-
 	// Default constructor needed by parse
 	public Chatter() {
 		super();
 	}
 
 	public Chatter(String facebookId, String name) {
-		setFacebookId(facebookId);
-		setName(name);
+		putFacebookId(facebookId);
+		putName(name);
 	}
 
 	public void saveToParse() {
@@ -24,20 +21,18 @@ public class Chatter extends ParseObject {
 	}
 
 	public String getFacebookId() {
-		facebookId = getString("facebookId");
-		return facebookId;
+		return getString("facebookId");
 	}
 
-	public void setFacebookId(String facebookId) {
+	public void putFacebookId(String facebookId) {
 		put("facebookId", facebookId);
 	}
 
 	public String getName() {
-		name = getString("name");
-		return name;
+		return getString("name");
 	}
 
-	public void setName(String name) {
+	public void putName(String name) {
 		put("name", name);
 	}
 }

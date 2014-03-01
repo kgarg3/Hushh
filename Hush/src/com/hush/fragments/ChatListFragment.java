@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.adapter.ChatAdapter;
-import com.hush.data.HushData;
 import com.hush.models.Chat;
 import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
@@ -61,7 +60,6 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
 		HushApp.getCurrentUser().fetchChatsFromParse(this);
 	}
 
@@ -122,13 +120,8 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	}
 	
 	@Override
-	public void chatsFetched() {
-		chats = user.getChats();
-		
-		//TODO: At this point chats should not be null or should at least return a zero size list
-		if(chats == null)
-			chats = HushData.getChatList();
-		
+	public void chatsFetched(List<Chat> inChats) {
+		chats = inChats;
 		loadChats();
 	}
 	

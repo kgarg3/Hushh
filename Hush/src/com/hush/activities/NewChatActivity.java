@@ -101,7 +101,7 @@ public class NewChatActivity extends Activity {
     	
 
         // Set active chat and navigate to a chat window
-        HushApp.getCurrentUser().setCurrentChat(chat);
+        //HushApp.getCurrentUser().setCurrentChat(chat);
 		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
 		startActivity(i);
 	}

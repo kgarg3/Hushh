@@ -13,14 +13,15 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hush.R;
+import com.hush.models.Message;
 
-public class MessageAdapter extends ArrayAdapter<String> {
+public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	Context activityContext;
 	private int chatterIndex = 0;
 	private String[] colorCodes;
 	
-	public MessageAdapter(Context context, ArrayList<String> messages) {
+	public MessageAdapter(Context context, ArrayList<Message> messages) {
 		super(context, 0, messages);
 		activityContext = context;
 		
@@ -36,11 +37,8 @@ public class MessageAdapter extends ArrayAdapter<String> {
 		}
 
 		//Set up views
-		//(TextView) view.findViewById(R.id.message_text)
-		//	.setText(String.valueOf(getItem(position).getContent()));
+		((TextView) view.findViewById(R.id.message_text)).setText(String.valueOf(getItem(position).getContent()));
 		
-		((TextView) view.findViewById(R.id.message_text)).setText(getItem(position));
-	    
         final LayerDrawable bubble = (LayerDrawable) activityContext.getResources().getDrawable(R.drawable.message_bubble);
 		GradientDrawable outerRect = (GradientDrawable) bubble.findDrawableByLayerId(R.id.outerRectangle);
 		outerRect.setColor(Color.parseColor(colorCodes[chatterIndex++ % colorCodes.length]));

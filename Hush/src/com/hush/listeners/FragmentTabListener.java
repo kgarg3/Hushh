@@ -18,6 +18,7 @@ public class FragmentTabListener<T extends Fragment> implements TabListener {
 	private final String mTag;
 	private final Class<T> mClass;
 	private final int mfragmentContainerId;
+	
 	// This version defaults to replacing the entire activity content area
 	// new FragmentTabListener<SomeFragment>(this, "first", SomeFragment.class))
 	public FragmentTabListener(FragmentActivity activity, String tag, Class<T> clz) {

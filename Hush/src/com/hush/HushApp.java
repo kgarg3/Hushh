@@ -40,13 +40,13 @@ public class HushApp extends Application {
     public void onCreate() {
     	super.onCreate();
     	
-    	Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
-    	ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
-    	PushService.setDefaultPushCallback(this, HushLoginActivity.class);
-    	
     	ParseObject.registerSubclass(User.class);
     	ParseObject.registerSubclass(Chat.class);
     	ParseObject.registerSubclass(Chatter.class);
     	ParseObject.registerSubclass(Message.class);
+
+    	Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
+    	ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
+    	PushService.setDefaultPushCallback(this, HushLoginActivity.class);
     }
 }

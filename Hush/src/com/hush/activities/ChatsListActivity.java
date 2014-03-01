@@ -1,11 +1,11 @@
 package com.hush.activities;
 
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -16,71 +16,43 @@ import com.facebook.Session;
 import com.hush.R;
 import com.hush.fragments.PrivateChatsFragment;
 import com.hush.fragments.PublicChatsFragment;
+import com.hush.listeners.FragmentTabListener;
 import com.parse.ParseUser;
 
 public class ChatsListActivity extends FragmentActivity {
 	public static final String CHAT = "chat";
-
-	private FragmentPagerAdapter adapterViewPager;
-	private ViewPager vpPager;
-
-	public static class ChatsListPagerAdapter extends FragmentPagerAdapter {
-		private static int NUM_ITEMS = 2;
-		private final String privateChats, publicChats;
-
-		private PrivateChatsFragment privateChatsFragment;
-		private PublicChatsFragment publicChatFragment;
-
-		public ChatsListPagerAdapter(FragmentManager fragmentManager, String privateChats, String publicChats) {
-			super(fragmentManager);
-			this.privateChats = privateChats;
-			this.publicChats = publicChats;
-		}
-
-		// Returns total number of pages
-		@Override
-		public int getCount() {
-			return NUM_ITEMS;
-		}
-
-		// Returns the fragment to display for that page
-		@Override
-		public Fragment getItem(int position) {
-			switch (position) {
-			case 1: 
-				if(publicChatFragment == null) {  
-					return publicChatFragment = new PublicChatsFragment();
-				}
-				return publicChatFragment;
-			case 0: //fallthrough
-			default:
-				if(privateChatsFragment == null) { 
-					return privateChatsFragment = new PrivateChatsFragment();
-				}
-				return privateChatsFragment;
-			}
-		}
-
-		// Returns the page title for the top indicator
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return position == 0 ? privateChats : publicChats;
-		}
-	}
-
+	
+	private static final String TAB_PRIVATE_CHATS_TAG = "PrivateChatsFragment";
+	private static final String TAB_PUBLIC_CHATS_TAG = "PublicChatsFragment";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chats_list);
 
-		//create the page viewer
-		vpPager = (ViewPager) findViewById(R.id.vpPager);
-		adapterViewPager = new ChatsListPagerAdapter(getSupportFragmentManager(), 
-				getString(R.string.tab_private_chats), getString(R.string.tab_public_chats));
-		vpPager.setAdapter(adapterViewPager);
+		setupNavgationTabs();
 	}
 
+	private void setupNavgationTabs() {
+	 	ActionBar actionBar = getActionBar();
+	 	//setup the navigation tabs
+	 	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+	 	
+	 	Tab tabMyChats = actionBar.newTab().setText(R.string.tab_private_chats)
+ 			.setTag(TAB_PRIVATE_CHATS_TAG).setTabListener(
+				new FragmentTabListener<PrivateChatsFragment>(R.id.flChatsActivityChatLists, this, 
+					TAB_PRIVATE_CHATS_TAG, PrivateChatsFragment.class));
+
+	 	Tab tabFrdsChats = actionBar.newTab().setText(R.string.tab_public_chats)
+ 			.setTag(TAB_PUBLIC_CHATS_TAG).setTabListener(
+				new FragmentTabListener<PublicChatsFragment>(R.id.flChatsActivityChatLists, this, 
+					TAB_PUBLIC_CHATS_TAG, PublicChatsFragment.class));
+	 	
+	 	actionBar.addTab(tabMyChats);
+	 	actionBar.addTab(tabFrdsChats);
+	 	actionBar.selectTab(tabMyChats);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

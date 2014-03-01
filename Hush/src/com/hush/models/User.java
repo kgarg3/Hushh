@@ -1,6 +1,10 @@
 package com.hush.models;
 
+
+import java.util.ArrayList;
 import java.util.List;
+
+import android.util.Log;
 
 import com.hush.clients.FacebookClient;
 import com.hush.utils.AsyncHelper;
@@ -14,11 +18,8 @@ import com.parse.ParseUser;
 @ParseClassName("User")
 public class User extends ParseUser implements AsyncHelper {
 	
-	private String name;
-	private String facebookId;
-	private Chat currentChat;
-	private List<Chat> chats;
-
+	private final static String TAG = ParseUser.class.getSimpleName();
+	
 	// Construct a new user
 	public User() {
 		super();
@@ -30,64 +31,56 @@ public class User extends ParseUser implements AsyncHelper {
 	}
 	
 	public String getName() {
-		return name;
+		return getCurrentUser().getString("name");
 	}
 	
-	public void setName(String inName) {
-		name = inName;
+	public void putName(String inName) {
+		getCurrentUser().put("name", inName);
 	}
 	
 	public String getFacebookId() {
-		return facebookId;
+		return getCurrentUser().getString("facebookId");
 	}
 	
-	public void setFacebookId(String inFacebookId) {
-		facebookId = inFacebookId;
+	public void putFacebookId(String inFacebookId) {
+		getCurrentUser().put("facebookId", inFacebookId);
 	}
 	
 	public boolean getIsNew() {
 		return getCurrentUser().isNew();
 	}
 	
-	public void setUserAttributesInParse(String inName, String inFacebookId) {
-		getCurrentUser().put("name", name);
-		getCurrentUser().put("facebookId", inFacebookId);
-		getCurrentUser().saveEventually();
-	}
-	
-    public Chat getCurrentChat() {
-        return currentChat;
-    }
-    
-    public void setCurrentChat(Chat inCurrentChat) {
-        currentChat = inCurrentChat;
-    }
-    
-	
 	
 	// Chat APIs
 	public ParseRelation<Chat> getChatsRelation() {
-		ParseRelation<Chat> relation = getCurrentUser().getRelation("chats");
-		return relation;
+		return getCurrentUser().getRelation("chats");
 	}
 	
 	public void fetchChatsFromParse(final AsyncHelper ah) {
-		ParseQuery<Chat> query = getChatsRelation().getQuery();
 		
+		final List<Chat> chats = new ArrayList<Chat>();
+		
+		// Define the class we would like to query
+		ParseQuery<Chat> query = ParseQuery.getQuery(Chat.class);
+		query.whereEqualTo("creator", ParseUser.getCurrentUser());
 		// Show chats expiring sooner on top. Deleted chats will automatically be at the bottom
 		query.addAscendingOrder("createdAt");
+		// Execute the find asynchronously
 		query.findInBackground(new FindCallback<Chat>() {
-
-			@Override
-			public void done(List<Chat> chatResults, ParseException e) {
-				if (e == null) {
-					chats = chatResults;
+		    public void done(List<Chat> chatsResults, ParseException e) {
+		    	if (e == null) {
+		    		for (Chat chat : chatsResults) {
+		    			chat.getString("topic");
+		    			chat.getString("type");
+		    			chats.add(chat);
+		    		} 
 				} else {
-					chats = null;
+					Log.d(TAG, "you're screwed");
 				}
+
 				// Inform the caller that the operation was completed, so they can query the results back
-				ah.chatsFetched();
-			}
+				ah.chatsFetched(chats);
+		    }
 		});
 	}
 	
@@ -95,25 +88,19 @@ public class User extends ParseUser implements AsyncHelper {
 		getChatsRelation().add(chat);
 	}
 
-	public List<Chat> getChats() {
-		return chats;
-	}
-	
 	public void sendMessage(Chat chat) {
 		getChatsRelation().add(chat);
 	}
-
 	
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {
-		setName(inName);
-		setFacebookId(inFacebookId);
-		setUserAttributesInParse(name, facebookId);
+		putName(inName);
+		putFacebookId(inFacebookId);
+		saveToParse();
 	}
 	
-
 	@Override
-	public void chatsFetched() { }
+	public void chatsFetched(List<Chat> chats) { }
 
 	@Override
 	public void chattersFetched() { }
