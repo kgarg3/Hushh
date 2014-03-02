@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,12 +17,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.hush.HushApp;
+import com.hush.HushPushReceiver;
 import com.hush.R;
 import com.hush.adapter.MessageAdapter;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.utils.AsyncHelper;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -32,6 +39,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	private static Chat chat;
 	private static List<Chatter> chatters;
+	private static ArrayList<String> chatterFacebookIds;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,37 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
+	}
+
+	private void setChatterFacebookIds() {
+        if(chatterFacebookIds == null) {
+        	chatterFacebookIds = new ArrayList<String>();
+        }
+        
+        for(Chatter chatter: chatters) {
+        	chatterFacebookIds.add(chatter.getFacebookId());
+        }
+	}
+
+	private ArrayList<String> getChatterFacebookIds() {
+        return chatterFacebookIds;
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Read the unread items from disk
+		/*
+			File filesDir = getFilesDir();
+			File todoFile = new File(filesDir, "todo.txt");
+
+			try {
+				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
+			} catch (IOException e) {
+				todoItems = new ArrayList<String>();
+			}
+		*/
 	}
 	
 	@Override
@@ -78,11 +117,14 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         adapterMessages.add(message);
         
 		// TODO: Call the push notif function for the function
+        
+    	chat.saveToParseWithPush(HushPushReceiver.pushType.NEW_CHAT, message.getContent(), getChatterFacebookIds());
 	}
 	
 	@Override
 	public void chattersFetched(List<Chatter> inChatters) {
 		chatters = inChatters;
+		setChatterFacebookIds();
 	}
 
 	@Override

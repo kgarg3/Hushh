@@ -5,7 +5,7 @@ import java.util.List;
 import android.app.Application;
 
 import com.facebook.model.GraphUser;
-import com.hush.activities.HushLoginActivity;
+import com.hush.activities.ChatsListActivity;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
@@ -18,8 +18,8 @@ import com.parse.PushService;
 public class HushApp extends Application {
 	
     private static User currentUser;
-    
     private static List<GraphUser> selectedUsers;
+    
     public static User getCurrentUser() {
         return currentUser;
     }
@@ -31,11 +31,11 @@ public class HushApp extends Application {
     public static List<GraphUser> getSelectedUsers() {
         return selectedUsers;
     }
-
+    
     public static void setSelectedUsers(List<GraphUser> inSelectedUsers) {
         selectedUsers = inSelectedUsers;
     }
-
+    
     @Override
     public void onCreate() {
     	super.onCreate();
@@ -47,6 +47,7 @@ public class HushApp extends Application {
 
     	Parse.initialize(this, getString(R.string.parse_app_id), getString(R.string.parse_client_key));
     	ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
-    	PushService.setDefaultPushCallback(this, HushLoginActivity.class);
+    	PushService.setDefaultPushCallback(this, ChatsListActivity.class);
+        //ParseInstallation.getCurrentInstallation().saveInBackground();  
     }
 }

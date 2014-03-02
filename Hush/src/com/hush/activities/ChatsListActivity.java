@@ -6,8 +6,6 @@ import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -31,6 +29,23 @@ public class ChatsListActivity extends FragmentActivity {
 		setContentView(R.layout.activity_chats_list);
 
 		setupNavgationTabs();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+
+		// Read the unread items from disk
+		/*
+			File filesDir = getFilesDir();
+			File todoFile = new File(filesDir, "todo.txt");
+
+			try {
+				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
+			} catch (IOException e) {
+				todoItems = new ArrayList<String>();
+			}
+		*/
 	}
 
 	private void setupNavgationTabs() {

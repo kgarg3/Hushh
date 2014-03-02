@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.hush.HushPushReceiver;
 import com.hush.utils.AsyncHelper;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
@@ -39,38 +40,41 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
-	public void saveToParseWithPush(final String message, final ArrayList<String> fbChattersToNotify) 
+	public void saveToParseWithPush(final HushPushReceiver.pushType pushType, final String message, final ArrayList<String> fbChattersToNotify) 
 	{
 		saveInBackground(new SaveCallback() {
 			
 			@Override
-			public void done(ParseException arg0) {
+			public void done(ParseException e) {
+				
+				// Fetch chatter objects with FB id in the list fbChattersToNotify
 				ParseQuery<ParseUser> chatterUserQuery = ParseUser.getQuery();
 				chatterUserQuery.whereContainedIn("facebookId", fbChattersToNotify);	
 				
 				chatterUserQuery.findInBackground(new FindCallback<ParseUser>() {
 
 					@Override
-					public void done(List<ParseUser> arg0, ParseException arg1) {
-						ParseQuery<ParseInstallation> userQuery = ParseInstallation.getQuery();
-						userQuery.whereContainedIn("user", arg0);
+					public void done(List<ParseUser> parseUsers, ParseException e) {
 						
-						JSONObject data= null;
+						// Find out which of chatters are actual hush users (from the
+						// installation table) and send the push notifs to their devices
+						ParseQuery<ParseInstallation> userQuery = ParseInstallation.getQuery();
+						userQuery.whereContainedIn("user", parseUsers);
+						userQuery.whereEqualTo("deviceType", "android");
+						
+						JSONObject obj = null;
 						try {
-							data = new JSONObject("{\"title\" : \"Hush!\"," +
-													"\"intent\" : \"ChatWindowActivity\"," +
-													"\"action\" : \"com.hush.UPDATE_STATUS\"," +
-													"\"chatId\" :" + getObjectId() + "}");
-						} catch (JSONException e) {
-							e.printStackTrace();
+							obj = new JSONObject();
+							obj.put("action", "com.hush.HUSH_MESSAGE");
+							obj.put("customdata", pushType.toString() + "|" + message);
+						} catch (JSONException je) {
+							je.printStackTrace();
 						}
 						
 						ParsePush push = new ParsePush();
 						push.setQuery(userQuery);
-						push.setData(data);
-						push.setMessage(message);
+						push.setData(obj);
 						push.sendInBackground();
-						
 					}
 				
 				});
