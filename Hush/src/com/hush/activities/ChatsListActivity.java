@@ -3,7 +3,10 @@ package com.hush.activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -23,6 +26,16 @@ public class ChatsListActivity extends FragmentActivity {
 	private static final String TAB_PRIVATE_CHATS_TAG = "PrivateChatsFragment";
 	private static final String TAB_PUBLIC_CHATS_TAG = "PublicChatsFragment";
 
+	// TODO: Move into fragment
+	private BroadcastReceiver pushNotifReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        	
+        	// TODO: Call a method on the fragment to update the adapter from disk
+        	updateChatsAdapterFromDisk();
+        }
+    };
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,10 +44,24 @@ public class ChatsListActivity extends FragmentActivity {
 		setupNavgationTabs();
 	}
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        
+        // Unregister this class as the receiver
+        this.unregisterReceiver(this.pushNotifReceiver);
+    }
+    
 	@Override
 	protected void onResume() {
 		super.onResume();
 
+		// Register this activity as the broadcast receiver with
+		// whatever message you want to receive as the action
+        this.registerReceiver(this.pushNotifReceiver, new IntentFilter("com.hush.HUSH_MESSAGE_INTERNAL"));
+	}
+
+	private void updateChatsAdapterFromDisk() {
 		// Read the unread items from disk
 		/*
 			File filesDir = getFilesDir();

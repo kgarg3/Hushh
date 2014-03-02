@@ -44,6 +44,9 @@
             android:name="com.hush.activities.ChatsListActivity"
             android:icon="@drawable/ic_app_icon"
             android:label="@string/title_activity_all_chats" >
+            <intent-filter>
+                <action android:name="com.hush.HUSH_MESSAGE_INTERNAL" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.hush.activities.NewChatActivity"
@@ -80,6 +83,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hush.activities.ChatsListActivity" />
+            
+            <intent-filter>
+                <action android:name="com.hush.HUSH_MESSAGE_INTERNAL" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.hush.activities.PickFriendsActivity"

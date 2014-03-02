@@ -49,7 +49,8 @@ public class HushPushReceiver extends BroadcastReceiver {
 							e.printStackTrace();
 						}
 						
-						//TODO: Invoke a method on the correct activity (if it is running) to load the updated file 
+						//TODO: Invoke a method on the correct activity (if it is running) to load the updated file
+				        context.sendBroadcast(new Intent("com.hush.HUSH_MESSAGE_INTERNAL"));
 					}
 				}
 			}

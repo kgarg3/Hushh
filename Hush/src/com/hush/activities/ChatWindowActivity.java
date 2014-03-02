@@ -2,12 +2,11 @@ package com.hush.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -24,13 +23,10 @@ import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.utils.AsyncHelper;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
-	private static final String TAG = ChatWindowActivity.class.getSimpleName();
+	//private static final String TAG = ChatWindowActivity.class.getSimpleName();
 	
 	private int maxMessages = 50;
 	
@@ -41,20 +37,73 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private static List<Chatter> chatters;
 	private static ArrayList<String> chatterFacebookIds;
 
+	private BroadcastReceiver pushNotifReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        	// If it is a new chat notif, then add this chat to the user's chat.
+        	// That will indicate user has joined the chat
+        	
+        	updateMessagesAdapterFromDisk();
+        }
+    };
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_window);
 		
+		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
+        adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
+        lvMessages.setAdapter(adapterMessages);
+	}
+	
+    @Override
+    public void onPause() {
+        super.onPause();
+        
+        // Unregister this class as the receiver
+        this.unregisterReceiver(this.pushNotifReceiver);
+    }
+    
+	@Override
+	protected void onResume() {
+		super.onResume();
+
 		chat = HushApp.getCurrentUser().getCurrentChat();
 		chat.fetchChattersFromParse(this);
 		chat.fetchMessagesFromParse(maxMessages, this);
 		
-        lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
-        adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
-        lvMessages.setAdapter(adapterMessages);
+		// Register this activity as the broadcast receiver with
+		// whatever message you want to receive as the action
+        this.registerReceiver(this.pushNotifReceiver, new IntentFilter("com.hush.HUSH_MESSAGE_INTERNAL"));
+        
+        updateMessagesAdapterFromDisk();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.chat_window, menu);
+		return true;
 	}
 
+	private void updateMessagesAdapterFromDisk() {
+		// Read the unread items from disk
+		/*
+			File filesDir = getFilesDir();
+			File todoFile = new File(filesDir, "todo.txt");
+
+			try {
+				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
+			} catch (IOException e) {
+				todoItems = new ArrayList<String>();
+			}
+		*/
+		
+		// Update adapter
+	}
+	
 	private void setChatterFacebookIds() {
         if(chatterFacebookIds == null) {
         	chatterFacebookIds = new ArrayList<String>();
@@ -69,30 +118,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         return chatterFacebookIds;
 	}
 	
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		// Read the unread items from disk
-		/*
-			File filesDir = getFilesDir();
-			File todoFile = new File(filesDir, "todo.txt");
-
-			try {
-				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
-			} catch (IOException e) {
-				todoItems = new ArrayList<String>();
-			}
-		*/
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.chat_window, menu);
-		return true;
-	}
-
 	// menu actions
 	public void onInviteFriendsClick(MenuItem mi) {
 		Intent i = new Intent(ChatWindowActivity.this, InviteFriendsActivity.class);

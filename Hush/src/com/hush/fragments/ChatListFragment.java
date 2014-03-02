@@ -77,11 +77,10 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 				// Make sure you call listView.onRefreshComplete()
 				// once the loading is done. This can be done from here or any
 				// place such as when the network request has completed successfully.
-				loadChats();
+				loadChatsIntoAdapter();
 				
 				// Now we call onRefreshComplete to signify refresh has finished
 				lvChats.onRefreshComplete();
-
 			}
 		});
 	}
@@ -92,7 +91,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	
 	protected abstract String getChatListType();
 	
-	protected void loadChats() {
+	protected void loadChatsIntoAdapter() {
 		//make the progress bar visible
 		progressBarLoadingTweets.setVisibility(ProgressBar.VISIBLE);
 		
@@ -118,13 +117,27 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 			//we have a parse exception, alert the user
 			Toast.makeText(getActivity(), getString(R.string.chat_list_parse_exception), Toast.LENGTH_SHORT).show();
 		}
-			
+	}
+	
+	// TODO: ChatsListActivity should call this method to make the fragment load chats from disk 
+	private void updateChatsAdapterFromDisk() {
+		// Read the unread items from disk
+		/*
+			File filesDir = getFilesDir();
+			File todoFile = new File(filesDir, "todo.txt");
+
+			try {
+				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
+			} catch (IOException e) {
+				todoItems = new ArrayList<String>();
+			}
+		*/
 	}
 	
 	@Override
 	public void chatsFetched(List<Chat> inChats) {
 		chats = inChats;
-		loadChats();
+		loadChatsIntoAdapter();
 	}
 	
 	@Override

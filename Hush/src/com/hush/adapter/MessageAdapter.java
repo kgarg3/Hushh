@@ -23,6 +23,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	// View lookup cache
 	private static class ViewHolder {
 		TextView content;
+		LayerDrawable bubble_wrapper;
+		GradientDrawable outerRect;
 	}
 	
 	public MessageAdapter(Context context, ArrayList<Message> messages) {
@@ -32,6 +34,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		Message message = getItem(position);
+
 		ViewHolder viewHolder; // view lookup cache stored in tag
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
@@ -39,24 +44,22 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			convertView = inflater.inflate(R.layout.message_item, null);
 			viewHolder.content = (TextView) convertView.findViewById(R.id.tvContent);
 			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
+			
+			viewHolder.bubble_wrapper = (LayerDrawable) activityContext.getResources().getDrawable(R.drawable.message_bubble);
+			viewHolder.outerRect = (GradientDrawable) viewHolder.bubble_wrapper.findDrawableByLayerId(R.id.outerRectangle);
+
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		Message message = getItem(position);
-		
 		viewHolder.content.setText(message.getContent());
-
-        final LayerDrawable bubble = (LayerDrawable) activityContext.getResources().getDrawable(R.drawable.message_bubble);
-		GradientDrawable outerRect = (GradientDrawable) bubble.findDrawableByLayerId(R.id.outerRectangle);
-		
 		if (message.getChatterFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
-			outerRect.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
+			viewHolder.outerRect.setColor(Color.parseColor(getContext().getString(R.color.purple)));
 		} else {
-			outerRect.setColor(Color.parseColor(getContext().getString(R.color.purple)));
+			viewHolder.outerRect.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
 		}
-
+		
 		return convertView;
 	}
 }
