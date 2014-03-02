@@ -1,9 +1,11 @@
 package com.hush.activities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -82,9 +84,11 @@ public class NewChatActivity extends Activity {
 		chat.saveToParse();
 		
 		Chatter chatter;
+		final ArrayList<String> fbChatterIds = new ArrayList<String>();
         Collection<GraphUser> selection = HushApp.getSelectedUsers();
         for (GraphUser user : selection) {
         	chatter = new Chatter(user.getId(), user.getName());
+        	fbChatterIds.add(chatter.getFacebookId());
         	chatter.saveToParse();
         	chat.addChatter(chatter);
         }
@@ -93,8 +97,9 @@ public class NewChatActivity extends Activity {
     	chatter = new Chatter(HushApp.getCurrentUser().getFacebookId(), HushApp.getCurrentUser().getName());
     	chatter.saveToParse();
     	chat.addChatter(chatter);
-        chat.saveToParse();
-        
+    	
+    	chat.saveToParseWithPush(getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	
         // Add the chat to user's chats 
     	HushApp.getCurrentUser().addChat(chat);
     	HushApp.getCurrentUser().saveToParse();

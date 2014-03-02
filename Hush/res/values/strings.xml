@@ -24,6 +24,9 @@
     <string name="action_view_chat">Done</string>
     <string name="title_activity_pick_friends">PickFriendsActivity</string>
 
+    <string name="new_chat_push_notif_message">"One of your friends wants to chat!"</string>
+    
+    
     <!-- FB App info -->
     <string name="facebook_app_id">1390710907863212</string>
     <string name="facebook_exception">Exception: %1$s</string>
