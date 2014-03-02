@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hush.HushApp;
 import com.hush.HushPushReceiver;
@@ -56,6 +57,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
+        
+        TextView tvChatTopic = (TextView) findViewById(R.id.tvChatTopic);
+        tvChatTopic.setText(chat.getTopic());
 	}
 	
     @Override
@@ -131,7 +135,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	public void onSendClicked(View v) {
-		String content = ((EditText) findViewById(R.id.etChatWindowMessage)).getText().toString();
+		EditText etChatWindowMessage = ((EditText) findViewById(R.id.etChatWindowMessage));
+		String content = etChatWindowMessage.getText().toString();
 		
 		Message message = new Message(content, HushApp.getCurrentUser().getFacebookId());
     	message.saveToParse();
@@ -144,6 +149,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		// TODO: Call the push notif function for the function
         
     	chat.saveToParseWithPush(HushPushReceiver.pushType.NEW_CHAT, message.getContent(), getChatterFacebookIds());
+    	etChatWindowMessage.setText("");
 	}
 	
 	@Override
