@@ -7,24 +7,35 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".ChatWindowActivity" >
     
+    <com.eevoskos.robotoviews.widget.RobotoTextView
+        android:id="@+id/tvChatTopic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        roboto:typeface="regular"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        style="@android:style/TextAppearance.Large"
+        />
+    
     <ListView
         android:id="@+id/lvChatWindowMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/editText1"
+        android:layout_below="@+id/tvChatTopic"
         android:layout_alignParentLeft="true"
         android:divider="@null"
         android:dividerHeight="0dp" >
 
     </ListView>
 
-    <EditText
+    <com.eevoskos.robotoviews.widget.RobotoEditText
         android:id="@+id/etChatWindowMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/btnSend"
+        roboto:typeface="light"
         android:ems="10" />
 
     <Button

@@ -2,10 +2,6 @@ package com.hush.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hush.HushApp;
 import com.hush.HushPushReceiver;
@@ -24,9 +21,6 @@ import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.utils.AsyncHelper;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -53,6 +47,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
+        
+        TextView tvChatTopic = (TextView) findViewById(R.id.tvChatTopic);
+        tvChatTopic.setText(chat.getTopic());
 	}
 
 	private void setChatterFacebookIds() {
@@ -106,7 +103,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	public void onSendClicked(View v) {
-		String content = ((EditText) findViewById(R.id.etChatWindowMessage)).getText().toString();
+		EditText etChatWindowMessage = ((EditText) findViewById(R.id.etChatWindowMessage));
+		String content = etChatWindowMessage.getText().toString();
 		
 		Message message = new Message(content, HushApp.getCurrentUser().getFacebookId());
     	message.saveToParse();
@@ -119,6 +117,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		// TODO: Call the push notif function for the function
         
     	chat.saveToParseWithPush(HushPushReceiver.pushType.NEW_CHAT, message.getContent(), getChatterFacebookIds());
+    	etChatWindowMessage.setText("");
 	}
 	
 	@Override
