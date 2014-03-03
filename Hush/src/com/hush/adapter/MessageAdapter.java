@@ -25,6 +25,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	// View lookup cache
 	private static class ViewHolder {
 		TextView content;
+		TextView timePosted;
 		LayerDrawable bubble_wrapper;
 		GradientDrawable outerRect;
 	}
@@ -76,6 +77,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			}
 			
 			viewHolder.content = (TextView) convertView.findViewById(R.id.tvContent);
+			viewHolder.timePosted = (TextView) convertView.findViewById(R.id.tvTimePosted);
 			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
 			convertView.setTag(viewHolder);
 		} else {
@@ -83,6 +85,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		
 		viewHolder.content.setText(message.getContent());
+		viewHolder.timePosted.setText(message.getFormattedTime(getContext()));
 
 		return convertView;
 	}
