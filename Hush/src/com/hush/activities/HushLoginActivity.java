@@ -77,7 +77,14 @@ public class HushLoginActivity extends Activity {
 		
 		ParseFacebookUtils.logIn(null, this, new LogInCallback() {
 			@Override
-			public void done(ParseUser user, ParseException err) {
+			public void done(ParseUser user, ParseException e) {
+
+				if (e != null) {
+					Log.d(TAG, "you're screwed");
+					Log.d(TAG, e.getMessage());
+					return;
+				}
+				
 				boolean loginSuccessful = false;
 				
 				progressDialog.dismiss();

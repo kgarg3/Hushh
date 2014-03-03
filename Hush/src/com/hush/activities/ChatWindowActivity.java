@@ -31,7 +31,7 @@ import com.hush.models.Message;
 import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
 import com.hush.utils.Constants;
-import com.hush.utils.HushPushReceiver;
+import com.hush.utils.HushPushNotifReceiver;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -156,7 +156,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         adapterMessages.add(message);
         
 		// Send a push notification
-    	chat.saveToParseWithPush(getString(R.string.app_name), HushPushReceiver.pushType.NEW_CHAT, message.getContent(), getChatterFacebookIds());
+    	chat.saveToParseWithPush(getString(R.string.app_name), HushPushNotifReceiver.pushType.NEW_CHAT.toString(), message.getContent(), getChatterFacebookIds());
 
     	etChatWindowMessage.setText("");
 	}

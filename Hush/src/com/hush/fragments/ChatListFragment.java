@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.hush.HushApp;
 import com.hush.R;
@@ -19,7 +18,6 @@ import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
-import com.parse.ParseException;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -41,7 +39,6 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	
 	protected User user = HushApp.getCurrentUser();
 	protected List<Chat> chats;
-	protected ParseException exception;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,10 +111,12 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 			//set the progress bar to invisible
 			progressBarLoadingTweets.setVisibility(ProgressBar.INVISIBLE);
 		}
+		/*
 		else if(exception != null) {
 			//we have a parse exception, alert the user
 			Toast.makeText(getActivity(), getString(R.string.chat_list_parse_exception), Toast.LENGTH_SHORT).show();
 		}
+		*/
 	}
 	
 	// TODO: ChatsListActivity should call this method to make the fragment load chats from disk 

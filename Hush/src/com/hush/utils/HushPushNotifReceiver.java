@@ -9,17 +9,19 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.hush.models.Chat;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-public class HushPushReceiver extends BroadcastReceiver {
+public class HushPushNotifReceiver extends BroadcastReceiver {
 	
 	public static enum pushType {NEW_CHAT, NEW_MESSAGE};
 	
-	private static final String TAG = HushPushReceiver.class.getSimpleName();
+	private static final String TAG = HushPushNotifReceiver.class.getSimpleName();
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
@@ -35,11 +37,13 @@ public class HushPushReceiver extends BroadcastReceiver {
 				Iterator<?> itr = json.keys();
 				while (itr.hasNext()) {
 					String key = (String) itr.next();
-					if (key.equals("customdata")) {
+					if (key.equals("customData")) {
+						
+						String customData = json.getString(key);
 						
 						// Write to file
 						ArrayList<String> notifs = new ArrayList<String>();
-						notifs.add(json.getString(key));
+						notifs.add(customData);
 						
 						Log.d(TAG, "Key/value :  " + key + " => " + json.getString(key));
 						
@@ -47,6 +51,13 @@ public class HushPushReceiver extends BroadcastReceiver {
 							FileUtils.writeLines(hushNotifsFile, notifs);
 						} catch (IOException e) {
 							e.printStackTrace();
+						}
+						
+						
+						// If the push notif is for a new chat, then add the chat to the user's chats in Parse
+						if (customData.startsWith(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
+							String[] chatId = customData.split(":");
+							Chat.addChatToCurrentUserInParse(chatId[1]);
 						}
 						
 						// Send a local broadcast for running activities to load the results

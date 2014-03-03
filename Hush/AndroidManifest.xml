@@ -110,7 +110,7 @@
 		        <action android:name="android.intent.action.RECEIVE_BOOT_COMPLETED" />  
             </intent-filter>
         </receiver>
-        <receiver android:name="com.hush.utils.HushPushReceiver" android:exported="false">
+        <receiver android:name="com.hush.utils.HushPushNotifReceiver" android:exported="false">
   			<intent-filter>
     			<action android:name="android.intent.action.BOOT_COMPLETED" />  
          		<action android:name="android.intent.action.USER_PRESENT" />

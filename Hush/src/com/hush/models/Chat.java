@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.util.Log;
 
+import com.hush.HushApp;
 import com.hush.utils.AsyncHelper;
-import com.hush.utils.Constants;
-import com.hush.utils.HushPushReceiver;
+import com.hush.utils.HushPushNotifSender;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -26,6 +22,8 @@ import com.parse.SaveCallback;
 
 @ParseClassName("Chat")
 public class Chat extends ParseObject {
+	
+	private final static String TAG = Chat.class.getSimpleName();
 	
 	// Default public constructor, needed by Parse
 	public Chat() {
@@ -41,42 +39,34 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
-	public void saveToParseWithPush(final String notifTitle, final HushPushReceiver.pushType pushType, final String message, final ArrayList<String> fbChattersToNotify) 
+	public void saveToParseWithPush(final String notifTitle, final String pushType, final String message, final ArrayList<String> fbChattersToNotify) 
 	{
-		saveInBackground(new SaveCallback() {
+		saveEventually(new SaveCallback() {
 			
 			@Override
 			public void done(ParseException e) {
+				if (e != null) {
+					Log.d(TAG, "you're screwed");
+					Log.d(TAG, e.getMessage());
+					return;
+				}
 				
-				// Fetch chatter objects with FB id in the list fbChattersToNotify
+				// Fetch Users with same facebook ids as in the list fbChattersToNotify
+				// those are the users to notify
 				ParseQuery<ParseUser> chatterUserQuery = ParseUser.getQuery();
 				chatterUserQuery.whereContainedIn("facebookId", fbChattersToNotify);	
-				
+
 				chatterUserQuery.findInBackground(new FindCallback<ParseUser>() {
 
 					@Override
 					public void done(List<ParseUser> parseUsers, ParseException e) {
-						
-						// Find out which of chatters are actual hush users (from the
-						// installation table) and send the push notifs to their devices
-						ParseQuery<ParseInstallation> userQuery = ParseInstallation.getQuery();
-						userQuery.whereContainedIn("user", parseUsers);
-						userQuery.whereEqualTo("deviceType", "android");
-						
-						JSONObject obj = null;
-						try {
-							obj = new JSONObject();
-							obj.put("alert", notifTitle);
-							obj.put("action", Constants.pushNotifAction);
-							obj.put("customdata", pushType.toString() + "|" + message);
-						} catch (JSONException je) {
-							je.printStackTrace();
+						if (e != null) {
+							Log.d(TAG, "you're screwed");
+							Log.d(TAG, e.getMessage());
+							return;
 						}
 						
-						ParsePush push = new ParsePush();
-						push.setQuery(userQuery);
-						push.setData(obj);
-						push.sendInBackground();
+						HushPushNotifSender.sendPushNotifToUsers(parseUsers, notifTitle, message, pushType, "newChatId:" + getObjectId());
 					}
 				
 				});
@@ -112,10 +102,24 @@ public class Chat extends ParseObject {
 		return super.getCreatedAt(); 
 	}
 
+	public static void addChatToCurrentUserInParse(String chatObjectId) {
+		ParseQuery<Chat> query = ParseQuery.getQuery(Chat.class);
+		query.getInBackground(chatObjectId, new GetCallback<Chat>() {
+			public void done(Chat chat, ParseException e) {
+				if (e != null) {
+					Log.d(TAG, "you're screwed");
+					Log.d(TAG, e.getMessage());
+					return;
+				}
+		    	HushApp.getCurrentUser().addChat(chat);
+		    	HushApp.getCurrentUser().saveToParse();
+			}
+		});
+	}
+	
 	// Chatters APIs
 	public ParseRelation<Chatter> getChattersRelation() {
-		ParseRelation<Chatter> relation = getRelation("chatters");
-		return relation;
+		return getRelation("chatters");
 	}
 	
 	public void fetchChattersFromParse(final AsyncHelper ah) {
@@ -133,7 +137,7 @@ public class Chat extends ParseObject {
 		    			chatters.add(chatter);
 		    		}
 				} else {
-					Log.d("HEY", "you're screwed");
+					Log.d(TAG, "you're screwed");
 				}
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.chattersFetched(chatters);
@@ -168,14 +172,16 @@ public class Chat extends ParseObject {
 
 			@Override
 			public void done(List<Message> messageResults, ParseException e) {
-				if (e == null) {
-					for (Message message : messageResults) {
-		    			message.getString("content");
-		    			messages.add(message);
-		    		}
-				} else {
-					Log.d("HEY", "you're screwed");
+				if (e != null) {
+					Log.d(TAG, "you're screwed");
+					Log.d(TAG, e.getMessage());
+					return;
 				}
+
+				for (Message message : messageResults) {
+	    			message.getString("content");
+	    			messages.add(message);
+	    		}
 				
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.messagesFetched(messages);

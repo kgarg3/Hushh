@@ -18,7 +18,7 @@ import com.parse.ParseUser;
 @ParseClassName("User")
 public class User extends ParseUser implements AsyncHelper {
 	
-	private final static String TAG = ParseUser.class.getSimpleName();
+	private final static String TAG = User.class.getSimpleName();
 	
 	private Chat currentChat;
 	
@@ -69,15 +69,17 @@ public class User extends ParseUser implements AsyncHelper {
 		
 		query.findInBackground(new FindCallback<Chat>() {
 		    public void done(List<Chat> chatsResults, ParseException e) {
-		    	if (e == null) {
-		    		for (Chat chat : chatsResults) {
-		    			chat.getString("topic");
-		    			chat.getString("type");
-		    			chats.add(chat);
-		    		} 
-				} else {
+				if (e != null) {
 					Log.d(TAG, "you're screwed");
+					Log.d(TAG, e.getMessage());
+					return;
 				}
+				
+	    		for (Chat chat : chatsResults) {
+	    			chat.getString("topic");
+	    			chat.getString("type");
+	    			chats.add(chat);
+	    		} 
 
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.chatsFetched(chats);
