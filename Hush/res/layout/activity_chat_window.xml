@@ -3,14 +3,16 @@
     xmlns:roboto="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context=".ChatWindowActivity" >
     
     <com.eevoskos.robotoviews.widget.RobotoTextView
         android:id="@+id/tvChatTopic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+    	android:paddingRight="@dimen/activity_horizontal_margin"
+    	android:paddingBottom="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_horizontal_margin"
         roboto:typeface="regular"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -21,37 +23,54 @@
         android:id="@+id/lvChatWindowMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+    	android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/tvChatTopic"
         android:layout_alignParentLeft="true"
+        android:stackFromBottom="true"
+        android:layout_above="@+id/rlMessageContainter"
+        android:transcriptMode="alwaysScroll"
         android:divider="@null"
         android:dividerHeight="0dp" >
 
     </ListView>
     
-    <com.eevoskos.robotoviews.widget.RobotoButton
-        android:id="@+id/btnChatWindowSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout 
+        android:id="@+id/rlMessageContainter"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:enabled="false"
-        android:background="@android:color/transparent"
-        android:onClick="onSendClicked"
-        android:text="SEND"
-        roboto:typeface="regular" />
-        
-    <com.eevoskos.robotoviews.widget.RobotoEditText
-        android:id="@+id/etChatWindowMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/btnChatWindowSend"
-        android:layout_alignBottom="@+id/btnChatWindowSend"
-        android:paddingBottom="13dp"
-        android:hint="@string/hint_new_chat"
-        android:autoLink="all"
-        roboto:typeface="light" />
+        android:background="#dfd6e0">
+        
+	    <com.eevoskos.robotoviews.widget.RobotoButton
+	        android:id="@+id/btnChatWindowSend"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentRight="true"
+	        android:enabled="false"
+	        android:background="@android:color/transparent"
+	        android:onClick="onSendClicked"
+	        android:text="SEND"
+	        roboto:typeface="regular" />
+        
+	    <com.eevoskos.robotoviews.widget.RobotoEditText
+	        android:id="@+id/etChatWindowMessage"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentLeft="true"
+	        android:layout_toLeftOf="@+id/btnChatWindowSend"
+	        android:layout_alignBottom="@+id/btnChatWindowSend"
+	        android:paddingBottom="13dp"
+	       	android:background="@android:drawable/editbox_background_normal"
+	        android:hint="@string/hint_new_chat"
+	        android:autoLink="all"
+	        roboto:typeface="light" />
+        
+        
+    </RelativeLayout>
 
 
 
