@@ -88,6 +88,10 @@ public class User extends ParseUser implements AsyncHelper {
 	public void addChat(Chat chat) {
 		getChatsRelation().add(chat);
 	}
+	
+	public void removeChat(Chat chat) {
+		getChatsRelation().remove(chat);
+	}
 
 	public void sendMessage(Chat chat) {
 		getChatsRelation().add(chat);

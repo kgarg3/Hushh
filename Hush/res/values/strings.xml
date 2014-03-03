@@ -40,4 +40,7 @@
     
     <!-- ChatListFragment -->
     <string name="chat_list_parse_exception">Cannot load chats</string>
+    
+    <!-- ChatWidowActivity -->
+    <string name="chat_window_leave_prompt">Are you sure you want to leave this chat?</string>
 </resources>
