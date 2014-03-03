@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hush.HushApp;
-import com.hush.HushPushReceiver;
 import com.hush.R;
 import com.hush.adapter.MessageAdapter;
 import com.hush.models.Chat;
@@ -25,6 +25,7 @@ import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.utils.AsyncHelper;
 import com.hush.utils.Constants;
+import com.hush.utils.HushPushReceiver;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -32,6 +33,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	
 	private int maxMessages = 50;
 	
+	private TextView tvChatTopic;
 	private ListView lvMessages;
 	private MessageAdapter adapterMessages;
 
@@ -39,36 +41,39 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private static List<Chatter> chatters;
 	private static ArrayList<String> chatterFacebookIds;
 
-	private BroadcastReceiver pushNotifReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-        	// If it is a new chat notif, then add this chat to the user's chat.
-        	// That will indicate user has joined the chat
-        	
-        	updateMessagesAdapterFromDisk();
-        }
-    };
+	private BroadcastReceiver pushNotifReceiver;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat_window);
-		
+
+		tvChatTopic = (TextView) findViewById(R.id.tvChatTopic);
 		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
         
-        TextView tvChatTopic = (TextView) findViewById(R.id.tvChatTopic);
-        tvChatTopic.setText(chat.getTopic());
+        
+        // Create the broadcast receiver object
+        pushNotifReceiver  = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            	// If it is a new chat notif, then add this chat to the user's chat.
+            	// That will indicate user has joined the chat
+            	
+            	
+            	updateMessagesAdapterFromDisk();
+            }
+        };
 	}
 	
     @Override
     public void onPause() {
         super.onPause();
         
-        // Unregister this class as the receiver
-        this.unregisterReceiver(this.pushNotifReceiver);
+        // Unregister as broadcast receiver
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(pushNotifReceiver);
     }
     
 	@Override
@@ -79,9 +84,10 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		chat.fetchChattersFromParse(this);
 		chat.fetchMessagesFromParse(maxMessages, this);
 		
-		// Register this activity as the broadcast receiver with
-		// whatever message you want to receive as the action
-        this.registerReceiver(this.pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
+        tvChatTopic.setText(chat.getTopic());
+
+		// Register as broadcast receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
         
         updateMessagesAdapterFromDisk();
 	}
@@ -147,9 +153,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         
         adapterMessages.add(message);
         
-		// TODO: Call the push notif function for the function
-        
-    	chat.saveToParseWithPush(HushPushReceiver.pushType.NEW_CHAT, message.getContent(), getChatterFacebookIds());
+		// Send a push notification
+    	chat.saveToParseWithPush(getString(R.string.app_name), HushPushReceiver.pushType.NEW_CHAT, message.getContent(), getChatterFacebookIds());
+
     	etChatWindowMessage.setText("");
 	}
 	

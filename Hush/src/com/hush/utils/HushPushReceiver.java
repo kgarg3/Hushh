@@ -1,4 +1,4 @@
-package com.hush;
+package com.hush.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +9,11 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.hush.utils.Constants;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 public class HushPushReceiver extends BroadcastReceiver {
@@ -50,8 +50,8 @@ public class HushPushReceiver extends BroadcastReceiver {
 							e.printStackTrace();
 						}
 						
-						//TODO: Invoke a method on the correct activity (if it is running) to load the updated file
-				        context.sendBroadcast(new Intent(Constants.pushNotifActionInternal));
+						// Send a local broadcast for running activities to load the results
+						LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.pushNotifActionInternal));
 					}
 				}
 			}

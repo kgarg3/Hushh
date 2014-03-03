@@ -19,10 +19,10 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.hush.HushApp;
-import com.hush.HushPushReceiver;
 import com.hush.R;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
+import com.hush.utils.HushPushReceiver;
 
 public class NewChatActivity extends Activity {
 
@@ -98,7 +98,8 @@ public class NewChatActivity extends Activity {
     	chatter.saveToParse();
     	chat.addChatter(chatter);
     	
-    	chat.saveToParseWithPush(HushPushReceiver.pushType.NEW_CHAT, getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	// Send a push notification
+    	chat.saveToParseWithPush(getString(R.string.app_name), HushPushReceiver.pushType.NEW_CHAT, getString(R.string.new_chat_push_notif_message), fbChatterIds);
     	
         // Add the chat to user's chats 
     	HushApp.getCurrentUser().addChat(chat);

@@ -9,9 +9,9 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
-import com.hush.HushPushReceiver;
 import com.hush.utils.AsyncHelper;
 import com.hush.utils.Constants;
+import com.hush.utils.HushPushReceiver;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -41,7 +41,7 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
-	public void saveToParseWithPush(final HushPushReceiver.pushType pushType, final String message, final ArrayList<String> fbChattersToNotify) 
+	public void saveToParseWithPush(final String notifTitle, final HushPushReceiver.pushType pushType, final String message, final ArrayList<String> fbChattersToNotify) 
 	{
 		saveInBackground(new SaveCallback() {
 			
@@ -66,6 +66,7 @@ public class Chat extends ParseObject {
 						JSONObject obj = null;
 						try {
 							obj = new JSONObject();
+							obj.put("alert", notifTitle);
 							obj.put("action", Constants.pushNotifAction);
 							obj.put("customdata", pushType.toString() + "|" + message);
 						} catch (JSONException je) {
