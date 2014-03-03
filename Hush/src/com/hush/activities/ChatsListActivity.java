@@ -82,19 +82,19 @@ public class ChatsListActivity extends FragmentActivity {
 	 	//setup the navigation tabs
 	 	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	 	
-	 	Tab tabMyChats = actionBar.newTab().setText(R.string.tab_private_chats)
+	 	Tab tabPrivateChats = actionBar.newTab().setText(R.string.tab_private_chats)
  			.setTag(TAB_PRIVATE_CHATS_TAG).setTabListener(
 				new FragmentTabListener<PrivateChatsFragment>(R.id.flChatsActivityChatLists, this, 
 					TAB_PRIVATE_CHATS_TAG, PrivateChatsFragment.class));
 
-	 	Tab tabFrdsChats = actionBar.newTab().setText(R.string.tab_public_chats)
+	 	Tab tabPublicChats = actionBar.newTab().setText(R.string.tab_public_chats)
  			.setTag(TAB_PUBLIC_CHATS_TAG).setTabListener(
 				new FragmentTabListener<PublicChatsFragment>(R.id.flChatsActivityChatLists, this, 
 					TAB_PUBLIC_CHATS_TAG, PublicChatsFragment.class));
 	 	
-	 	actionBar.addTab(tabMyChats);
-	 	actionBar.addTab(tabFrdsChats);
-	 	actionBar.selectTab(tabMyChats);
+	 	actionBar.addTab(tabPublicChats);
+	 	actionBar.addTab(tabPrivateChats);
+	 	actionBar.selectTab(tabPublicChats);
 	}
 	
 	@Override

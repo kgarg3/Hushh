@@ -1,11 +1,12 @@
 package com.hush.adapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,34 +27,43 @@ import com.hush.models.Chat;
  */
 public class ChatAdapter extends ArrayAdapter<Chat> {
 
+	private static final long MILLISEC_PER_DAY = 24 * 60 * 60 * 1000;
+	private static final long SEC_PER_HOUR = 60 * 60;
+	private String expirationTimeStr;
+	private int color;
+	private Resources resources;
+	private Chat chat;
+
 	// View lookup cache
 	private static class ViewHolder {
 		TextView topic;
-		// TextView createdAt;
+		TextView createdAt;
 	}
 
 	public ChatAdapter(Context context, ArrayList<Chat> chats) {
 		super(context, 0, chats);
+		resources = context.getResources();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-
-		ViewHolder viewHolder; // view lookup cache stored in tag
+		
+		final ViewHolder viewHolder; // view lookup cache stored in tag
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
 			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.chat_item, null);
 			viewHolder.topic = (TextView) convertView.findViewById(R.id.tvChatItemChatTopic);
-			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
+			viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		final Chat chat = getItem(position);
+		final View view = convertView;
+		chat = getItem(position);
 
-		convertView.setOnClickListener(new OnClickListener() {
+		view.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				HushApp.getCurrentUser().setCurrentChat(chat);
@@ -69,35 +79,66 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 		// make the text bold, else normal
 		// make the view background gray else white
 
-		// TextView tvExpirationTime = (TextView) view.findViewById(R.id.tvExpirationTime);
-		// tvExpirationTime.setText(getExpirationTime(chat.getCreatedAt()));
+
+		
+		if(chat.getCreatedAt().getTime() + MILLISEC_PER_DAY < (new Date()).getTime()) {
+			//this chat has expired.. so no need to add countdown timer
+			//ideally this should be removed from the db
+			setExpiredChatDisabled(viewHolder, view);	
+		}
+		else {
+			long expirationTimeInMillisec = chat.getCreatedAt().getTime() + MILLISEC_PER_DAY  - (new Date()).getTime();
+			
+			//for testing use values like 70000(70s) or 15000(15s)
+			new CountDownTimer(expirationTimeInMillisec, 1000) {
+
+				public void onTick(long millisUntilFinished) {
+
+					long secondsUntilFinished = millisUntilFinished/1000;
+
+					if(secondsUntilFinished > 0 && secondsUntilFinished < 60){
+						color = resources.getColor(R.color.red);
+						expirationTimeStr =  String.valueOf(secondsUntilFinished) + "s";
+					}
+					else if (secondsUntilFinished >= 60 && secondsUntilFinished < (SEC_PER_HOUR)) {
+						long minUntilFinished = secondsUntilFinished / 60;
+						color = resources.getColor(R.color.blue);
+						expirationTimeStr = String.valueOf(minUntilFinished) + "m";
+					}
+					else if(secondsUntilFinished >= (SEC_PER_HOUR)) {
+						long hourUntilFinished = secondsUntilFinished/ SEC_PER_HOUR;
+						color = resources.getColor(R.color.green);
+						expirationTimeStr = String.valueOf(hourUntilFinished) + "h";
+					}
+
+					viewHolder.createdAt.setText(expirationTimeStr);
+					viewHolder.createdAt.setTextColor(color);
+
+				}
+
+				public void onFinish() {				
+					//the user should refresh and this chat should be moved to the bottom eventually. 
+					setExpiredChatDisabled(viewHolder, view);
+				}
+			}.start();
+		}
+		
+		
 
 		return convertView;
 	}
-
+	
 	/**
-	 * Returns the expiration time in sec if #min is less than 1 else the
-	 * minutes if the #hours is less than 1 else the hours
-	 * 
-	 * @param createdAt
-	 * @return
+	 * For now just make the background color light purple and make it non-clickable
+	 * @param holder
+	 * @param view
 	 */
-	private String getExpirationTime(Date createdAt) {
-		Date expirationTime = new Date(createdAt.getTime() + (long) 24 * 60
-				* 60 * 1000 - (new Date()).getTime());
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(expirationTime);
-		int hours = calendar.get(Calendar.HOUR_OF_DAY);
-
-		if (hours < 1) {
-			int min = calendar.get(Calendar.MINUTE);
-			if (min < 1) {
-				int sec = calendar.get(Calendar.SECOND);
-				return String.valueOf(sec) + "s";
-			} else
-				return String.valueOf(min) + "m";
-		}
-		return String.valueOf(hours) + "h";
+	private void setExpiredChatDisabled(ViewHolder holder, View view){
+		holder.createdAt.setText("0s");
+		holder.createdAt.setTextColor(color);
+		view.setBackgroundColor(resources.getColor(R.color.gray));
+		view.setOnClickListener(null);
+		view.setClickable(false);
 	}
 
 }

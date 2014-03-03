@@ -92,9 +92,6 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	protected abstract String getChatListType();
 	
 	protected void loadChatsIntoAdapter() {
-		//make the progress bar visible
-		progressBarLoadingTweets.setVisibility(ProgressBar.VISIBLE);
-		
 		String chatType = getChatListType();
 		//if we have switched from public to private or vice versa, clear out the adapter before adding chats to it
 		if(!chatType.equals(previousChatType)) {
@@ -103,6 +100,9 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 		
 		//make a call to get the current user's chats based on the type
 		if(chats != null && chats.size() > 0) {
+			//make the progress bar visible
+			progressBarLoadingTweets.setVisibility(ProgressBar.VISIBLE);
+			
 			ArrayList<Chat> chatsToShow = new ArrayList<Chat>();
 			for(Chat c : chats) {
 				if(c.getType().equals(chatType))
@@ -110,6 +110,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 			}
 			
 			adapter.addAll(chatsToShow);
+			
 			//set the progress bar to invisible
 			progressBarLoadingTweets.setVisibility(ProgressBar.INVISIBLE);
 		}
@@ -148,4 +149,5 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {}
+	
 }

@@ -29,8 +29,6 @@ import com.hush.utils.HushPushReceiver;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
-	//private static final String TAG = ChatWindowActivity.class.getSimpleName();
-	
 	private int maxMessages = 50;
 	
 	private TextView tvChatTopic;
@@ -175,4 +173,5 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {	}
+
 }
