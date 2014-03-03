@@ -2,10 +2,6 @@ package com.hush.activities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,13 +20,8 @@ import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.utils.AsyncHelper;
-import com.parse.ParseInstallation;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
-	
-	private static final String TAG = ChatWindowActivity.class.getSimpleName();
 	
 	private int maxMessages = 50;
 	
@@ -137,4 +128,5 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {	}
+
 }
