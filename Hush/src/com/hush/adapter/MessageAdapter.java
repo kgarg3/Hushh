@@ -85,7 +85,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		}
 		
 		viewHolder.content.setText(message.getContent());
-		viewHolder.timePosted.setText(message.getFormattedTime(getContext()));
+		if(message.getCreatedAt() != null) {
+			viewHolder.timePosted.setText(message.getFormattedTime(getContext()));	
+		} else {
+			viewHolder.timePosted.setText("");	
+		}
 
 		return convertView;
 	}
