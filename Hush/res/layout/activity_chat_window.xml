@@ -38,14 +38,16 @@
         roboto:typeface="light"
         android:ems="10" />
 
-    <Button
+    <com.eevoskos.robotoviews.widget.RobotoButton
         android:id="@+id/btnChatWindowSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:enabled="false"
         android:onClick="onSendClicked"
-        android:text="Send" />
+        android:text="Send"
+        roboto:typeface="light" />
 
 </RelativeLayout>
 

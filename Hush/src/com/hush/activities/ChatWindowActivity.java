@@ -10,9 +10,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,7 +32,6 @@ import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
 import com.hush.utils.Constants;
 import com.hush.utils.HushPushReceiver;
-import com.parse.ParseException;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -37,6 +39,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	
 	private TextView tvChatTopic;
 	private ListView lvMessages;
+	private EditText etChatWindowMessage;
 	private MessageAdapter adapterMessages;
 
 	private static Chat chat;
@@ -54,7 +57,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
-        
+           
+        configureChatWindowMessage();
         
         // Create the broadcast receiver object
         pushNotifReceiver  = new BroadcastReceiver() {
@@ -142,7 +146,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	public void onSendClicked(View v) {
-		EditText etChatWindowMessage = ((EditText) findViewById(R.id.etChatWindowMessage));
 		String content = etChatWindowMessage.getText().toString();
 		
 		Message message = new Message(content, HushApp.getCurrentUser().getFacebookId());
@@ -195,6 +198,36 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
                 }
         }
        ).show();
+	}
+	
+	private void configureChatWindowMessage() {
+		final Button btnChatWindowSend = (Button) findViewById(R.id.btnChatWindowSend);
+        etChatWindowMessage = ((EditText) findViewById(R.id.etChatWindowMessage));
+        etChatWindowMessage.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if(etChatWindowMessage.length() > 0) {
+					btnChatWindowSend.setEnabled(true);
+				} else {
+					btnChatWindowSend.setEnabled(false);
+				}
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 }
