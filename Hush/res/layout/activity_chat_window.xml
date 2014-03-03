@@ -27,17 +27,7 @@
         android:dividerHeight="0dp" >
 
     </ListView>
-
-    <com.eevoskos.robotoviews.widget.RobotoEditText
-        android:id="@+id/etChatWindowMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/btnSend"
-        roboto:typeface="light"
-        android:ems="10" />
-
+    
     <com.eevoskos.robotoviews.widget.RobotoButton
         android:id="@+id/btnChatWindowSend"
         android:layout_width="wrap_content"
@@ -45,9 +35,25 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:enabled="false"
+        android:background="@android:color/transparent"
         android:onClick="onSendClicked"
-        android:text="Send"
+        android:text="SEND"
+        roboto:typeface="regular" />
+        
+    <com.eevoskos.robotoviews.widget.RobotoEditText
+        android:id="@+id/etChatWindowMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/btnChatWindowSend"
+        android:layout_alignBottom="@+id/btnChatWindowSend"
+        android:paddingBottom="13dp"
+        android:hint="@string/hint_new_chat"
+        android:autoLink="all"
         roboto:typeface="light" />
+
+
 
 </RelativeLayout>
 
