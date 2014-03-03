@@ -9,6 +9,8 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.hush.utils.Constants;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,9 +30,8 @@ public class HushPushReceiver extends BroadcastReceiver {
 		try {
 			String action = intent.getAction();
 			Log.d(TAG, "got action " + action);
-			if (action.equals("com.hush.HUSH_MESSAGE")) {
+			if (action.equals(Constants.pushNotifAction)) {
 				JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-				Log.d(TAG, "got action " + action );
 				
 				Iterator<?> itr = json.keys();
 				while (itr.hasNext()) {
@@ -50,7 +51,7 @@ public class HushPushReceiver extends BroadcastReceiver {
 						}
 						
 						//TODO: Invoke a method on the correct activity (if it is running) to load the updated file
-				        context.sendBroadcast(new Intent("com.hush.HUSH_MESSAGE_INTERNAL"));
+				        context.sendBroadcast(new Intent(Constants.pushNotifActionInternal));
 					}
 				}
 			}

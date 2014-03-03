@@ -18,6 +18,7 @@ import com.hush.R;
 import com.hush.fragments.PrivateChatsFragment;
 import com.hush.fragments.PublicChatsFragment;
 import com.hush.listeners.FragmentTabListener;
+import com.hush.utils.Constants;
 import com.parse.ParseUser;
 
 public class ChatsListActivity extends FragmentActivity {
@@ -58,7 +59,7 @@ public class ChatsListActivity extends FragmentActivity {
 
 		// Register this activity as the broadcast receiver with
 		// whatever message you want to receive as the action
-        this.registerReceiver(this.pushNotifReceiver, new IntentFilter("com.hush.HUSH_MESSAGE_INTERNAL"));
+        this.registerReceiver(this.pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
 	}
 
 	private void updateChatsAdapterFromDisk() {

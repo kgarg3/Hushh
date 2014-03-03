@@ -24,6 +24,7 @@ import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.utils.AsyncHelper;
+import com.hush.utils.Constants;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -80,7 +81,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		
 		// Register this activity as the broadcast receiver with
 		// whatever message you want to receive as the action
-        this.registerReceiver(this.pushNotifReceiver, new IntentFilter("com.hush.HUSH_MESSAGE_INTERNAL"));
+        this.registerReceiver(this.pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
         
         updateMessagesAdapterFromDisk();
 	}

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.hush.HushPushReceiver;
 import com.hush.utils.AsyncHelper;
+import com.hush.utils.Constants;
 import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
@@ -65,7 +66,7 @@ public class Chat extends ParseObject {
 						JSONObject obj = null;
 						try {
 							obj = new JSONObject();
-							obj.put("action", "com.hush.HUSH_MESSAGE");
+							obj.put("action", Constants.pushNotifAction);
 							obj.put("customdata", pushType.toString() + "|" + message);
 						} catch (JSONException je) {
 							je.printStackTrace();
