@@ -23,9 +23,11 @@ import com.hush.adapter.MessageAdapter;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
+import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
 import com.hush.utils.Constants;
 import com.hush.utils.HushPushReceiver;
+import com.parse.ParseException;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -134,7 +136,11 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	public void onLeaveChatClick(MenuItem mi) {
-		// TODO: Remove the user from parse
+		
+		User user = HushApp.getCurrentUser();
+		user.removeChat(chat);
+		user.saveToParse();
+
 		Intent i = new Intent(ChatWindowActivity.this, ChatsListActivity.class);
 		startActivity(i);
 	}
