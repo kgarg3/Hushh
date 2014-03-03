@@ -6,13 +6,8 @@
         android:icon="@drawable/ic_num_participants"
         android:orderInCategory="99"
         android:showAsAction="always"
-        android:title="@string/empty"/>
-    <item
-        android:id="@+id/action_invite_friends"
-        android:onClick="onInviteFriendsClick"
-        android:orderInCategory="99"
-        android:showAsAction="always"
-        android:title="@string/action_total_chatters"/>
+        android:title="15"/>
+  
     <item
         android:id="@+id/action_leave_chat"
         android:icon="@drawable/ic_action_leave_chat"
