@@ -28,6 +28,7 @@
     	android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/tvChatTopic"
         android:layout_alignParentLeft="true"
+        android:scrollbars="none"
         android:layout_above="@+id/rlMessageContainter"
         android:transcriptMode="alwaysScroll"
         android:divider="@null"
@@ -41,7 +42,7 @@
         android:layout_alignParentRight="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#dfd6e0">
+        android:background="@color/light_purple">
         
 	    <com.eevoskos.robotoviews.widget.RobotoButton
 	        android:id="@+id/btnChatWindowSend"
