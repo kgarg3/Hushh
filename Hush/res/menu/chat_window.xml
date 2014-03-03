@@ -1,18 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_invite_friends"
+        android:id="@+id/num_participants"
+        android:enabled="false"
+        android:icon="@drawable/ic_num_participants"
         android:orderInCategory="99"
         android:showAsAction="always"
-        android:onClick="onInviteFriendsClick"
-        android:title="@string/action_total_chatters"/>
-
+        android:title="15"/>
+  
     <item
         android:id="@+id/action_leave_chat"
+        android:icon="@drawable/ic_action_leave_chat"
+        android:onClick="onLeaveChatClick"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:onClick="onLeaveChatClick"
-        android:icon="@drawable/ic_action_leave_chat"
         android:title="@string/action_leave_chat"/>
 
 </menu>

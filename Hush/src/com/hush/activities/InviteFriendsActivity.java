@@ -123,9 +123,7 @@ public class InviteFriendsActivity extends Activity {
     */
 
     private void uploadFriendsAsLayerContacts() {
-    	HushApp application = (HushApp) getApplication();
-
-        Collection<GraphUser> selection = application.getSelectedUsers();
+        Collection<GraphUser> selection = HushApp.getSelectedUsers();
         
         if (selection == null || selection.size() == 0) { return; }
 
