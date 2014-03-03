@@ -5,6 +5,7 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:onClick="onDoneClick"
+        android:enabled="false"
         android:title="@string/action_view_chat"/>
 
 </menu>
