@@ -68,7 +68,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
             	// If it is a new chat notif, then add this chat to the user's chat.
             	// That will indicate user has joined the chat
             	
-            	
             	updateMessagesAdapterFromDisk();
             }
         };
@@ -212,21 +211,13 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 				} else {
 					btnChatWindowSend.setEnabled(false);
 				}
-				
 			}
 			
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 			
 			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-			}
+			public void afterTextChanged(Editable s) { }
 		});
 	}
 

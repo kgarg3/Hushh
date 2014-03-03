@@ -37,6 +37,8 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		
 		Message message = getItem(position);
 
+		// Use convert view
+		/*
 		ViewHolder viewHolder; // view lookup cache stored in tag
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
@@ -45,7 +47,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			viewHolder.content = (TextView) convertView.findViewById(R.id.tvContent);
 			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
 			
-			viewHolder.bubble_wrapper = (LayerDrawable) activityContext.getResources().getDrawable(R.drawable.message_bubble);
+			viewHolder.bubble_wrapper = (LayerDrawable) convertView.getResources().getDrawable(R.drawable.message_bubble);
 			viewHolder.outerRect = (GradientDrawable) viewHolder.bubble_wrapper.findDrawableByLayerId(R.id.outerRectangle);
 
 			convertView.setTag(viewHolder);
@@ -59,7 +61,26 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		} else {
 			viewHolder.outerRect.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
 		}
-		
+
 		return convertView;
+		*/
+
+		// TODO: Hack for demo, move to using above convertView later on
+		// Return new view 
+		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = inflater.inflate(R.layout.message_item, null);
+		TextView tvContent = (TextView) view.findViewById(R.id.tvContent);
+			
+		LayerDrawable bubbleWrapper = (LayerDrawable) view.getResources().getDrawable(R.drawable.message_bubble);
+		GradientDrawable outerRectangle = (GradientDrawable) bubbleWrapper.findDrawableByLayerId(R.id.outerRectangle);
+
+		tvContent.setText(message.getContent());
+		if (message.getChatterFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
+			outerRectangle.setColor(Color.parseColor(getContext().getString(R.color.purple)));
+		} else {
+			outerRectangle.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
+		}
+
+		return view;
 	}
 }
