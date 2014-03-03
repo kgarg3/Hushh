@@ -3,7 +3,6 @@ package com.hush.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
@@ -20,6 +19,9 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	
 	Context activityContext;
 	
+	private int MY_MESSAGE = 0;
+	private int OTHER_MESSAGE = 1;
+	
 	// View lookup cache
 	private static class ViewHolder {
 		TextView content;
@@ -31,6 +33,27 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		super(context, 0, messages);
 		activityContext = context;
 	}
+	
+	 // Returns the number of types of Views that will be created by getView(int, View, ViewGroup)
+    @Override
+    public int getViewTypeCount() {
+       // Returns the number of types of Views that will be created by this adapter
+       // Each type represents a set of views that can be converted
+    	return 2;
+    }
+    
+    // Get the type of View that will be created by getView(int, View, ViewGroup) for the specified item.
+    @Override
+    public int getItemViewType(int position) {
+       // Return an integer here representing the type of View.
+       // Note: Integers must be in the range 0 to getViewTypeCount() - 1
+    	Message message = getItem(position);
+		if (message.getChatterFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
+			return MY_MESSAGE;
+		} else {
+			return OTHER_MESSAGE;
+		}
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -38,49 +61,29 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		Message message = getItem(position);
 
 		// Use convert view
-		/*
+
 		ViewHolder viewHolder; // view lookup cache stored in tag
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
 			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.message_item, null);
+			
+			// Get the data item type for this position
+			int type = getItemViewType(position);
+			if(type == MY_MESSAGE) {
+				convertView = inflater.inflate(R.layout.message_item, null);
+			} else {
+				convertView = inflater.inflate(R.layout.message_item_other, null);
+			}
+			
 			viewHolder.content = (TextView) convertView.findViewById(R.id.tvContent);
 			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
-			
-			viewHolder.bubble_wrapper = (LayerDrawable) convertView.getResources().getDrawable(R.drawable.message_bubble);
-			viewHolder.outerRect = (GradientDrawable) viewHolder.bubble_wrapper.findDrawableByLayerId(R.id.outerRectangle);
-
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
 		viewHolder.content.setText(message.getContent());
-		if (message.getChatterFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
-			viewHolder.outerRect.setColor(Color.parseColor(getContext().getString(R.color.purple)));
-		} else {
-			viewHolder.outerRect.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
-		}
 
 		return convertView;
-		*/
-
-		// TODO: Hack for demo, move to using above convertView later on
-		// Return new view 
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.message_item, null);
-		TextView tvContent = (TextView) view.findViewById(R.id.tvContent);
-			
-		LayerDrawable bubbleWrapper = (LayerDrawable) view.getResources().getDrawable(R.drawable.message_bubble);
-		GradientDrawable outerRectangle = (GradientDrawable) bubbleWrapper.findDrawableByLayerId(R.id.outerRectangle);
-
-		tvContent.setText(message.getContent());
-		if (message.getChatterFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
-			outerRectangle.setColor(Color.parseColor(getContext().getString(R.color.purple)));
-		} else {
-			outerRectangle.setColor(Color.parseColor(getContext().getString(R.color.light_purple)));
-		}
-
-		return view;
 	}
 }
