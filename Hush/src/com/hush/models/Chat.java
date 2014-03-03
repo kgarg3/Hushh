@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.hush.HushApp;
 import com.hush.utils.AsyncHelper;
+import com.hush.utils.HushPushNotifReceiver;
 import com.hush.utils.HushPushNotifSender;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -66,7 +67,12 @@ public class Chat extends ParseObject {
 							return;
 						}
 						
-						HushPushNotifSender.sendPushNotifToUsers(parseUsers, notifTitle, message, pushType, "newChatId:" + getObjectId());
+						String customData = message;
+						if (pushType.equals(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
+							customData = "newChatId:" + getObjectId();
+						}
+						
+						HushPushNotifSender.sendPushNotifToUsers(parseUsers, notifTitle, message, pushType, customData);
 					}
 				
 				});

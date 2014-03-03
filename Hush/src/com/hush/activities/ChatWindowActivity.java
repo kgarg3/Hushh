@@ -126,7 +126,10 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         }
         
         for(Chatter chatter: chatters) {
-        	chatterFacebookIds.add(chatter.getFacebookId());
+        	// Send the notif to everyone except yourself
+        	if (!chatter.getFacebookId().equals(HushApp.getCurrentUser().getFacebookId())) {
+        		chatterFacebookIds.add(chatter.getFacebookId());
+        	}
         }
 	}
 
@@ -151,13 +154,12 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
     	message.saveToParse();
     	
     	chat.addMessage(message);
-        chat.saveToParse();
+    	
+		// Save to parse and send a push notification
+        chat.saveToParseWithPush(getString(R.string.app_name), HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
         
         adapterMessages.add(message);
         
-		// Send a push notification
-    	chat.saveToParseWithPush(getString(R.string.app_name), HushPushNotifReceiver.pushType.NEW_CHAT.toString(), message.getContent(), getChatterFacebookIds());
-
     	etChatWindowMessage.setText("");
 	}
 	
@@ -195,8 +197,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
                 public void onNegative() {
                     // handle cancel
                 }
-        }
-       ).show();
+        }).show();
 	}
 	
 	private void configureChatWindowMessage() {
