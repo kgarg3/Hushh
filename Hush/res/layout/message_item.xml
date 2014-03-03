@@ -10,7 +10,7 @@
 
 	<RelativeLayout
 		android:id="@+id/message_bubble_wrapper"
-	    android:layout_width="match_parent"
+	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
 	    android:background="@drawable/message_bubble"
 	    android:paddingLeft="10dp">
