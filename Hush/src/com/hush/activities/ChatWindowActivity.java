@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.adapter.MessageAdapter;
+import com.hush.fragments.SimpleAlertDialog;
+import com.hush.fragments.SimpleAlertDialog.SimpleAlertListener;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
 import com.hush.models.Message;
@@ -136,13 +138,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 
 	public void onLeaveChatClick(MenuItem mi) {
-		
-		User user = HushApp.getCurrentUser();
-		user.removeChat(chat);
-		user.saveToParse();
-
-		Intent i = new Intent(ChatWindowActivity.this, ChatsListActivity.class);
-		startActivity(i);
+		showDialog();
 	}
 
 	public void onSendClicked(View v) {
@@ -179,5 +175,26 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {	}
+	
+	private void showDialog() {
+        SimpleAlertDialog.build(this, 
+            (String) getText(R.string.chat_window_leave_prompt), "YES", "NO", new SimpleAlertListener() {
+                @Override
+                public void onPositive() {
+            		User user = HushApp.getCurrentUser();
+            		user.removeChat(chat);
+            		user.saveToParse();
+            		
+            		Intent i = new Intent(ChatWindowActivity.this, ChatsListActivity.class);
+            		startActivity(i);
+                }
+
+                @Override
+                public void onNegative() {
+                    // handle cancel
+                }
+        }
+       ).show();
+	}
 
 }
