@@ -15,7 +15,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.hush.R;
-import com.hush.activities.ChatsListActivity;
+import com.hush.activities.HushLoginActivity;
 import com.hush.models.Chat;
 
 public class HushPushNotifReceiver extends BroadcastReceiver {
@@ -69,7 +69,7 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 	}
 	
 	private void generateNotification(Context context, String chatId, String pushMessage) {
-		Intent intent = new Intent(context, ChatsListActivity.class);
+		Intent intent = new Intent(context, HushLoginActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 		NotificationManager mNotifM = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
