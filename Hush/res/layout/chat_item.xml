@@ -13,6 +13,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/rlClock"
         android:gravity="fill_horizontal"
+        android:paddingLeft="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_margin="@dimen/chat_item_margins"
         android:text="@string/empty"
         android:textAlignment="viewStart"
