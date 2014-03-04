@@ -7,33 +7,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".HushLoginActivity" >
     
+    <ImageView
+   	    android:id="@+id/ivChatIconBlack"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignParentRight="true"
+   	    android:layout_marginRight="50dp"
+   	    android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+   	    android:contentDescription="black chat bubble"
+   	    android:src="@drawable/hush_logo_bubble" />
+    
    	<ImageView
         android:id="@+id/ivChatIconWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/ivChatIconBlack"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
         android:contentDescription="white chat bubble"
         android:src="@drawable/chat_icon_white" />
-   	
-   	<ImageView
-        android:id="@+id/ivChatIconBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="50dp"
-        android:layout_below="@+id/ivChatIconWhite"
-        android:contentDescription="black chat bubble"
-        android:src="@drawable/chat_icon_black" />
+   
     
     <com.eevoskos.robotoviews.widget.RobotoTextView
         android:id="@+id/tvLoginActivityJoinHushTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/ivChatIconBlack"
+        android:layout_below="@+id/ivChatIconWhite"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
