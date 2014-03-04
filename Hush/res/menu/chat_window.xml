@@ -3,8 +3,17 @@
     <item
         android:id="@+id/num_participants"
         android:enabled="false"
+        android:orderInCategory="98"
+        android:showAsAction="always"
+        android:visible="false"/>
+    
+   <item
+        android:id="@+id/invite_friends"
+        android:enabled="true"
+        android:icon="@drawable/ic_add"
         android:orderInCategory="99"
         android:showAsAction="always"
+        android:onClick="onInviteFriendsClick"
         android:visible="false"/>
   
     <item

@@ -1,12 +1,14 @@
 package com.hush.activities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -20,6 +22,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.adapter.MessageAdapter;
@@ -37,6 +42,8 @@ import com.hush.utils.HushUtils;
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
 	private int maxMessages = 50;
+	private static final int PICK_FRIENDS_ACTIVITY = 1;
+	boolean pickFriendsWhenSessionOpened;
 	
 	private TextView tvChatTopic;
 	private ListView lvMessages;
@@ -128,6 +135,11 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		
 		this.menu = menu;
 		
+        if(chat.getType().equals("public")) {
+        	MenuItem inviteFriendsItem = menu.getItem(1);
+        	inviteFriendsItem.setVisible(true);
+        }
+		
 		return true;
 	}
 
@@ -150,8 +162,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	
 	// menu actions
 	public void onInviteFriendsClick(MenuItem mi) {
-		Intent i = new Intent(ChatWindowActivity.this, InviteFriendsActivity.class);
-		startActivity(i);
+		startPickFriendsActivity();
 	}
 
 	public void onLeaveChatClick(MenuItem mi) {
@@ -178,7 +189,13 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	public void chattersFetched(List<Chatter> inChatters) {
 		chatters = inChatters;
 		
-		configureNumParticipantsMenuItem();
+		Collection<GraphUser> selectedFriends = HushApp.getSelectedUsers();
+		int numParticipants = chatters.size();
+		if (selectedFriends == null || selectedFriends.size() == 0) {
+			configureNumParticipantsMenuItem(numParticipants);
+		} else {
+			configureNumParticipantsMenuItem(numParticipants + selectedFriends.size());
+		}
 	    
 		setChatterFacebookIds();
 	}
@@ -193,6 +210,56 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case PICK_FRIENDS_ACTIVITY:
+			displayFriendCount();       
+			break;
+		default:
+			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+			break;
+		}
+	}
+	
+	private void displayFriendCount() {
+		Collection<GraphUser> selectedFriends = HushApp.getSelectedUsers();
+
+		if (selectedFriends == null || selectedFriends.size() == 0) { return; }
+		
+		Chatter chatter;
+		final ArrayList<String> fbChatterIds = new ArrayList<String>();
+		Collection<GraphUser> selection = HushApp.getSelectedUsers();
+		for (GraphUser user : selection) {
+			chatter = new Chatter(user.getId(), user.getName());
+			fbChatterIds.add(user.getId());
+			chatter.saveToParse();
+			chat.addChatter(chatter);
+		}
+		
+		// Send a push notification
+    	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+
+		// Need to add selected users as chatters
+//		chat.addChatter(new);
+		configureNumParticipantsMenuItem(chatters.size() + selectedFriends.size());
+	}
+	
+	// private methods
+	private void startPickFriendsActivity() {
+		if (ensureOpenSession()) {
+			Intent intent = new Intent(this, PickFriendsActivity.class);
+
+				// Note: The following line is optional, as multi-select behavior is the default for
+				// FriendPickerFragment. It is here to demonstrate how parameters could be passed to the
+				// friend picker if single-select functionality was desired, or if a different user ID was
+				// desired (for instance, to see friends of a friend).
+			PickFriendsActivity.populateParameters(intent, null, true, true);
+			startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
+		} else {
+			pickFriendsWhenSessionOpened = true;
+		}
+	}
 	
 	private void showDialog() {
         SimpleAlertDialog.build(this, 
@@ -236,15 +303,36 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		});
 	}
 	
-	private void configureNumParticipantsMenuItem() {
+	private void configureNumParticipantsMenuItem(int chattersCount) {
 		// # of participants
 		MenuItem numParticipantsItem = this.menu.getItem(0);
-		String numParticipants = "(" + chatters.size() + ")";				
+		String numParticipants = "(" + chattersCount + ")";				
 		numParticipantsItem.setActionView(R.layout.num_participants);
 		View numParticipantsActionView = numParticipantsItem.getActionView();
 		TextView tvNumParticipants = (TextView) numParticipantsActionView.findViewById(R.id.tvNumParticipants);
 		tvNumParticipants.setText(numParticipants);
 		numParticipantsItem.setVisible(true);
+	}
+	
+	private boolean ensureOpenSession() {
+		if (Session.getActiveSession() == null || !Session.getActiveSession().isOpened()) {
+			Session.openActiveSession(this, true, new Session.StatusCallback() {
+				@Override
+				public void call(Session session, SessionState state, Exception exception) {
+					onSessionStateChanged(session, state, exception);
+				}
+			});
+			return false;
+		}
+		return true;
+	}
+
+	private void onSessionStateChanged(Session session, SessionState state, Exception exception) {
+		if (pickFriendsWhenSessionOpened && state.isOpened()) {
+			pickFriendsWhenSessionOpened = false;
+
+			startPickFriendsActivity();
+		}
 	}
 
 }
