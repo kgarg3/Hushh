@@ -3,10 +3,9 @@
     <item
         android:id="@+id/num_participants"
         android:enabled="false"
-        android:icon="@drawable/ic_num_participants"
         android:orderInCategory="99"
         android:showAsAction="always"
-        android:title="15"/>
+        android:visible="false"/>
   
     <item
         android:id="@+id/action_leave_chat"
