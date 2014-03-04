@@ -128,6 +128,11 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		
 		this.menu = menu;
 		
+        if(chat.getType().equals("public")) {
+        	MenuItem inviteFriendsItem = menu.getItem(1);
+        	inviteFriendsItem.setVisible(true);
+        }
+		
 		return true;
 	}
 
