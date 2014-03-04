@@ -13,6 +13,7 @@
         android:icon="@drawable/ic_add"
         android:orderInCategory="99"
         android:showAsAction="always"
+        android:onClick="onInviteFriendsClick"
         android:visible="false"/>
   
     <item
