@@ -42,6 +42,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private ListView lvMessages;
 	private EditText etChatWindowMessage;
 	private MessageAdapter adapterMessages;
+	private Menu menu;
 
 	private static Chat chat;
 	private static List<Chatter> chatters;
@@ -124,6 +125,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.chat_window, menu);
+		
+		this.menu = menu;
+		
 		return true;
 	}
 
@@ -173,6 +177,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	@Override
 	public void chattersFetched(List<Chatter> inChatters) {
 		chatters = inChatters;
+		
+		configureNumParticipantsMenuItem();
+	    
 		setChatterFacebookIds();
 	}
 
@@ -227,6 +234,17 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
+	}
+	
+	private void configureNumParticipantsMenuItem() {
+		// # of participants
+		MenuItem numParticipantsItem = this.menu.getItem(0);
+		String numParticipants = "(" + chatters.size() + ")";				
+		numParticipantsItem.setActionView(R.layout.num_participants);
+		View numParticipantsActionView = numParticipantsItem.getActionView();
+		TextView tvNumParticipants = (TextView) numParticipantsActionView.findViewById(R.id.tvNumParticipants);
+		tvNumParticipants.setText(numParticipants);
+		numParticipantsItem.setVisible(true);
 	}
 
 }
