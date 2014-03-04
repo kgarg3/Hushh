@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.hush.HushApp;
 import com.hush.utils.AsyncHelper;
-import com.hush.utils.HushPushNotifReceiver;
 import com.hush.utils.HushPushNotifSender;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -40,14 +39,14 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
-	public void saveToParseWithPush(final String notifTitle, final String pushType, final String message, final ArrayList<String> fbChattersToNotify) 
+	public void saveToParseWithPush(final String notifTitle, final String pushType, final String pushMessage, final ArrayList<String> fbChattersToNotify) 
 	{
+		//TODO: Copied over in message, refactor this
 		saveEventually(new SaveCallback() {
 			
 			@Override
 			public void done(ParseException e) {
 				if (e != null) {
-					Log.d(TAG, "you're screwed");
 					Log.d(TAG, e.getMessage());
 					return;
 				}
@@ -62,17 +61,12 @@ public class Chat extends ParseObject {
 					@Override
 					public void done(List<ParseUser> parseUsers, ParseException e) {
 						if (e != null) {
-							Log.d(TAG, "you're screwed");
 							Log.d(TAG, e.getMessage());
 							return;
 						}
 						
-						String customData = message;
-						if (pushType.equals(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
-							customData = "newChatId:" + getObjectId();
-						}
-						
-						HushPushNotifSender.sendPushNotifToUsers(parseUsers, notifTitle, message, pushType, customData);
+						String customData = "chatId" + "|" + getObjectId() + "|" + pushMessage;
+						HushPushNotifSender.sendPushNotifToUsers(parseUsers, notifTitle, pushMessage, pushType, customData);
 					}
 				
 				});
@@ -113,7 +107,6 @@ public class Chat extends ParseObject {
 		query.getInBackground(chatObjectId, new GetCallback<Chat>() {
 			public void done(Chat chat, ParseException e) {
 				if (e != null) {
-					Log.d(TAG, "you're screwed");
 					Log.d(TAG, e.getMessage());
 					return;
 				}
@@ -136,15 +129,17 @@ public class Chat extends ParseObject {
 
 			@Override
 			public void done(List<Chatter> chatterResults, ParseException e) {
-				if (e == null) {
-					for (Chatter chatter : chatterResults) {
-		    			chatter.getString("name");
-		    			chatter.getString("facebookId");
-		    			chatters.add(chatter);
-		    		}
-				} else {
-					Log.d(TAG, "you're screwed");
+				if (e != null) {
+					Log.d(TAG, e.getMessage());
+					return;
 				}
+
+				for (Chatter chatter : chatterResults) {
+	    			chatter.getString("name");
+	    			chatter.getString("facebookId");
+	    			chatters.add(chatter);
+	    		}
+
 				// Inform the caller that the operation was completed, so they can query the results back
 				ah.chattersFetched(chatters);
 			}
@@ -179,7 +174,6 @@ public class Chat extends ParseObject {
 			@Override
 			public void done(List<Message> messageResults, ParseException e) {
 				if (e != null) {
-					Log.d(TAG, "you're screwed");
 					Log.d(TAG, e.getMessage());
 					return;
 				}

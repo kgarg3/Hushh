@@ -3,8 +3,14 @@ package com.hush.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +24,12 @@ import com.hush.models.Chatter;
 import com.hush.models.Message;
 import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
+import com.hush.utils.Constants;
+import com.hush.utils.HushPushNotifReceiver;
+import com.hush.utils.HushUtils;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -40,6 +52,22 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	protected User user = HushApp.getCurrentUser();
 	protected List<Chat> chats;
 
+	private BroadcastReceiver pushNotifReceiver;
+    
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// Create the broadcast receiver object
+        pushNotifReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            	updateChatsAdapterFromDisk();
+            }
+        };
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Defines the xml file for the fragment
@@ -82,6 +110,24 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 		});
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		// Register as broadcast receiver
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
+        
+        updateChatsAdapterFromDisk();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		 // Unregister as broadcast receiver
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(pushNotifReceiver);
+	}
+	
 	public ChatAdapter getAdapter() {
 		return adapter;
 	}
@@ -119,19 +165,44 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 		*/
 	}
 	
-	// TODO: ChatsListActivity should call this method to make the fragment load chats from disk 
 	private void updateChatsAdapterFromDisk() {
 		// Read the unread items from disk
-		/*
-			File filesDir = getFilesDir();
-			File todoFile = new File(filesDir, "todo.txt");
+		ArrayList<String> notifs = HushUtils.readFromFile(getActivity());
+		
+		// There is no file to process, everything has been processed already
+		if (notifs.size() == 0) {
+			return;
+		}
+		
+		HushUtils.deleteFile(getActivity());
+		
+		for(final String notifMsg : notifs) {
+			
+			//  "chatId" + "|" + getObjectId() + "|" + pushMessage;
 
-			try {
-				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
-			} catch (IOException e) {
-				todoItems = new ArrayList<String>();
-			}
-		*/
+			String[] notifParts = notifMsg.split("\\|");
+			
+			ParseQuery<Chat> query = ParseQuery.getQuery(Chat.class);
+			query.getInBackground(notifParts[2], new GetCallback<Chat>() {
+				public void done(Chat chat, ParseException e) {
+					if (e != null) {
+						Log.d("TAG", e.getMessage());
+						return;
+					}
+					
+					if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
+						adapter.add(chat);
+						// Mark that chat as unread
+					}
+					else if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString())) {
+						// Mark the chat as unread
+					} else {
+						// This should not happen
+						Log.d("TAG", "Found notifLine: " + notifMsg );
+					}
+				}
+			});
+		}
 	}
 	
 	@Override

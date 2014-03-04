@@ -3,13 +3,9 @@ package com.hush.activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,7 +15,6 @@ import com.hush.R;
 import com.hush.fragments.PrivateChatsFragment;
 import com.hush.fragments.PublicChatsFragment;
 import com.hush.listeners.FragmentTabListener;
-import com.hush.utils.Constants;
 import com.parse.ParseUser;
 
 public class ChatsListActivity extends FragmentActivity {
@@ -28,53 +23,12 @@ public class ChatsListActivity extends FragmentActivity {
 	private static final String TAB_PRIVATE_CHATS_TAG = "PrivateChatsFragment";
 	private static final String TAB_PUBLIC_CHATS_TAG = "PublicChatsFragment";
 
-	// TODO: Move into fragment
-	private BroadcastReceiver pushNotifReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-        	
-        	// TODO: Call a method on the fragment to update the adapter from disk
-        	updateChatsAdapterFromDisk();
-        }
-    };
-    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chats_list);
 
 		setupNavgationTabs();
-	}
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        
-        // Unregister as broadcast receiver
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(pushNotifReceiver);
-    }
-    
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-        // Register as broadcast receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
-
-	}
-
-	private void updateChatsAdapterFromDisk() {
-		// Read the unread items from disk
-		/*
-			File filesDir = getFilesDir();
-			File todoFile = new File(filesDir, "todo.txt");
-
-			try {
-				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
-			} catch (IOException e) {
-				todoItems = new ArrayList<String>();
-			}
-		*/
 	}
 
 	private void setupNavgationTabs() {

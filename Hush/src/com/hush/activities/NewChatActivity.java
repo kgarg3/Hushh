@@ -95,7 +95,7 @@ public class NewChatActivity extends Activity {
 		Collection<GraphUser> selection = HushApp.getSelectedUsers();
 		for (GraphUser user : selection) {
 			chatter = new Chatter(user.getId(), user.getName());
-			fbChatterIds.add(chatter.getFacebookId());
+			fbChatterIds.add(user.getId());
 			chatter.saveToParse();
 			chat.addChatter(chatter);
 		}

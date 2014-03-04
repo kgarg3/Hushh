@@ -1,21 +1,17 @@
 package com.hush.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.hush.models.Chat;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
+import com.hush.models.Chat;
 
 public class HushPushNotifReceiver extends BroadcastReceiver {
 	
@@ -26,7 +22,7 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(final Context context, Intent intent) {
 
-		File hushNotifsFile = new File(context.getFilesDir(), "hush_notifs.txt");
+		//File hushNotifsFile = new File(context.getFilesDir(), Constants.hushNotifsFile);
 
 		try {
 			String action = intent.getAction();
@@ -41,23 +37,14 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 						
 						String customData = json.getString(key);
 						
-						// Write to file
-						ArrayList<String> notifs = new ArrayList<String>();
-						notifs.add(customData);
-						
 						Log.d(TAG, "Key/value :  " + key + " => " + json.getString(key));
-						
-						try {
-							FileUtils.writeLines(hushNotifsFile, notifs);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						
+	
+						HushUtils.writeToFile(context, customData);
 						
 						// If the push notif is for a new chat, then add the chat to the user's chats in Parse
 						if (customData.startsWith(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
-							String[] chatId = customData.split(":");
-							Chat.addChatToCurrentUserInParse(chatId[1]);
+							String[] chatId = customData.split("\\|");
+							Chat.addChatToCurrentUserInParse(chatId[2]);
 						}
 						
 						// Send a local broadcast for running activities to load the results

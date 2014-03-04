@@ -80,7 +80,6 @@ public class HushLoginActivity extends Activity {
 			public void done(ParseUser user, ParseException e) {
 
 				if (e != null) {
-					Log.d(TAG, "you're screwed");
 					Log.d(TAG, e.getMessage());
 					return;
 				}

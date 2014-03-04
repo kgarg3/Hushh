@@ -70,7 +70,6 @@ public class User extends ParseUser implements AsyncHelper {
 		query.findInBackground(new FindCallback<Chat>() {
 		    public void done(List<Chat> chatsResults, ParseException e) {
 				if (e != null) {
-					Log.d(TAG, "you're screwed");
 					Log.d(TAG, e.getMessage());
 					return;
 				}

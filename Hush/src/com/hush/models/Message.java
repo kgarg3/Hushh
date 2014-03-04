@@ -45,10 +45,8 @@ public class Message extends ParseObject {
 	}
 	
 	public String getFormattedTime(Context context) {
-		String timeString = DateUtils.getRelativeDateTimeString(context, 
-				getCreatedAt().getTime(), 
-				DateUtils.SECOND_IN_MILLIS, 
-				DateUtils.WEEK_IN_MILLIS, 0).toString();
+		String timeString = DateUtils.getRelativeDateTimeString(context, getCreatedAt().getTime(), 
+				DateUtils.SECOND_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0).toString();
 		String formattedTime = timeString.split(",")[0];
 		return formattedTime;
 	}

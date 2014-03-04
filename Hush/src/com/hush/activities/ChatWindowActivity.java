@@ -32,6 +32,7 @@ import com.hush.models.User;
 import com.hush.utils.AsyncHelper;
 import com.hush.utils.Constants;
 import com.hush.utils.HushPushNotifReceiver;
+import com.hush.utils.HushUtils;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
@@ -45,9 +46,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private static Chat chat;
 	private static List<Chatter> chatters;
 	private static ArrayList<String> chatterFacebookIds;
-
+	
 	private BroadcastReceiver pushNotifReceiver;
-    
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,30 +58,19 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
-           
-        configureChatWindowMessage();
         
-        // Create the broadcast receiver object
-        pushNotifReceiver  = new BroadcastReceiver() {
+    	// TODO: Move into fragment
+    	pushNotifReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-            	// If it is a new chat notif, then add this chat to the user's chat.
-            	// That will indicate user has joined the chat
             	
             	updateMessagesAdapterFromDisk();
             }
         };
+        
+        configureChatWindowMessage();
 	}
 	
-    @Override
-    public void onPause() {
-        super.onPause();
-        
-        // Unregister as broadcast receiver
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(pushNotifReceiver);
-    }
-    
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -90,13 +80,46 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		chat.fetchMessagesFromParse(maxMessages, this);
 		
         tvChatTopic.setText(chat.getTopic());
-
-		// Register as broadcast receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
         
+        // Register as broadcast receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
+
         updateMessagesAdapterFromDisk();
 	}
 	
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		// Unregister as broadcast receiver
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(pushNotifReceiver);
+	}
+
+	private void updateMessagesAdapterFromDisk() {
+		// Read the unread items from disk
+		ArrayList<String> notifs = HushUtils.readFromFile(ChatWindowActivity.this);
+		
+		// There is no file to process, everything has been processed already
+		if (notifs.size() == 0) {
+			return;
+		}
+
+		HushUtils.deleteFile(ChatWindowActivity.this);
+		
+		for(String notifMsg : notifs) {
+			if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString())) {
+				String[] notifParts = notifMsg.split("\\|");
+				if(notifParts[2].equals(chat.getObjectId())) {
+					adapterMessages.add(new Message(notifParts[3], "-1"));
+				} else {
+					HushUtils.writeToFile(ChatWindowActivity.this, notifMsg);
+				}
+			} else {
+				HushUtils.writeToFile(ChatWindowActivity.this, notifMsg);
+			}
+		}
+	}
+		
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -104,22 +127,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		return true;
 	}
 
-	private void updateMessagesAdapterFromDisk() {
-		// Read the unread items from disk
-		/*
-			File filesDir = getFilesDir();
-			File todoFile = new File(filesDir, "todo.txt");
-
-			try {
-				todoItems = new ArrayList<String>(FileUtils.readLines(todoFile));
-			} catch (IOException e) {
-				todoItems = new ArrayList<String>();
-			}
-		*/
-		
-		// Update adapter
-	}
-	
 	private void setChatterFacebookIds() {
         if(chatterFacebookIds == null) {
         	chatterFacebookIds = new ArrayList<String>();
