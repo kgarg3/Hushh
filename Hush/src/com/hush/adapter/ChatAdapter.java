@@ -101,7 +101,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 					}
 					else if (secondsUntilFinished >= 60 && secondsUntilFinished < (SEC_PER_HOUR)) {
 						long minUntilFinished = secondsUntilFinished / 60;
-						color = resources.getColor(R.color.blue);
+						color = resources.getColor(R.color.orange);
 						expirationTimeStr = String.valueOf(minUntilFinished) + "m";
 					}
 					else if(secondsUntilFinished >= (SEC_PER_HOUR)) {
