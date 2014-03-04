@@ -88,7 +88,7 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 		if(message.getCreatedAt() != null) {
 			viewHolder.timePosted.setText(message.getFormattedTime(getContext()));	
 		} else {
-			viewHolder.timePosted.setText("");	
+			viewHolder.timePosted.setText("just now");	
 		}
 
 		return convertView;
