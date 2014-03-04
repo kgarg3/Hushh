@@ -32,7 +32,6 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 	private String expirationTimeStr;
 	private int color;
 	private Resources resources;
-	private Chat chat;
 
 	// View lookup cache
 	private static class ViewHolder {
@@ -61,8 +60,8 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 		}
 
 		final View view = convertView;
-		chat = getItem(position);
-
+		final Chat chat = getItem(position);
+		
 		view.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
