@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -72,16 +73,19 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 		Intent intent = new Intent(context, HushLoginActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-		NotificationManager mNotifM = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager notifManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+		NotificationCompat.Builder systemTrayNotif = new NotificationCompat.Builder(context)
 				.setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle(context.getString(R.string.app_name))
 				.setContentText(pushMessage)
 				.setContentIntent(contentIntent);
 
+		// Hide the notification after its selected
+		systemTrayNotif.setAutoCancel(true);
+		
 		// Since chatIds are unique object Ids, their integer hashcodes should not collide
 		// So this will create one new notification per chat 
-		mNotifM.notify(chatId.hashCode(), mBuilder.build());
+		notifManager.notify(chatId.hashCode(), systemTrayNotif.build());
 	}
 }
