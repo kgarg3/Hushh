@@ -82,7 +82,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
         tvChatTopic.setText(chat.getTopic());
         
         // Register as broadcast receiver
-        LocalBroadcastManager.getInstance(this).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
+        LocalBroadcastManager.getInstance(this).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.broadcastLocalMessageAction));
 
         updateMessagesAdapterFromDisk();
 	}
@@ -163,7 +163,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
     	chat.addMessage(message);
     	
 		// Save to parse and send a push notification
-        chat.saveToParseWithPush(getString(R.string.app_name), HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
+        chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
         
         adapterMessages.add(message);
         

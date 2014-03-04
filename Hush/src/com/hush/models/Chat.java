@@ -39,7 +39,7 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
-	public void saveToParseWithPush(final String notifTitle, final String pushType, final String pushMessage, final ArrayList<String> fbChattersToNotify) 
+	public void saveToParseWithPush(final String pushType, final String pushMessage, final ArrayList<String> fbChattersToNotify) 
 	{
 		//TODO: Copied over in message, refactor this
 		saveEventually(new SaveCallback() {
@@ -66,7 +66,7 @@ public class Chat extends ParseObject {
 						}
 						
 						String customData = "chatId" + "|" + getObjectId() + "|" + pushMessage;
-						HushPushNotifSender.sendPushNotifToUsers(parseUsers, notifTitle, pushMessage, pushType, customData);
+						HushPushNotifSender.sendPushNotifToUsers(parseUsers, pushType, customData);
 					}
 				
 				});

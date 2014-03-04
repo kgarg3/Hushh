@@ -12,7 +12,7 @@ import com.parse.ParseUser;
 
 public class HushPushNotifSender {
 
-	public static void sendPushNotifToUsers(List<ParseUser> parseUsers, final String notifTitle, final String notifMessage, final String pushType, final String customData) {
+	public static void sendPushNotifToUsers(List<ParseUser> parseUsers, final String pushType, final String customData) {
 
 		// The fetched Users are linked to the Installation table, so send
 		// notifications to the devices of those users
@@ -23,9 +23,7 @@ public class HushPushNotifSender {
 		JSONObject obj = null;
 		try {
 			obj = new JSONObject();
-			obj.put("title", notifTitle);
-			obj.put("alert", notifMessage);
-			obj.put("action", Constants.pushNotifAction);
+			obj.put("action", Constants.externalPushNotifAction);
 			obj.put("customData", pushType.toString() + "|" + customData);
 		} catch (JSONException je) {
 			je.printStackTrace();

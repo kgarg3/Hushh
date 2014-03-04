@@ -115,7 +115,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 		super.onResume();
 		
 		// Register as broadcast receiver
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.pushNotifActionInternal));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(pushNotifReceiver, new IntentFilter(Constants.broadcastLocalMessageAction));
         
         updateChatsAdapterFromDisk();
 	}

@@ -106,7 +106,7 @@ public class NewChatActivity extends Activity {
 		chat.addChatter(chatter);
 
 		// Send a push notification
-    	chat.saveToParseWithPush(getString(R.string.app_name), HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 
 		// Add the chat to user's chats 
 		HushApp.getCurrentUser().addChat(chat);
