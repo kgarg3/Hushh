@@ -10,7 +10,7 @@
    <item
         android:id="@+id/invite_friends"
         android:enabled="true"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_action_add_friends"
         android:orderInCategory="99"
         android:showAsAction="always"
         android:onClick="onInviteFriendsClick"
