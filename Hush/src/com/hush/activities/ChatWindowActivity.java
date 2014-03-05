@@ -264,7 +264,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		}
 		
 		// Send a push notification
-    	//chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 	}
 	
 	// private methods
