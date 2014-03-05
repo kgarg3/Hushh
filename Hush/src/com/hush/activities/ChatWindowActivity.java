@@ -111,7 +111,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	
 	@Override
     public void onBackPressed() {
-		finish();
+		Intent i = new Intent(ChatWindowActivity.this, ChatsListActivity.class);
+		startActivity(i);
 		overridePendingTransition(R.anim.right_out, R.anim.left_in);
     }
 
