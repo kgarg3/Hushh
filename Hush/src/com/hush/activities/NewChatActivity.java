@@ -160,7 +160,7 @@ public class NewChatActivity extends Activity {
 
 		if (selectedFriends == null || selectedFriends.size() == 0) { return; }
 
-		tvFriendCount.setText("(" + selectedFriends.size() + ")");
+		tvFriendCount.setText("(" + (selectedFriends.size() + 1) + ")");
 		tvFriendCount.setTextColor(Color.parseColor("#669900"));
 	}
 

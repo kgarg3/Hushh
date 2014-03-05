@@ -54,7 +54,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private Button btnChatWindowSend;
 	private Menu menu;
 
-	private static Chat chat;
+	private Chat chat;
 	private List<Chatter> chatters;
 	private ArrayList<String> chatterFacebookIds;
 	
