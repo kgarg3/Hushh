@@ -54,7 +54,7 @@ public class Message extends ParseObject {
 			createdAtDate = getCreatedAt().getTime();
 		}
 		
-		String formattedTime = new SimpleDateFormat("H:mm a").format(createdAtDate);
+		String formattedTime = new SimpleDateFormat("h:mm a").format(createdAtDate);
 		return formattedTime;
 	}
 }
