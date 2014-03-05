@@ -66,6 +66,7 @@
             android:id="@+id/ivRightArrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:alpha="0.3"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/chat_item_margins"
             android:contentDescription="@string/empty"
