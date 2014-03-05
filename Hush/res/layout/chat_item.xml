@@ -8,8 +8,7 @@
     <com.eevoskos.robotoviews.widget.RobotoTextView
         android:id="@+id/tvChatItemChatTopic"
         android:layout_width="@dimen/chat_topic_width"
-        android:layout_height="22dp"
-        android:layout_alignBottom="@+id/rlClock"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/rlClock"
         android:layout_margin="@dimen/chat_item_margins"
@@ -25,6 +24,7 @@
         android:id="@+id/rlClock"
         android:layout_width="@dimen/timer_width"
         android:layout_height="@dimen/timer_width"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/rlRightArrow" >
 
         <com.eevoskos.robotoviews.widget.RobotoTextView
@@ -58,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/chat_item_margins"
         android:layout_marginTop="@dimen/chat_item_margins" >
 
@@ -67,7 +68,6 @@
             android:layout_height="20dp"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/chat_item_margins"
-            android:layout_marginTop="5dp"
             android:contentDescription="@string/empty"
             android:scaleType="fitXY"
             android:src="@drawable/ic_right_arrow" />
