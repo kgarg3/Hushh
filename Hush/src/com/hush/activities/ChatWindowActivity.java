@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -41,20 +40,23 @@ import com.hush.utils.HushUtils;
 
 public class ChatWindowActivity extends FragmentActivity implements AsyncHelper {
 	
-	private int maxMessages = 50;
+	private static final int maxMessages = 50;
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
-	boolean pickFriendsWhenSessionOpened;
+	
+	private boolean pickFriendsWhenSessionOpened;
 	private int numFriendsSelected;
+	private boolean enableSend = false;
 	
 	private TextView tvChatTopic;
 	private ListView lvMessages;
 	private EditText etChatWindowMessage;
 	private MessageAdapter adapterMessages;
+	private Button btnChatWindowSend;
 	private Menu menu;
 
 	private static Chat chat;
-	private static List<Chatter> chatters;
-	private static ArrayList<String> chatterFacebookIds;
+	private List<Chatter> chatters;
+	private ArrayList<String> chatterFacebookIds;
 	
 	private BroadcastReceiver pushNotifReceiver;
 
@@ -64,13 +66,14 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		setContentView(R.layout.activity_chat_window);
 
 		tvChatTopic = (TextView) findViewById(R.id.tvChatTopic);
+		etChatWindowMessage = ((EditText) findViewById(R.id.etChatWindowMessage));
 		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
+		btnChatWindowSend = (Button) findViewById(R.id.btnChatWindowSend);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
         
         numFriendsSelected = 0;
         
-    	// TODO: Move into fragment
     	pushNotifReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -179,8 +182,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
     	message.saveToParse();
     	
     	chat.addMessage(message);
+    	chat.saveToParse();
     	
-		// Save to parse and send a push notification
+    	// Save to parse and send a push notification
         chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
         
         adapterMessages.add(message);
@@ -196,6 +200,13 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		configureNumParticipantsMenuItem(numParticipants + numFriendsSelected);
 	    
 		setChatterFacebookIds();
+		
+		enableSend = true;
+		if(etChatWindowMessage.getText().toString() != null &&
+				etChatWindowMessage.getText().toString().length() > 0)
+		{
+			btnChatWindowSend.setEnabled(enableSend);
+		}
 	}
 
 	@Override
@@ -237,7 +248,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		}
 		
 		// Send a push notification
-    	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	//chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 	}
 	
 	// private methods
@@ -277,13 +288,11 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	}
 	
 	private void configureChatWindowMessage() {
-		final Button btnChatWindowSend = (Button) findViewById(R.id.btnChatWindowSend);
-        etChatWindowMessage = ((EditText) findViewById(R.id.etChatWindowMessage));
         etChatWindowMessage.addTextChangedListener(new TextWatcher() {
 			
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if(etChatWindowMessage.length() > 0) {
+				if(etChatWindowMessage.length() > 0 && enableSend) {
 					btnChatWindowSend.setEnabled(true);
 				} else {
 					btnChatWindowSend.setEnabled(false);

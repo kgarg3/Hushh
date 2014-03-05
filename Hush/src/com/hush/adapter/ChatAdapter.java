@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,18 +67,26 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 			@Override
 			public void onClick(View v) {
 				HushApp.getCurrentUser().setCurrentChat(chat);
+				chat.setRead(true);
 				Intent intent = new Intent(getContext(), ChatWindowActivity.class);
 				getContext().startActivity(intent);
 			}
 		});
 
-		viewHolder.topic.setText(chat.getTopic());
+		
+		//Set only the first 25 chars of the chat topic, else it overflows onto the next line
+		//which is not seen. Add ... after the 25th char
+		String topic = chat.getTopic();
+		if(topic.length() > 35) { 
+			topic = topic + "...";
+		}
+		viewHolder.topic.setText(topic);
 
-		// TODO: if chat has notifications and is unread
-		// if(chat is unread)
-		// make the text bold, else normal
-		// make the view background gray else white
-
+		//if the chat is not read, make it gray and bold the text
+		 if(!chat.isRead()) {
+			view.setBackgroundColor(resources.getColor(R.color.dark_gray)); 
+			viewHolder.topic.setTypeface(null, Typeface.BOLD);
+		 }
 
 		
 		if(chat.getCreatedAt().getTime() + MILLISEC_PER_DAY < (new Date()).getTime()) {

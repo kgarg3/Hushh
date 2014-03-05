@@ -102,7 +102,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 				// Make sure you call listView.onRefreshComplete()
 				// once the loading is done. This can be done from here or any
 				// place such as when the network request has completed successfully.
-				loadChatsIntoAdapter();
+				HushApp.getCurrentUser().fetchChatsFromParse(ChatListFragment.this);
 				
 				// Now we call onRefreshComplete to signify refresh has finished
 				lvChats.onRefreshComplete();
@@ -191,11 +191,13 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 					}
 					
 					if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
+						chat.setRead(false);
 						adapter.add(chat);
 						// Mark that chat as unread
 					}
 					else if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString())) {
 						// Mark the chat as unread
+						chat.setRead(false);
 					} else {
 						// This should not happen
 						Log.d("TAG", "Found notifLine: " + notifMsg );

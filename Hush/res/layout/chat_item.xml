@@ -12,43 +12,65 @@
         android:layout_alignBottom="@+id/rlClock"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/rlClock"
+        android:layout_margin="@dimen/chat_item_margins"
+        android:layout_toLeftOf="@+id/rlClock"
         android:gravity="fill_horizontal"
         android:paddingLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_margin="@dimen/chat_item_margins"
         android:text="@string/empty"
         android:textAlignment="viewStart"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         roboto:typeface="light" />
 
     <RelativeLayout
         android:id="@+id/rlClock"
         android:layout_width="@dimen/timer_width"
         android:layout_height="@dimen/timer_width"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/chat_item_margins"
-        android:layout_marginTop="@dimen/chat_item_margins" >
-
-        <ImageView
-            android:id="@+id/ivClock"
-            android:layout_width="@dimen/timer_width"
-            android:layout_height="@dimen/timer_width"
-            android:layout_margin="@dimen/chat_item_margins"
-            android:contentDescription="@string/empty"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_clock" />
+        android:layout_toLeftOf="@+id/rlRightArrow" >
 
         <com.eevoskos.robotoviews.widget.RobotoTextView
             android:id="@+id/tvExpirationTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/ivClock"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:text="@string/app_name"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/expiration_time_text_size"
+            roboto:typeface="condensed_bold" />
+
+        <ImageView
+            android:id="@+id/ivClock"
+            android:layout_width="@dimen/timer_width"
+            android:layout_height="@dimen/timer_width"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dip"
-            android:layout_marginRight="10dip"
-            android:text="@string/app_name"
-            roboto:typeface="condensed_bold"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="@dimen/expiration_time_text_size" />
+            android:layout_margin="@dimen/chat_item_margins"
+            android:layout_marginRight="16dp"
+            android:contentDescription="@string/empty"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_clock" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlRightArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/chat_item_margins"
+        android:layout_marginTop="@dimen/chat_item_margins" >
+
+        <ImageView
+            android:id="@+id/ivRightArrow"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/chat_item_margins"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/empty"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_right_arrow" />
 
     </RelativeLayout>
 

@@ -3,8 +3,6 @@ package com.hush.adapter;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +24,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 	private static class ViewHolder {
 		TextView content;
 		TextView timePosted;
-		LayerDrawable bubble_wrapper;
-		GradientDrawable outerRect;
 	}
 	
 	public MessageAdapter(Context context, ArrayList<Message> messages) {

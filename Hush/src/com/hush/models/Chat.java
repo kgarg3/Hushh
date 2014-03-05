@@ -25,6 +25,10 @@ public class Chat extends ParseObject {
 	
 	private final static String TAG = Chat.class.getSimpleName();
 	
+	//when the broadcast receiver processes the chats from the file, we make those chats unread, 
+	//so that the chats show up in the chats list activity.
+	private boolean read = true;
+	
 	// Default public constructor, needed by Parse
 	public Chat() {
 		super();
@@ -101,6 +105,14 @@ public class Chat extends ParseObject {
 	public Date getCreatedAt() {
 		return super.getCreatedAt(); 
 	}
+	
+	public boolean isRead() {
+		return read;
+	}
+	
+	public void setRead(boolean read) {
+		this.read = read;
+	}	
 
 	public static void addChatToCurrentUserInParse(String chatObjectId) {
 		ParseQuery<Chat> query = ParseQuery.getQuery(Chat.class);
