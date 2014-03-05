@@ -108,7 +108,22 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		// Unregister as broadcast receiver
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(pushNotifReceiver);
 	}
+	
+	@Override
+    public void onBackPressed() {
+		finish();
+		overridePendingTransition(R.anim.right_out, R.anim.left_in);
+    }
 
+	 @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+             switch (item.getItemId()) {
+             case android.R.id.home:
+                    onBackPressed(); 
+             }
+             return true;
+     }
+	
 	private void updateMessagesAdapterFromDisk() {
 		// Read the unread items from disk
 		ArrayList<String> notifs = HushUtils.readFromFile(ChatWindowActivity.this);
@@ -278,6 +293,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
             		
             		Intent i = new Intent(ChatWindowActivity.this, ChatsListActivity.class);
             		startActivity(i);
+            		overridePendingTransition(R.anim.right_out, R.anim.left_in);
                 }
 
                 @Override

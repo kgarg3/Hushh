@@ -3,6 +3,7 @@ package com.hush.adapter;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -70,7 +71,10 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 				HushApp.getCurrentUser().setCurrentChat(chat);
 				chat.setRead(true);
 				Intent intent = new Intent(getContext(), ChatWindowActivity.class);
-				getContext().startActivity(intent);
+				
+				Activity parentActivity = (Activity) getContext();
+				parentActivity.startActivity(intent);
+				parentActivity.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 			}
 		});
 
