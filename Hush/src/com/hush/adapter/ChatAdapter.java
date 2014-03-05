@@ -30,6 +30,7 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
 	private static final long MILLISEC_PER_DAY = 24 * 60 * 60 * 1000;
 	private static final long SEC_PER_HOUR = 60 * 60;
+	private static final int CHARACTER_COUNT = 30;
 	private String expirationTimeStr;
 	private int color;
 	private Resources resources;
@@ -74,10 +75,10 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 		});
 
 		
-		//Set only the first 25 chars of the chat topic, else it overflows onto the next line
+		//Set only the first 30 chars of the chat topic, else it overflows onto the next line
 		//which is not seen. Add ... after the 25th char
 		String topic = chat.getTopic();
-		if(topic.length() > 35) { 
+		if(topic.length() > CHARACTER_COUNT) { 
 			topic = topic + "...";
 		}
 		viewHolder.topic.setText(topic);
