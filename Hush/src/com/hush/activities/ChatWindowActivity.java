@@ -44,6 +44,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	private int maxMessages = 50;
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	boolean pickFriendsWhenSessionOpened;
+	private int numFriendsSelected;
 	
 	private TextView tvChatTopic;
 	private ListView lvMessages;
@@ -66,6 +67,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		lvMessages = (ListView) findViewById(R.id.lvChatWindowMessages);
         adapterMessages = new MessageAdapter(this, new ArrayList<Message>());
         lvMessages.setAdapter(adapterMessages);
+        
+        numFriendsSelected = 0;
         
     	// TODO: Move into fragment
     	pushNotifReceiver = new BroadcastReceiver() {
@@ -189,13 +192,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	public void chattersFetched(List<Chatter> inChatters) {
 		chatters = inChatters;
 		
-		Collection<GraphUser> selectedFriends = HushApp.getSelectedUsers();
 		int numParticipants = chatters.size();
-		if (selectedFriends == null || selectedFriends.size() == 0) {
-			configureNumParticipantsMenuItem(numParticipants);
-		} else {
-			configureNumParticipantsMenuItem(numParticipants + selectedFriends.size());
-		}
+		configureNumParticipantsMenuItem(numParticipants + numFriendsSelected);
 	    
 		setChatterFacebookIds();
 	}
@@ -224,8 +222,9 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 	
 	private void displayFriendCount() {
 		Collection<GraphUser> selectedFriends = HushApp.getSelectedUsers();
-
+		
 		if (selectedFriends == null || selectedFriends.size() == 0) { return; }
+		numFriendsSelected = selectedFriends.size();
 		
 		Chatter chatter;
 		final ArrayList<String> fbChatterIds = new ArrayList<String>();
@@ -239,10 +238,6 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		
 		// Send a push notification
     	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
-
-		// Need to add selected users as chatters
-//		chat.addChatter(new);
-		configureNumParticipantsMenuItem(chatters.size() + selectedFriends.size());
 	}
 	
 	// private methods
