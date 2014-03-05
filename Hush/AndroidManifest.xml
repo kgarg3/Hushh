@@ -64,19 +64,6 @@
                 android:value="com.hush.activities.ChatsListActivity" />
         </activity>
         <activity
-            android:name="com.hush.activities.InviteFriendsActivity"
-            android:icon="@drawable/ic_app_icon"
-            android:label="@string/title_activity_invite_friends"
-            android:configChanges="orientation"
-    		android:screenOrientation="portrait"
-            android:parentActivityName="com.hush.activities.ChatsListActivity" >
-
-            <!-- Parent activity meta-data to support API level 7+ -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.hush.activities.ChatsListActivity" />
-        </activity>
-        <activity
             android:name="com.hush.activities.ChatWindowActivity"
             android:icon="@drawable/ic_app_icon"
             android:label="@string/title_activity_chat"
