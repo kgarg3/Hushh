@@ -55,6 +55,11 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			return OTHER_MESSAGE;
 		}
     }
+    
+    @Override
+    public boolean isEnabled(int position) {
+    	return false;
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
