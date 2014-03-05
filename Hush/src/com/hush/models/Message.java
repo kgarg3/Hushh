@@ -1,9 +1,10 @@
 package com.hush.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
-import android.text.format.DateUtils;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
@@ -45,9 +46,15 @@ public class Message extends ParseObject {
 	}
 	
 	public String getFormattedTime(Context context) {
-		String timeString = DateUtils.getRelativeDateTimeString(context, getCreatedAt().getTime(), 
-				DateUtils.SECOND_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0).toString();
-		String formattedTime = timeString.split(",")[0];
+		long createdAtDate;
+		if(getCreatedAt() == null) {
+			Calendar c = Calendar.getInstance(); 
+			createdAtDate = c.getTime().getTime();
+		} else {
+			createdAtDate = getCreatedAt().getTime();
+		}
+		
+		String formattedTime = new SimpleDateFormat("H:mm a").format(createdAtDate);
 		return formattedTime;
 	}
 }

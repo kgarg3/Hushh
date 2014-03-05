@@ -79,18 +79,13 @@ public class MessageAdapter extends ArrayAdapter<Message> {
 			
 			viewHolder.content = (TextView) convertView.findViewById(R.id.tvContent);
 			viewHolder.timePosted = (TextView) convertView.findViewById(R.id.tvTimePosted);
-			// viewHolder.createdAt = (TextView) convertView.findViewById(R.id.tvExpirationTime);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
 		viewHolder.content.setText(message.getContent());
-		if(message.getCreatedAt() != null) {
-			viewHolder.timePosted.setText(message.getFormattedTime(getContext()));	
-		} else {
-			viewHolder.timePosted.setText("just now");	
-		}
+		viewHolder.timePosted.setText(message.getFormattedTime(getContext()));	 
 
 		return convertView;
 	}
