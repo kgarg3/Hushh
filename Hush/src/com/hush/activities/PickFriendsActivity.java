@@ -70,6 +70,7 @@ public class PickFriendsActivity extends FragmentActivity {
 
 				setResult(RESULT_OK, null);
 				finish();
+				overridePendingTransition(android.R.anim.fade_in, R.anim.slide_out_top);
 			}
 		});
 	}

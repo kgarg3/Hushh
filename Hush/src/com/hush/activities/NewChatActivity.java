@@ -129,6 +129,7 @@ public class NewChatActivity extends Activity {
 			// desired (for instance, to see friends of a friend).
 			PickFriendsActivity.populateParameters(intent, null, true, true);
 			startActivityForResult(intent, PICK_FRIENDS_ACTIVITY);
+			overridePendingTransition(R.anim.slide_in_bottom, android.R.anim.fade_out);
 		} else {
 			pickFriendsWhenSessionOpened = true;
 		}
