@@ -87,7 +87,7 @@ public class NewChatActivity extends Activity implements AsyncHelper {
 	}
 
 	public void onDoneClick(MenuItem mi) {
-
+		mi.setEnabled(false);
 		// Create chat and chatters objects in parse
 		String chatType = swPublicPrivate.isChecked() ? "private" : "public";
 		Chat chat = new Chat(etChatTopic.getText().toString(), chatType);
