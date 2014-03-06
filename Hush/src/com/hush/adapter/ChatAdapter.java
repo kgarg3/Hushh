@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.eevoskos.robotoviews.Roboto;
 import com.hush.HushApp;
 import com.hush.R;
 import com.hush.activities.ChatWindowActivity;
@@ -89,8 +90,8 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 
 		//if the chat is not read, make it gray and bold the text
 		 if(!chat.isRead()) {
-			view.setBackgroundColor(resources.getColor(R.color.dark_gray)); 
-			viewHolder.topic.setTypeface(null, Typeface.BOLD);
+			view.setBackgroundColor(resources.getColor(R.color.light_purple)); 
+			viewHolder.topic.setTypeface(Roboto.getInstance().getTypeface(Roboto.ROBOTO_REGULAR));
 		 }
 
 		
