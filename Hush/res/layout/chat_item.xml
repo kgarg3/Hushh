@@ -34,6 +34,7 @@
             android:layout_alignRight="@+id/ivClock"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
+            android:text="@string/empty"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="@dimen/expiration_time_text_size"
             roboto:typeface="condensed_bold" />

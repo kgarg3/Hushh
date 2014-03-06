@@ -83,9 +83,9 @@ public class ChatAdapter extends ArrayAdapter<Chat> {
 		//Set only the first 30 chars of the chat topic, else it overflows onto the next line
 		//which is not seen. Add ... after the 25th char
 		String topic = chat.getTopic();
-		if(topic.length() > CHARACTER_COUNT) { 
-			topic = topic + "...";
-		}
+//		if(topic.length() > CHARACTER_COUNT) { 
+//			topic = topic + "...";
+//		}
 		viewHolder.topic.setText(topic);
 
 		//if the chat is not read, make it gray and bold the text
