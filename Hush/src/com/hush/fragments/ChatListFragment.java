@@ -222,4 +222,7 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 	@Override
 	public void userAttributesFetched(String inName, String inFacebookId) {}
 	
+	@Override
+	public void chatSaved(Chat chat) { }
+
 }

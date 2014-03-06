@@ -2,6 +2,7 @@ package com.hush.activities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,9 +25,11 @@ import com.hush.HushApp;
 import com.hush.R;
 import com.hush.models.Chat;
 import com.hush.models.Chatter;
+import com.hush.models.Message;
+import com.hush.utils.AsyncHelper;
 import com.hush.utils.HushPushNotifReceiver;
 
-public class NewChatActivity extends Activity {
+public class NewChatActivity extends Activity implements AsyncHelper {
 
 	private static final int PICK_FRIENDS_ACTIVITY = 1;
 	private UiLifecycleHelper lifecycleHelper;
@@ -106,16 +109,7 @@ public class NewChatActivity extends Activity {
 		chat.addChatter(chatter);
 
 		// Send a push notification
-    	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
-
-		// Add the chat to user's chats 
-		HushApp.getCurrentUser().addChat(chat);
-		HushApp.getCurrentUser().saveToParse();
-
-		// Set active chat and navigate to a chat window
-		HushApp.getCurrentUser().setCurrentChat(chat);
-		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
-		startActivity(i);
+    	chat.saveToParseWithPush(this, HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 	}
 
 	// private methods
@@ -192,4 +186,28 @@ public class NewChatActivity extends Activity {
 		tvFriendCount.addTextChangedListener(watcher);
 
 	}
+
+	@Override
+	public void userAttributesFetched(String inName, String inFacebookId) {	}
+
+	@Override
+	public void chatSaved(Chat chat) {
+		// Add the chat to user's chats 
+		HushApp.getCurrentUser().addChat(chat);
+		HushApp.getCurrentUser().saveToParse();
+
+		// Set active chat and navigate to a chat window
+		HushApp.getCurrentUser().setCurrentChat(chat);
+		Intent i = new Intent(NewChatActivity.this, ChatWindowActivity.class);
+		startActivity(i);
+	}
+
+	@Override
+	public void chatsFetched(List<Chat> chats) { }
+
+	@Override
+	public void chattersFetched(List<Chatter> chatters) { }
+
+	@Override
+	public void messagesFetched(List<Message> messages) { }
 }

@@ -122,4 +122,7 @@ public class User extends ParseUser implements AsyncHelper {
 	@Override
 	public void messagesFetched(List<Message> messages) { }
 
+	@Override
+	public void chatSaved(Chat chat) { }
+
 }

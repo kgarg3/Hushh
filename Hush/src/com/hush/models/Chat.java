@@ -43,8 +43,10 @@ public class Chat extends ParseObject {
 		saveEventually();
 	}
 	
-	public void saveToParseWithPush(final String pushType, final String pushMessage, final ArrayList<String> fbChattersToNotify) 
+	public void saveToParseWithPush(final AsyncHelper ah, final String pushType, final String pushMessage, final ArrayList<String> fbChattersToNotify) 
 	{
+		final Chat chat = this;
+		
 		//TODO: Copied over in message, refactor this
 		saveEventually(new SaveCallback() {
 			
@@ -54,6 +56,9 @@ public class Chat extends ParseObject {
 					Log.d(TAG, e.getMessage());
 					return;
 				}
+				
+				// Chat is saved, so call the method on the object
+				ah.chatSaved(chat);
 				
 				// Fetch Users with same facebook ids as in the list fbChattersToNotify
 				// those are the users to notify
