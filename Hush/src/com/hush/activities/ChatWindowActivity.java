@@ -201,7 +201,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
     	chat.saveToParse();
     	
     	// Save to parse and send a push notification
-        chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
+        chat.saveToParseWithPush(this, HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
         
         adapterMessages.add(message);
         
@@ -264,7 +264,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		}
 		
 		// Send a push notification
-    	chat.saveToParseWithPush(HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	chat.saveToParseWithPush(this, HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 	}
 	
 	// private methods
@@ -356,5 +356,8 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 			startPickFriendsActivity();
 		}
 	}
+
+	@Override
+	public void chatSaved(Chat chat) { }
 
 }
