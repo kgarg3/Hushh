@@ -109,7 +109,7 @@ public class NewChatActivity extends Activity implements AsyncHelper {
 		chat.addChatter(chatter);
 
 		// Send a push notification
-    	chat.saveToParseWithPush(this, HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	chat.saveToParseWithPush(this, HushPushNotifReceiver.PushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 	}
 
 	// private methods

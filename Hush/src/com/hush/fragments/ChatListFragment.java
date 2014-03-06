@@ -190,12 +190,12 @@ public abstract class ChatListFragment extends Fragment implements AsyncHelper {
 						return;
 					}
 					
-					if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
+					if(notifMsg.startsWith(HushPushNotifReceiver.PushType.NEW_CHAT.toString())) {
 						chat.setRead(false);
 						adapter.add(chat);
 						// Mark that chat as unread
 					}
-					else if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString())) {
+					else if(notifMsg.startsWith(HushPushNotifReceiver.PushType.NEW_MESSAGE.toString())) {
 						// Mark the chat as unread
 						chat.setRead(false);
 					} else {

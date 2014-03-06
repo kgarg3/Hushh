@@ -20,7 +20,7 @@ import com.hush.models.Chat;
 
 public class HushPushNotifReceiver extends BroadcastReceiver {
 	
-	public static enum pushType {NEW_CHAT, NEW_MESSAGE};
+	public static enum PushType {NEW_CHAT, NEW_MESSAGE};
 	
 	private static final String TAG = HushPushNotifReceiver.class.getSimpleName();
 	
@@ -52,11 +52,11 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 						String[] customDataParts = customData.split("\\|");
 						
 						// If the push notif is for a new chat, then add the chat to the user's chats in Parse
-						if (customData.startsWith(HushPushNotifReceiver.pushType.NEW_CHAT.toString())) {
+						if (customDataParts[0].equals(HushPushNotifReceiver.PushType.NEW_CHAT.toString())) {
 							Chat.addChatToCurrentUserInParse(customDataParts[2]);
 						}
 						
-						generateNotification(context, customDataParts[2], customDataParts[3]);
+						generateNotification(customDataParts[0], context, customDataParts[2], customDataParts[3]);
 						
 						// Send a local broadcast for running activities to load the results
 						LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(Constants.broadcastLocalMessageAction));
@@ -68,7 +68,7 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 		}
 	}
 	
-	private void generateNotification(Context context, String chatId, String pushMessage) {
+	private void generateNotification(String pushType, Context context, String chatId, String pushMessage) {
 		Intent intent = new Intent(context, HushLoginActivity.class);
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
@@ -76,9 +76,19 @@ public class HushPushNotifReceiver extends BroadcastReceiver {
 
 		NotificationCompat.Builder systemTrayNotif = new NotificationCompat.Builder(context)
 				.setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(context.getString(R.string.app_name))
-				.setContentText(pushMessage)
 				.setContentIntent(contentIntent);
+
+		if (pushType.equals(HushPushNotifReceiver.PushType.NEW_CHAT.toString()))
+		{
+			systemTrayNotif.setContentTitle(context.getString(R.string.app_name));
+			systemTrayNotif.setContentText(pushMessage);
+
+		} else
+		{
+			String[] pushMessageParts = pushMessage.split("\\|");
+			systemTrayNotif.setContentTitle(pushMessageParts[0]);
+			systemTrayNotif.setContentText(pushMessageParts[1]);
+		}
 
 		// Hide the notification after its selected
 		systemTrayNotif.setAutoCancel(true);

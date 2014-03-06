@@ -137,7 +137,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		HushUtils.deleteFile(ChatWindowActivity.this);
 		
 		for(String notifMsg : notifs) {
-			if(notifMsg.startsWith(HushPushNotifReceiver.pushType.NEW_MESSAGE.toString())) {
+			if(notifMsg.startsWith(HushPushNotifReceiver.PushType.NEW_MESSAGE.toString())) {
 				String[] notifParts = notifMsg.split("\\|");
 				if(notifParts[2].equals(chat.getObjectId())) {
 					adapterMessages.add(new Message(notifParts[3], "-1"));
@@ -201,7 +201,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
     	chat.saveToParse();
     	
     	// Save to parse and send a push notification
-        chat.saveToParseWithPush(this, HushPushNotifReceiver.pushType.NEW_MESSAGE.toString(), message.getContent(), getChatterFacebookIds());
+        chat.saveToParseWithPush(this, HushPushNotifReceiver.PushType.NEW_MESSAGE.toString(), chat.getTopic() + "|" + message.getContent(), getChatterFacebookIds());
         
         adapterMessages.add(message);
         
@@ -264,7 +264,7 @@ public class ChatWindowActivity extends FragmentActivity implements AsyncHelper 
 		}
 		
 		// Send a push notification
-    	chat.saveToParseWithPush(this, HushPushNotifReceiver.pushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
+    	chat.saveToParseWithPush(this, HushPushNotifReceiver.PushType.NEW_CHAT.toString(), getString(R.string.new_chat_push_notif_message), fbChatterIds);
 	}
 	
 	// private methods
