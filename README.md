@@ -1,4 +1,4 @@
-hush
-====
+Hushh
+=====
 
-hush
+Anonymous chatting app with facebook friends
